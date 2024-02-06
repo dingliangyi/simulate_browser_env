@@ -692,6 +692,7 @@
             },
         }
         let proxyObj = new Proxy(obj, handler);
+        proxyObj = new Proxy(proxyObj, handler);
         Object.defineProperty(obj, dingvm.memory.symbolProxy, {
             configurable: false,
             enumerable: false,

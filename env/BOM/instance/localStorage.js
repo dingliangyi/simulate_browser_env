@@ -1,4 +1,3 @@
 // localStorage对象
-localStorage = {
-};
+localStorage = {};
 Object.setPrototypeOf(localStorage, Storage.prototype);

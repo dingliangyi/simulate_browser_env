@@ -1,4 +1,3 @@
 // sessionStorage对象
-sessionStorage = {
-};
+sessionStorage = {};
 Object.setPrototypeOf(sessionStorage, Storage.prototype);

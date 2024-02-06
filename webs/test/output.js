@@ -759,6 +759,7 @@ dingvm.timer_map = {
             },
         }
         let proxyObj = new Proxy(obj, handler);
+        proxyObj = new Proxy(proxyObj, handler);
         Object.defineProperty(obj, dingvm.memory.symbolProxy, {
             configurable: false,
             enumerable: false,
@@ -3950,11 +3951,15 @@ dingvm.toolsFunc.defineProperty(Storage.prototype, "setItem", {
 });
 
 // navigator对象
-navigator = {};
+class navigator {
+}
+
 Object.setPrototypeOf(navigator, Navigator.prototype);
 
 // location对象
-let location = {};
+class location {
+}
+
 Object.setPrototypeOf(location, Location.prototype);
 dingvm.toolsFunc.defineProperty(location, "valueOf", {
     configurable: false,
@@ -4089,25 +4094,33 @@ dingvm.toolsFunc.defineProperty(location, "toString", {
 });
 
 // localStorage对象
-localStorage = {
-};
+class localStorage {
+}
+
 Object.setPrototypeOf(localStorage, Storage.prototype);
 
 // sessionStorage对象
-sessionStorage = {
-};
+class sessionStorage {
+}
+
 Object.setPrototypeOf(sessionStorage, Storage.prototype);
 
 // history对象
-history = {};
+class history {
+}
+
 Object.setPrototypeOf(history, History.prototype);
 
 // screen对象
-screen = {};
+class screen {
+}
+
 Object.setPrototypeOf(screen, Screen.prototype);
 
 // chrome对象
-chrome_ = {};
+class chrome_ {
+}
+
 dingvm.toolsFunc.defineProperty(chrome_, "loadTimes", {
     configurable: true,
     enumerable: true,
@@ -9417,7 +9430,9 @@ dingvm.toolsFunc.defineProperty(CSSStyleDeclaration.prototype, "forEach", {
 });
 ;
 // document对象
-document = {};
+class document {
+}
+
 Object.setPrototypeOf(document, HTMLDocument.prototype);
 dingvm.toolsFunc.defineProperty(document, "location", {
     configurable: false,
@@ -10048,7 +10063,10 @@ style = {
     "y": "",
     "zIndex": "",
     "zoom": ""
-};
+}
+// class style{
+//
+// };
 // window对象
 // 删除浏览器中不存在的对象
 delete global;

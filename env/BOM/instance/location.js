@@ -1,5 +1,5 @@
 // location对象
-let location = {};
+location = {};
 Object.setPrototypeOf(location, Location.prototype);
 dingvm.toolsFunc.defineProperty(location, "valueOf", {
     configurable: false,

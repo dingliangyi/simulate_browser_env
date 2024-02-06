@@ -376,3 +376,9 @@ dingvm.envFunc.DocumentProto_getElementsByName = function () {
 
     return result
 };
+dingvm.envFunc.DocumentProto_hidden_get = function () {
+    return false
+};
+dingvm.envFunc.DocumentProto_webkitHidden_get = function () {
+    return false
+}

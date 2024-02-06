@@ -941,6 +941,22 @@ dingvm.timer_map = {
         dingvm.toolsFunc.reNameFunc(func, name);
     };
 
+    // 迭代器
+    dingvm.toolsFunc.iterator = function () {
+        return {
+            next: function () {
+                if (this.index_ === undefined) {
+                    this.index_ = 0;
+                }
+                let tmp = this.self_[this.index_];
+                this.index_ += 1;
+                return {value: tmp, done: tmp === undefined};
+            },
+            self_: this
+        }
+    };
+    dingvm.toolsFunc.reNameFunc(dingvm.toolsFunc.iterator, "values");
+
     // 原型保护方法
     dingvm.toolsFunc.safe_constructor_prototype = function (obj, name) {
         dingvm.toolsFunc.setNative(obj, name);
@@ -1342,9 +1358,6 @@ dingvm.envFunc.window_outerHeight_get = function () {
 dingvm.envFunc.window_outerHeight_set = function () {
     dingvm.toolsFunc.setProtoArr('outerHeight')
 };
-dingvm.envFunc.window_location_get = function () {
-    return location
-};
 dingvm.envFunc.window_styleMedia_get = function () {
     let StyleMedia = function StyleMedia() {
 
@@ -1646,7 +1659,11 @@ dingvm.envFunc.NavigatorProto_webkitTemporaryStorage_get = function () {
     Object.setPrototypeOf(obj, DeprecatedStorageQuota)
 
     return obj
-};;
+};
+dingvm.envFunc.NavigatorProto_sendBeacon = function (url, data) {
+    console.log(`调用了navigator.sendBeacon(${url}, ${data})`)
+    return true
+};
 dingvm.envFunc.BatteryManagerProto_charging_get = function () {
     return true
 };
@@ -2037,7 +2054,15 @@ dingvm.envFunc.DocumentProto_getElementsByName = function () {
 
     return result
 };
-;
+dingvm.envFunc.DocumentProto_hidden_get = function () {
+    return false
+};
+dingvm.envFunc.DocumentProto_webkitHidden_get = function () {
+    return false
+};
+dingvm.envFunc.DocumentProto_currentScript_get = function () {
+    return null
+};
 dingvm.envFunc.ElementProto_id_get = function ElementProto_id_get() {
     return this.jquery.attr('id')
 };
@@ -2716,6 +2741,22 @@ dingvm.envFunc.HTMLDivElementProto_align_set = function HTMLDivElementProto_alig
     let value = arguments[0];
     return dingvm.toolsFunc.setProtoArr.call(this, "align", value);
 };;
+dingvm.envFunc.HTMLCollectionProto_length_get = function () {
+    return this.length
+};
+dingvm.envFunc.HTMLCollectionProto_item = function (idx) {
+    return this[idx]
+};
+dingvm.envFunc.HTMLCollectionProto_namedItem = function (key) {
+    for (let tag of this) {
+        let name = tag.jquery.attr('name');
+        if (name === key || tag.id === key) {
+            return tag
+        }
+    }
+    return null
+};
+;
 !function () {
 
     dingvm.toolsFunc.printLog = function printLog(logList) {
@@ -3770,23 +3811,9 @@ dingvm.toolsFunc.defineProperty(Plugin.prototype, "namedItem", {
         return dingvm.toolsFunc.dispatch(this, Plugin.prototype, "PluginProto", "namedItem", arguments)
     }
 });
-let iterator = function values() {
-    return {
-        next: function () {
-            if (this.index_ === undefined) {
-                this.index_ = 0;
-            }
-            let tmp = this.self_[this.index_];
-            this.index_ += 1;
-            return {value: tmp, done: tmp === undefined};
-        },
-        self_: this
-    }
-};
-dingvm.toolsFunc.reNameFunc(iterator, "values");
 Object.defineProperties(Plugin.prototype, {
     [Symbol.iterator]: {
-        value: iterator,
+        value: dingvm.toolsFunc.iterator,
         configurable: true
     }
 })
@@ -3829,7 +3856,7 @@ dingvm.toolsFunc.defineProperty(PluginArray.prototype, "refresh", {
 });
 Object.defineProperties(PluginArray.prototype, {
     [Symbol.iterator]: {
-        value: iterator,
+        value: dingvm.toolsFunc.iterator,
         configurable: true
     }
 })
@@ -3951,15 +3978,11 @@ dingvm.toolsFunc.defineProperty(Storage.prototype, "setItem", {
 });
 
 // navigator对象
-class navigator {
-}
-
+navigator = {};
 Object.setPrototypeOf(navigator, Navigator.prototype);
 
 // location对象
-class location {
-}
-
+location = {};
 Object.setPrototypeOf(location, Location.prototype);
 dingvm.toolsFunc.defineProperty(location, "valueOf", {
     configurable: false,
@@ -4094,33 +4117,23 @@ dingvm.toolsFunc.defineProperty(location, "toString", {
 });
 
 // localStorage对象
-class localStorage {
-}
-
+localStorage = {};
 Object.setPrototypeOf(localStorage, Storage.prototype);
 
 // sessionStorage对象
-class sessionStorage {
-}
-
+sessionStorage = {};
 Object.setPrototypeOf(sessionStorage, Storage.prototype);
 
 // history对象
-class history {
-}
-
+history = {};
 Object.setPrototypeOf(history, History.prototype);
 
 // screen对象
-class screen {
-}
-
+screen = {};
 Object.setPrototypeOf(screen, Screen.prototype);
 
 // chrome对象
-class chrome_ {
-}
-
+chrome_ = {};
 dingvm.toolsFunc.defineProperty(chrome_, "loadTimes", {
     configurable: true,
     enumerable: true,
@@ -9338,6 +9351,95 @@ dingvm.toolsFunc.defineProperty(HTMLDivElement.prototype, "align", {
     }
 });
 ;
+// NodeList对象
+NodeList = function NodeList() {
+    return dingvm.toolsFunc.throwError("TypeError", "Illegal constructor")
+};
+dingvm.toolsFunc.safe_constructor_prototype(NodeList, "NodeList");
+dingvm.toolsFunc.defineProperty(NodeList.prototype, "entries", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, NodeList.prototype, "NodeListProto", "entries", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(NodeList.prototype, "keys", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, NodeList.prototype, "NodeListProto", "keys", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(NodeList.prototype, "values", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, NodeList.prototype, "NodeListProto", "values", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(NodeList.prototype, "forEach", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, NodeList.prototype, "NodeListProto", "forEach", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(NodeList.prototype, "length", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, NodeList.prototype, "NodeListProto", "length_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(NodeList.prototype, "item", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, NodeList.prototype, "NodeListProto", "item", arguments)
+    }
+});
+;
+// HTMLCollection对象
+HTMLCollection = function HTMLCollection() {
+    return dingvm.toolsFunc.throwError("TypeError", "Illegal constructor")
+};
+dingvm.toolsFunc.safe_constructor_prototype(HTMLCollection, "HTMLCollection");
+dingvm.toolsFunc.defineProperty(HTMLCollection.prototype, "length", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLCollection.prototype, "HTMLCollectionProto", "length_get", arguments, 82)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(HTMLCollection.prototype, "item", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLCollection.prototype, "HTMLCollectionProto", "item", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLCollection.prototype, "namedItem", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLCollection.prototype, "HTMLCollectionProto", "namedItem", arguments)
+    }
+});
+Object.defineProperties(HTMLCollection.prototype, {
+    [Symbol.iterator]: {
+        value: dingvm.toolsFunc.iterator,
+        configurable: true
+    }
+});
 // CSSStyleDeclaration对象
 // todo Symbol.iterator未实现
 CSSStyleDeclaration = function CSSStyleDeclaration() {
@@ -9430,9 +9532,7 @@ dingvm.toolsFunc.defineProperty(CSSStyleDeclaration.prototype, "forEach", {
 });
 ;
 // document对象
-class document {
-}
-
+document = {};
 Object.setPrototypeOf(document, HTMLDocument.prototype);
 dingvm.toolsFunc.defineProperty(document, "location", {
     configurable: false,
@@ -10063,10 +10163,7 @@ style = {
     "y": "",
     "zIndex": "",
     "zoom": ""
-}
-// class style{
-//
-// };
+};
 // window对象
 // 删除浏览器中不存在的对象
 delete global;
@@ -10120,16 +10217,6 @@ dingvm.toolsFunc.defineProperty(window, "name", {
     },
     set: function () {
         return dingvm.toolsFunc.dispatch(this, window, "window", "name_set", arguments)
-    }
-});
-dingvm.toolsFunc.defineProperty(window, "location", {
-    configurable: false,
-    enumerable: true,
-    get: function () {
-        return dingvm.toolsFunc.dispatch(this, window, "window", "location_get", arguments)
-    },
-    set: function () {
-        return dingvm.toolsFunc.dispatch(this, window, "window", "location_set", arguments)
     }
 });
 dingvm.toolsFunc.defineProperty(window, "self", {
@@ -10773,8 +10860,10 @@ delete globalThis['Database'];
 delete globalThis['SQLTransaction'];;
 debugger
 
-for (let i of navigator.plugins[0]) {
-    console.log(i)
-}
+divs = document.getElementsByTagName('div')
+a = divs.namedItem('2')
+b = divs.namedItem('22')
+console.log(a)
+console.log(b)
 
 debugger;

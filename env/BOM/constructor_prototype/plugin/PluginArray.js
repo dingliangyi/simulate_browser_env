@@ -37,7 +37,7 @@ dingvm.toolsFunc.defineProperty(PluginArray.prototype, "refresh", {
 });
 Object.defineProperties(PluginArray.prototype, {
     [Symbol.iterator]: {
-        value: iterator,
+        value: dingvm.toolsFunc.iterator,
         configurable: true
     }
 })

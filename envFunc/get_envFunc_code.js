@@ -72,6 +72,7 @@ const files_envFunc = [
     // "/DOM/tag/HTMLFormElement_prototype.js",
     // "/DOM/tag/HTMLAllCollection_prototype.js",
     // "/DOM/tag/HTMLScriptElement_prototype.js",
+    "/DOM/tag/HTMLCollection_prototype.js"
 
     //! other
     // "/DOM/other/XPathExpression_prototype.js",

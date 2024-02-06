@@ -381,4 +381,7 @@ dingvm.envFunc.DocumentProto_hidden_get = function () {
 };
 dingvm.envFunc.DocumentProto_webkitHidden_get = function () {
     return false
+};
+dingvm.envFunc.DocumentProto_currentScript_get = function () {
+    return null
 }

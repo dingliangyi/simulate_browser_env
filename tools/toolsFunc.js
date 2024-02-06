@@ -874,6 +874,22 @@
         dingvm.toolsFunc.reNameFunc(func, name);
     };
 
+    // 迭代器
+    dingvm.toolsFunc.iterator = function () {
+        return {
+            next: function () {
+                if (this.index_ === undefined) {
+                    this.index_ = 0;
+                }
+                let tmp = this.self_[this.index_];
+                this.index_ += 1;
+                return {value: tmp, done: tmp === undefined};
+            },
+            self_: this
+        }
+    };
+    dingvm.toolsFunc.reNameFunc(dingvm.toolsFunc.iterator, "values");
+
     // 原型保护方法
     dingvm.toolsFunc.safe_constructor_prototype = function (obj, name) {
         dingvm.toolsFunc.setNative(obj, name);

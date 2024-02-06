@@ -77,3 +77,6 @@ dingvm.envFunc.PerformanceProto_memory_get = function () {
 
     return memory
 };
+dingvm.envFunc.PerformanceProto_clearMarks = function () {
+    debugger
+}

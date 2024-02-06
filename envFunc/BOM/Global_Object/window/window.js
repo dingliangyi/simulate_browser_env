@@ -74,9 +74,6 @@ dingvm.envFunc.window_outerHeight_get = function () {
 dingvm.envFunc.window_outerHeight_set = function () {
     dingvm.toolsFunc.setProtoArr('outerHeight')
 };
-dingvm.envFunc.window_location_get = function () {
-    return location
-};
 dingvm.envFunc.window_styleMedia_get = function () {
     let StyleMedia = function StyleMedia() {
 

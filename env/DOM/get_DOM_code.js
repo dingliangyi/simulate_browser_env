@@ -55,8 +55,8 @@ const files_constructor_prototype = [
     // "/constructor_prototype/event/PointerEvent.js",
 
     //> 类数组
-    // "/constructor_prototype/tag/NodeList.js",
-    // "/constructor_prototype/tag/HTMLCollection.js",
+    "/constructor_prototype/tag/NodeList.js",
+    "/constructor_prototype/tag/HTMLCollection.js",
 
     //> style CSS
     "/constructor_prototype/CSS/CSSStyleDeclaration.js",

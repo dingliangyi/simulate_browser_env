@@ -51,23 +51,9 @@ dingvm.toolsFunc.defineProperty(Plugin.prototype, "namedItem", {
         return dingvm.toolsFunc.dispatch(this, Plugin.prototype, "PluginProto", "namedItem", arguments)
     }
 });
-let iterator = function values() {
-    return {
-        next: function () {
-            if (this.index_ === undefined) {
-                this.index_ = 0;
-            }
-            let tmp = this.self_[this.index_];
-            this.index_ += 1;
-            return {value: tmp, done: tmp === undefined};
-        },
-        self_: this
-    }
-};
-dingvm.toolsFunc.reNameFunc(iterator, "values");
 Object.defineProperties(Plugin.prototype, {
     [Symbol.iterator]: {
-        value: iterator,
+        value: dingvm.toolsFunc.iterator,
         configurable: true
     }
 })

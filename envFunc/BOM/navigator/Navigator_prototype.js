@@ -140,3 +140,7 @@ dingvm.envFunc.NavigatorProto_webkitTemporaryStorage_get = function () {
 
     return obj
 };
+dingvm.envFunc.NavigatorProto_sendBeacon = function (url, data) {
+    console.log(`调用了navigator.sendBeacon(${url}, ${data})`)
+    return true
+}

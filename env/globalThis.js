@@ -53,16 +53,6 @@ dingvm.toolsFunc.defineProperty(window, "name", {
         return dingvm.toolsFunc.dispatch(this, window, "window", "name_set", arguments)
     }
 });
-dingvm.toolsFunc.defineProperty(window, "location", {
-    configurable: false,
-    enumerable: true,
-    get: function () {
-        return dingvm.toolsFunc.dispatch(this, window, "window", "location_get", arguments)
-    },
-    set: function () {
-        return dingvm.toolsFunc.dispatch(this, window, "window", "location_set", arguments)
-    }
-});
 dingvm.toolsFunc.defineProperty(window, "self", {
     configurable: true,
     enumerable: true,

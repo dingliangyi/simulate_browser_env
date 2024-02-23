@@ -7,10 +7,15 @@ const files_envFunc = [
 
     //! BOM全局对象
     "/BOM/Global_Object/location.js",
-    "/BOM/Global_Object/Screen_prototype.js",
     "/BOM/Global_Object/History_prototype.js",
+
+    "/BOM/Global_Object/Screen/Screen_prototype.js",
+    "/BOM/Global_Object/Screen/ScreenOrientation_prototype.js",
+
     "/BOM/Global_Object/window/window.js",
     "/BOM/Global_Object/window/chrome.js",
+    "/BOM/Global_Object/window/MediaQueryList_prototype.js",
+
 
     //! navigator
     "/BOM/navigator/navigator plugin.js",

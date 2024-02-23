@@ -291,7 +291,7 @@ dingvm.envFunc.DocumentProto_querySelector = function (selector) {
     return result
 };
 dingvm.envFunc.DocumentProto_referrer_get = function () {
-    return document.href
+    return ''
 };
 dingvm.envFunc.DocumentProto_visibilityState_get = function () {
     return 'visible'
@@ -384,4 +384,28 @@ dingvm.envFunc.DocumentProto_webkitHidden_get = function () {
 };
 dingvm.envFunc.DocumentProto_currentScript_get = function () {
     return null
-}
+};
+dingvm.envFunc.DocumentProto_URL_get = function () {
+    return location.href
+};
+dingvm.envFunc.DocumentProto_documentURI_get = function () {
+    return location.href
+};
+dingvm.envFunc.DocumentProto_dir_get = function () {
+    return ''
+};
+dingvm.envFunc.DocumentProto_designMode_get = function () {
+    return 'off'
+};
+dingvm.envFunc.DocumentProto_contentType_get = function () {
+    return 'text/html'
+};
+dingvm.envFunc.DocumentProto_inputEncoding_get = function () {
+    return 'UTF-8'
+};
+dingvm.envFunc.DocumentProto_onmousemove_get = function () {
+    return null
+};
+dingvm.envFunc.DocumentProto_onselectionchange_get = function () {
+    return null
+};

@@ -4,12 +4,17 @@ const files_constructor_prototype = [
     "/constructor_prototype/EventTarget.js",
 
     // BOM全局对象
-    "/constructor_prototype/Global_Object/WindowProperties.js",
-    "/constructor_prototype/Global_Object/Window.js",
+    "/constructor_prototype/Global_Object/window/WindowProperties.js",
+    "/constructor_prototype/Global_Object/window/Window.js",
+    "/constructor_prototype/Global_Object/window/MediaQueryList.js",
+
     "/constructor_prototype/Global_Object/Location.js",
     "/constructor_prototype/Global_Object/Navigator.js",
     "/constructor_prototype/Global_Object/History.js",
-    "/constructor_prototype/Global_Object/Screen.js",
+
+    "/constructor_prototype/Global_Object/Screen/ScreenOrientation.js",
+    "/constructor_prototype/Global_Object/Screen/Screen.js",
+
 
     // plugin
     "/constructor_prototype/plugin/Plugin.js",

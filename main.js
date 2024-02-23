@@ -2,15 +2,15 @@ const {VM, VMScript} = require("vm2");
 const fs = require("fs");
 const request = require('request')
 const CryptoJS = require('crypto-js')
-const _ = require('lodash');
+// const _ = require('lodash');
 const {createCanvas} = require('canvas')
 const getContextWebgl = require('gl')
 // const cheerio = require('cheerio')
 const {indexedDB: indexedDB_} = require("fake-indexeddb");
 
-
 const {read_html_code} = require('./env/get_html_code')
 const {get_document, get_env_code, get_tools_code, get_file} = require('./readfile')
+//> --------------------------------------------------------------------------------------------
 
 // 名称
 const name = "test";
@@ -19,14 +19,16 @@ fs.writeFileSync(`./webs/${name}/log.txt`, "");
 // 加载网页html并解析
 const html_code = read_html_code();
 $ = get_document(html_code);
-
+//> --------------------------------------------------------------------------------------------
 
 let codeTest = function () {
     // 全局配置
     const configCode = fs.readFileSync("./config.js");
     // 功能插件、env实现
     const toolsCode = get_tools_code();
-    // 浏览器环境
+    // log
+    const logCode = get_file("tools", "printLog");
+    // env
     const envCode = get_env_code();
     // 全局初始化代码
     const globalVarCode = get_file('tools', "globalVar");
@@ -34,20 +36,19 @@ let codeTest = function () {
     const proxyObjCode = get_file('tools', "proxyObj")
     // 网页变量初始化代码
     const userVarCode = get_file(`webs/${name}`, "userVar");
+    // 删除不是全局的构造器
+    let delete_NoGlobal_constructor = get_file("tools", "delete_NoGlobal_constructor")
     // 网页关键代码
     const debugCode = get_file(`webs/${name}`, "web-js");
     // 异步执行的代码
     // const asyncCode = user.getCode(name, "async");
     const asyncCode = "";
-    // log
-    const logCode = get_file("tools", "printLog");
-    // 删除不是全局的构造器
-    let delete_NoGlobal_constructor = get_file("tools", "delete_NoGlobal_constructor")
     // 整合代码
     return `${configCode}${toolsCode}${logCode}${envCode}${globalVarCode}${proxyObjCode}${userVarCode}${delete_NoGlobal_constructor}${debugCode}${asyncCode}`;
 }()
 fs.writeFileSync(`./webs/${name}/output.js`, codeTest);
 
+//> --------------------------------------------------------------------------------------------
 //* 套娃iframeEnv
 const createIframeEnv = function () {
     let jsCode2 = get_file('env', "iframeEnv")
@@ -59,6 +60,16 @@ const createIframeEnv = function () {
 
     return vm2.run(ScriptTemp)
 }
+const _ = {
+    random: function (min, max, floating = false) {
+        if (floating) {
+            return Math.random() * (max - min) + min;
+        } else {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+    }
+}
+//> --------------------------------------------------------------------------------------------
 
 // 创建虚拟机实例
 const vm = new VM({
@@ -85,6 +96,7 @@ const vm = new VM({
     }
 });
 
+
 //* 保存生成的js
 !function () {
     let code = codeTest
@@ -104,7 +116,8 @@ const vm = new VM({
     code = 'const setInterval_ = setInterval;\n' + code
     code = 'const CryptoJS = require(\'crypto-js\');\n' + code
     code = 'const {createCanvas} = require(\'canvas\');\n' + code
-    code = 'const _ = require(\'lodash\');\n' + code
+    // code = 'const _ = require(\'lodash\');\n' + code
+    code = 'const _={random:function(a,b,c){if(floating){return Math.random()*(b-a)+a}else{return Math.floor(Math.random()*(b-a+1))+a}}};\n' + code
     code = 'const getContextWebgl = require(\'gl\');\n' + code
     code = 'const {indexedDB: indexedDB_} = require("fake-indexeddb");\n' + code
     // 替换vm2_if

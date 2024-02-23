@@ -112,6 +112,15 @@
         };
     }();
 
+    // 获取随机数
+    dingvm.toolsFunc.random = function (min, max, floating = false) {
+        if (floating) {
+            return Math.random() * (max - min) + min;
+        } else {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+    }
+
     // 更新location信息
     dingvm.toolsFunc.resetLocation = function (url) {
         let jsonUrl = dingvm.toolsFunc.parseUrl(url);

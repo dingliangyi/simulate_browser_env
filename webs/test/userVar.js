@@ -39,7 +39,7 @@
     dingvm.toolsFunc.resetLocation('http://www.chinastock.com.cn/newsite/cgs-services/stockFinance/businessAnnc.html');
 
     //* 固定文档加载状态 "interactive" "complete" "loading"
-    dingvm.memory.globalVar.document.readyState = 'loading';
+    dingvm.memory.globalVar.document.readyState = 'interactive';
 
     debugger
     //! 最后执行
@@ -52,18 +52,9 @@
     //     delete document['script_position'];
     // }
 
-    //* 获取随机值
-    function randInt(x, y) {
-        if (y <= x) {
-            return y + Math.round(Math.random() * (x - y));
-        } else {
-            return x + Math.round(Math.random() * (y - x))
-        }
-    }
-
     //* 初始化宽度、高度
-    dingvm.memory.globalVar.width = randInt(480, 800);
-    dingvm.memory.globalVar.height = randInt(720, 1278);
+    dingvm.memory.globalVar.width = dingvm.toolsFunc.random(480, 800);
+    dingvm.memory.globalVar.height = dingvm.toolsFunc.random(720, 1278);
 
     //* setTimeout setInterval修改
     if (dingvm.config.setTimeout) {

@@ -1,10 +1,10 @@
 // 全局对象配置
 debugger
 dingvm = {
-    "toolsFunc": {},//功能函数相关，插件
-    "envFunc": {},// 具体环境实现相关
-    "config": {}, // 配置相关
-    "memory": {}, // 内存
+    toolsFunc: {},//功能函数相关，插件
+    envFunc: {},// 具体环境实现相关
+    config: {}, // 配置相关
+    memory: {}, // 内存
 };
 
 dingvm.config.proxy = false;// 是否开启代理
@@ -25,8 +25,8 @@ dingvm.config.vm2_if = true; // 是否在vm2运行
 
 dingvm.memory.symbolProxy = Symbol("proxy");// 独一无二的属性, 标记是否已代理
 dingvm.memory.symbolData = Symbol("data");// 用来保存当前对象上的原型属性
-dingvm.memory.filterStrProp = ["eval", '__proto__', 'prototype', 'jquery', 'listeners'];// 需要过滤的属性
-dingvm.memory.filterSymbolProp = [dingvm.memory.symbolProxy, Symbol.toStringTag, dingvm.memory.symbolData]
+dingvm.memory.filterStrProp = ['toString', "eval", '__proto__', 'prototype', 'jquery', 'listeners', 'hasOwnProperty', 'constructor', 'valueOf'];// 需要过滤的属性
+dingvm.memory.filterSymbolProp = [dingvm.memory.symbolProxy, Symbol.toStringTag, dingvm.memory.symbolData, Symbol.toPrimitive]
 dingvm.memory.filterRecursionProp = ['jquery', 'getedContext']
 dingvm.memory.ID = {}; // tag对象次数id
 
@@ -54,6 +54,7 @@ dingvm.memory.globalVar.scripts = [];
 dingvm.memory.globalVar.document = {};
 dingvm.memory.globalVar.performance = {};
 dingvm.memory.globalVar.navigator = {};
+dingvm.memory.globalVar.window = {};
 
 dingvm.memory.asyncEvent = {};// 异步事件
 
@@ -178,6 +179,15 @@ dingvm.timer_map = {
             return plugin;
         };
     }();
+
+    // 获取随机数
+    dingvm.toolsFunc.random = function (min, max, floating = false) {
+        if (floating) {
+            return Math.random() * (max - min) + min;
+        } else {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+    }
 
     // 更新location信息
     dingvm.toolsFunc.resetLocation = function (url) {
@@ -1222,6 +1232,34 @@ dingvm.envFunc.location_toString = function () {
     return dingvm.memory.globalVar._location.href;
 };
 ;
+dingvm.envFunc.HistoryProto_length_get = function () {
+    return 1
+};
+dingvm.envFunc.HistoryProto_scrollRestoration_get = function () {
+    return 'auto'
+};
+dingvm.envFunc.HistoryProto_scrollRestoration_set = function (value) {
+    return dingvm.toolsFunc.setProtoArr.call(this, 'scrollRestoration', value)
+};
+dingvm.envFunc.HistoryProto_state_get = function () {
+    return null
+};
+dingvm.envFunc.HistoryProto_back = function () {
+    debugger
+};
+dingvm.envFunc.HistoryProto_forward = function () {
+    debugger
+};
+dingvm.envFunc.HistoryProto_go = function () {
+    debugger
+};
+dingvm.envFunc.HistoryProto_pushState = function () {
+    debugger
+};
+dingvm.envFunc.HistoryProto_replaceState = function () {
+    debugger
+};
+;
 dingvm.envFunc.ScreenProto_width_get = function () {
     return dingvm.memory.globalVar.width;
 };
@@ -1253,33 +1291,17 @@ dingvm.envFunc.ScreenProto_orientation_get = function () {
         onchange: null
     };
 };
-;
-dingvm.envFunc.HistoryProto_length_get = function () {
-    return 1
-};
-dingvm.envFunc.HistoryProto_scrollRestoration_get = function () {
-    return 'auto'
-};
-dingvm.envFunc.HistoryProto_scrollRestoration_set = function (value) {
-    return dingvm.toolsFunc.setProtoArr.call(this, 'scrollRestoration', value)
-};
-dingvm.envFunc.HistoryProto_state_get = function () {
+dingvm.envFunc.ScreenProto_isExtended_get = function () {
+    return false
+}
+dingvm.envFunc.ScreenProto_onchange_get = function () {
     return null
-};
-dingvm.envFunc.HistoryProto_back = function () {
-    debugger
-};
-dingvm.envFunc.HistoryProto_forward = function () {
-    debugger
-};
-dingvm.envFunc.HistoryProto_go = function () {
-    debugger
-};
-dingvm.envFunc.HistoryProto_pushState = function () {
-    debugger
-};
-dingvm.envFunc.HistoryProto_replaceState = function () {
-    debugger
+}
+dingvm.envFunc.ScreenProto_orientation_get = function () {
+    let orientation = {};
+    Object.setPrototypeOf(orientation, ScreenOrientation.prototype);
+
+    return orientation;
 };
 ;
 dingvm.envFunc.window_top_get = function () {
@@ -1420,7 +1442,36 @@ dingvm.envFunc.window_frames_get = function () {
 };
 dingvm.envFunc.window_frames_set = function () {
     debugger
-};;
+};
+dingvm.envFunc.window_origin_get = function () {
+    return location.origin
+};
+dingvm.envFunc.window_closed_get = function () {
+    return false
+};
+dingvm.envFunc.window_matchMedia = function (matchMedia_str) {
+    let obj = {}
+    Object.setPrototypeOf(obj, MediaQueryList.prototype)
+    dingvm.toolsFunc.setProtoArr.call(obj, 'media', matchMedia_str)
+
+    return obj
+};
+dingvm.envFunc.window_webkitRequestFileSystem = function (storage_type, space_size, success_callback, error_callback) {
+    debugger
+    try {
+        let fs = {
+            root: {
+                getFile(path, param, callback) {
+                    console.log(`调用了 getFile(webkitRequestFileSystem) 路径：${path} 参数：${param} 回调：${callback.toString()}`)
+                }
+            }
+        }
+        success_callback(fs)
+    } catch (e) {
+        error_callback({})
+    }
+    console.log(`调用了 window_webkitRequestFileSystem 存储类型：${storage_type} 空间大小：${space_size} 成功回调：${success_callback.toString()} 失败回调：${error_callback.toString()}`)
+};
 dingvm.envFunc.chrome_loadTimes = function () {
     // debugger
     let random1 = _.random(100, 300, false)
@@ -1455,6 +1506,30 @@ dingvm.envFunc.chrome_csi = function () {
         startE: dingvm.memory.globalVar.chrome_loadTimes_time1 * 1000,
         tran: 15
     }
+};
+;
+dingvm.envFunc.MediaQueryListProto_media_get = function () {
+    return dingvm.toolsFunc.getProtoArr.call(this, 'media')
+};
+dingvm.envFunc.MediaQueryListProto_matches_get = function () {
+    // todo 临时返回true
+    return true
+};
+dingvm.envFunc.MediaQueryListProto_onchange_get = function () {
+    let onchange = dingvm.toolsFunc.getProtoArr.call(this, 'onchange')
+    if (onchange)
+        return onchange
+
+    return null
+};
+dingvm.envFunc.MediaQueryListProto_onchange_set = function (value) {
+    return dingvm.toolsFunc.setProtoArr.call(this, 'onchange', value)
+};
+dingvm.envFunc.MediaQueryListProto_addListener = function () {
+    debugger
+};
+dingvm.envFunc.MediaQueryListProto_removeListener = function () {
+    debugger
 };
 ;
 //! MimeTypeArray_prototype
@@ -1663,6 +1738,9 @@ dingvm.envFunc.NavigatorProto_webkitTemporaryStorage_get = function () {
 dingvm.envFunc.NavigatorProto_sendBeacon = function (url, data) {
     console.log(`调用了navigator.sendBeacon(${url}, ${data})`)
     return true
+};
+dingvm.envFunc.NavigatorProto_javaEnabled = function () {
+    return false
 };
 dingvm.envFunc.BatteryManagerProto_charging_get = function () {
     return true
@@ -1969,7 +2047,7 @@ dingvm.envFunc.DocumentProto_querySelector = function (selector) {
     return result
 };
 dingvm.envFunc.DocumentProto_referrer_get = function () {
-    return document.href
+    return ''
 };
 dingvm.envFunc.DocumentProto_visibilityState_get = function () {
     return 'visible'
@@ -2063,6 +2141,30 @@ dingvm.envFunc.DocumentProto_webkitHidden_get = function () {
 dingvm.envFunc.DocumentProto_currentScript_get = function () {
     return null
 };
+dingvm.envFunc.DocumentProto_URL_get = function () {
+    return location.href
+};
+dingvm.envFunc.DocumentProto_documentURI_get = function () {
+    return location.href
+};
+dingvm.envFunc.DocumentProto_dir_get = function () {
+    return ''
+};
+dingvm.envFunc.DocumentProto_designMode_get = function () {
+    return 'off'
+};
+dingvm.envFunc.DocumentProto_contentType_get = function () {
+    return 'text/html'
+};
+dingvm.envFunc.DocumentProto_inputEncoding_get = function () {
+    return 'UTF-8'
+};
+dingvm.envFunc.DocumentProto_onmousemove_get = function () {
+    return null
+};
+dingvm.envFunc.DocumentProto_onselectionchange_get = function () {
+    return null
+};;
 dingvm.envFunc.ElementProto_id_get = function ElementProto_id_get() {
     return this.jquery.attr('id')
 };
@@ -3064,6 +3166,55 @@ dingvm.toolsFunc.defineProperty(Window.prototype, "PERSISTENT", {
     writable: false, value: 1
 });
 
+// MediaQueryList对象
+MediaQueryList = function MediaQueryList() {
+    return dingvm.toolsFunc.throwError("TypeError", "Illegal constructor")
+};
+dingvm.toolsFunc.safe_constructor_prototype(MediaQueryList, "MediaQueryList");
+Object.setPrototypeOf(MediaQueryList.prototype, EventTarget.prototype);
+dingvm.toolsFunc.defineProperty(MediaQueryList.prototype, "media", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, MediaQueryList.prototype, "MediaQueryListProto", "media_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(MediaQueryList.prototype, "matches", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, MediaQueryList.prototype, "MediaQueryListProto", "matches_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(MediaQueryList.prototype, "onchange", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, MediaQueryList.prototype, "MediaQueryListProto", "onchange_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, MediaQueryList.prototype, "MediaQueryListProto", "onchange_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(MediaQueryList.prototype, "addListener", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, MediaQueryList.prototype, "MediaQueryListProto", "addListener", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(MediaQueryList.prototype, "removeListener", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, MediaQueryList.prototype, "MediaQueryListProto", "removeListener", arguments)
+    }
+});
+
 // Location对象
 Location = function Location() {
     return dingvm.toolsFunc.throwError("TypeError", "Illegal constructor")
@@ -3658,6 +3809,55 @@ dingvm.toolsFunc.defineProperty(History.prototype, "replaceState", {
     writable: true,
     value: function () {
         return dingvm.toolsFunc.dispatch(this, History.prototype, "HistoryProto", "replaceState", arguments)
+    }
+});
+
+// ScreenOrientation对象
+ScreenOrientation = function ScreenOrientation() {
+    return dingvm.toolsFunc.throwError("TypeError", "Illegal constructor")
+};
+dingvm.toolsFunc.safe_constructor_prototype(ScreenOrientation, "ScreenOrientation");
+Object.setPrototypeOf(ScreenOrientation.prototype, EventTarget.prototype);
+dingvm.toolsFunc.defineProperty(ScreenOrientation.prototype, "angle", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, ScreenOrientation.prototype, "ScreenOrientationProto", "angle_get", arguments, 0)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(ScreenOrientation.prototype, "type", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, ScreenOrientation.prototype, "ScreenOrientationProto", "type_get", arguments, 'landscape-primary')
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(ScreenOrientation.prototype, "onchange", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, ScreenOrientation.prototype, "ScreenOrientationProto", "onchange_get", arguments, null)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, ScreenOrientation.prototype, "ScreenOrientationProto", "onchange_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(ScreenOrientation.prototype, "lock", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, ScreenOrientation.prototype, "ScreenOrientationProto", "lock", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(ScreenOrientation.prototype, "unlock", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, ScreenOrientation.prototype, "ScreenOrientationProto", "unlock", arguments)
     }
 });
 
@@ -4663,7 +4863,7 @@ dingvm.toolsFunc.defineProperty(Document.prototype, "implementation", {
     },
     set: undefined
 });
-dingvm.toolsFunc.defineProperty(Document.prototype, "URL", {
+dingvm.toolsFunc.defineProperty(Document.prototype, "URL",{
     configurable: true,
     enumerable: true,
     get: function () {
@@ -10196,6 +10396,15 @@ if (vm2) {
 
 //*--------------------------------------------------------------------------
 //todo 属性
+dingvm.toolsFunc.defineProperty(window, "name", {
+    configurable: true, enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, window, "window", "name_get", arguments, '')
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, window, "window", "name_set", arguments)
+    }
+});
 dingvm.toolsFunc.defineProperty(window, "atob", {
     configurable: true, enumerable: true, writable: true,
     value: function atob(str) {
@@ -10208,15 +10417,6 @@ dingvm.toolsFunc.defineProperty(window, "btoa", {
     writable: true,
     value: function btoa(str) {
         return dingvm.toolsFunc.base64.base64encode(str);
-    }
-});
-dingvm.toolsFunc.defineProperty(window, "name", {
-    configurable: true, enumerable: true,
-    get: function () {
-        return dingvm.toolsFunc.dispatch(this, window, "window", "name_get", arguments, '')
-    },
-    set: function () {
-        return dingvm.toolsFunc.dispatch(this, window, "window", "name_set", arguments)
     }
 });
 dingvm.toolsFunc.defineProperty(window, "self", {
@@ -10381,6 +10581,38 @@ dingvm.toolsFunc.defineProperty(window, "fetch", {
         return dingvm.toolsFunc.dispatch(this, window, "window", "fetch", arguments)
     }
 });
+dingvm.toolsFunc.defineProperty(window, "origin", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, window, "window", "origin_get", arguments, 'https://www.baidu.com')
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, window, "window", "origin_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(window, "closed", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, window, "window", "closed_get", arguments, false)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(window, "matchMedia", {
+    configurable: true,
+    enumerable: true,
+    writable: true, value: function () {
+        return dingvm.toolsFunc.dispatch(this, window, "window", "matchMedia", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(window, "webkitRequestFileSystem", {
+    configurable: true,
+    enumerable: true,
+    writable: true, value: function () {
+        return dingvm.toolsFunc.dispatch(this, window, "window", "webkitRequestFileSystem", arguments)
+    }
+});
 
 //*--------------------------------------------------------------------------
 //todo 方法
@@ -10444,6 +10676,12 @@ webkitSpeechGrammar = function () {
 };
 dingvm.toolsFunc.safeFunc(webkitSpeechGrammar, 'webkitSpeechGrammar');
 
+class Blob {
+    constructor() {
+        console.log('调用了 Blob')
+    }
+}
+
 //*--------------------------------------------------------------------------
 
 function Image(width, height) {
@@ -10464,6 +10702,7 @@ dingvm.toolsFunc.defineProperty(window, "Image", {
 //* 常见属性值
 window.length = 0;
 window.scrollX = 0;
+window.scrollY = 0;
 window.screenY = 0;
 window.pageXOffset = 0;
 window.pageYOffset = 0;
@@ -10473,6 +10712,8 @@ window.screenLeft = 0;
 window.screenTop = 0;
 window.devicePixelRatio = 1.25;
 window.osversion = "win10";
+window.status = '';
+window.PERSISTENT = 1;
 //* 凑数 检测了window属性个数
 window.isSecureContext = true;
 window.originAgentCluster = false;
@@ -10760,7 +11001,7 @@ parent = top = self = window = dingvm.toolsFunc.proxy(window, "window"); // me t
     dingvm.toolsFunc.resetLocation('http://www.chinastock.com.cn/newsite/cgs-services/stockFinance/businessAnnc.html');
 
     //* 固定文档加载状态 "interactive" "complete" "loading"
-    dingvm.memory.globalVar.document.readyState = 'loading';
+    dingvm.memory.globalVar.document.readyState = 'interactive';
 
     debugger
     //! 最后执行
@@ -10773,18 +11014,9 @@ parent = top = self = window = dingvm.toolsFunc.proxy(window, "window"); // me t
     //     delete document['script_position'];
     // }
 
-    //* 获取随机值
-    function randInt(x, y) {
-        if (y <= x) {
-            return y + Math.round(Math.random() * (x - y));
-        } else {
-            return x + Math.round(Math.random() * (y - x))
-        }
-    }
-
     //* 初始化宽度、高度
-    dingvm.memory.globalVar.width = randInt(480, 800);
-    dingvm.memory.globalVar.height = randInt(720, 1278);
+    dingvm.memory.globalVar.width = dingvm.toolsFunc.random(480, 800);
+    dingvm.memory.globalVar.height = dingvm.toolsFunc.random(720, 1278);
 
     //* setTimeout setInterval修改
     if (dingvm.config.setTimeout) {

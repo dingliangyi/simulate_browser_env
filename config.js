@@ -1,10 +1,10 @@
 // 全局对象配置
 debugger
 dingvm = {
-    "toolsFunc": {},//功能函数相关，插件
-    "envFunc": {},// 具体环境实现相关
-    "config": {}, // 配置相关
-    "memory": {}, // 内存
+    toolsFunc: {},//功能函数相关，插件
+    envFunc: {},// 具体环境实现相关
+    config: {}, // 配置相关
+    memory: {}, // 内存
 };
 
 dingvm.config.proxy = false;// 是否开启代理
@@ -25,8 +25,8 @@ dingvm.config.vm2_if = true; // 是否在vm2运行
 
 dingvm.memory.symbolProxy = Symbol("proxy");// 独一无二的属性, 标记是否已代理
 dingvm.memory.symbolData = Symbol("data");// 用来保存当前对象上的原型属性
-dingvm.memory.filterStrProp = ["eval", '__proto__', 'prototype', 'jquery', 'listeners'];// 需要过滤的属性
-dingvm.memory.filterSymbolProp = [dingvm.memory.symbolProxy, Symbol.toStringTag, dingvm.memory.symbolData]
+dingvm.memory.filterStrProp = ['toString', "eval", '__proto__', 'prototype', 'jquery', 'listeners', 'hasOwnProperty', 'constructor', 'valueOf'];// 需要过滤的属性
+dingvm.memory.filterSymbolProp = [dingvm.memory.symbolProxy, Symbol.toStringTag, dingvm.memory.symbolData, Symbol.toPrimitive]
 dingvm.memory.filterRecursionProp = ['jquery', 'getedContext']
 dingvm.memory.ID = {}; // tag对象次数id
 
@@ -54,6 +54,7 @@ dingvm.memory.globalVar.scripts = [];
 dingvm.memory.globalVar.document = {};
 dingvm.memory.globalVar.performance = {};
 dingvm.memory.globalVar.navigator = {};
+dingvm.memory.globalVar.window = {};
 
 dingvm.memory.asyncEvent = {};// 异步事件
 

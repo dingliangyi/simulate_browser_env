@@ -30,6 +30,15 @@ if (vm2) {
 
 //*--------------------------------------------------------------------------
 //todo 属性
+dingvm.toolsFunc.defineProperty(window, "name", {
+    configurable: true, enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, window, "window", "name_get", arguments, '')
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, window, "window", "name_set", arguments)
+    }
+});
 dingvm.toolsFunc.defineProperty(window, "atob", {
     configurable: true, enumerable: true, writable: true,
     value: function atob(str) {
@@ -42,15 +51,6 @@ dingvm.toolsFunc.defineProperty(window, "btoa", {
     writable: true,
     value: function btoa(str) {
         return dingvm.toolsFunc.base64.base64encode(str);
-    }
-});
-dingvm.toolsFunc.defineProperty(window, "name", {
-    configurable: true, enumerable: true,
-    get: function () {
-        return dingvm.toolsFunc.dispatch(this, window, "window", "name_get", arguments, '')
-    },
-    set: function () {
-        return dingvm.toolsFunc.dispatch(this, window, "window", "name_set", arguments)
     }
 });
 dingvm.toolsFunc.defineProperty(window, "self", {
@@ -215,6 +215,38 @@ dingvm.toolsFunc.defineProperty(window, "fetch", {
         return dingvm.toolsFunc.dispatch(this, window, "window", "fetch", arguments)
     }
 });
+dingvm.toolsFunc.defineProperty(window, "origin", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, window, "window", "origin_get", arguments, 'https://www.baidu.com')
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, window, "window", "origin_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(window, "closed", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, window, "window", "closed_get", arguments, false)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(window, "matchMedia", {
+    configurable: true,
+    enumerable: true,
+    writable: true, value: function () {
+        return dingvm.toolsFunc.dispatch(this, window, "window", "matchMedia", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(window, "webkitRequestFileSystem", {
+    configurable: true,
+    enumerable: true,
+    writable: true, value: function () {
+        return dingvm.toolsFunc.dispatch(this, window, "window", "webkitRequestFileSystem", arguments)
+    }
+});
 
 //*--------------------------------------------------------------------------
 //todo 方法
@@ -278,6 +310,12 @@ webkitSpeechGrammar = function () {
 };
 dingvm.toolsFunc.safeFunc(webkitSpeechGrammar, 'webkitSpeechGrammar');
 
+class Blob {
+    constructor() {
+        console.log('调用了 Blob')
+    }
+}
+
 //*--------------------------------------------------------------------------
 
 function Image(width, height) {
@@ -298,6 +336,7 @@ dingvm.toolsFunc.defineProperty(window, "Image", {
 //* 常见属性值
 window.length = 0;
 window.scrollX = 0;
+window.scrollY = 0;
 window.screenY = 0;
 window.pageXOffset = 0;
 window.pageYOffset = 0;
@@ -307,6 +346,8 @@ window.screenLeft = 0;
 window.screenTop = 0;
 window.devicePixelRatio = 1.25;
 window.osversion = "win10";
+window.status = '';
+window.PERSISTENT = 1;
 //* 凑数 检测了window属性个数
 window.isSecureContext = true;
 window.originAgentCluster = false;

@@ -137,3 +137,32 @@ dingvm.envFunc.window_frames_get = function () {
 dingvm.envFunc.window_frames_set = function () {
     debugger
 };
+dingvm.envFunc.window_origin_get = function () {
+    return location.origin
+};
+dingvm.envFunc.window_closed_get = function () {
+    return false
+};
+dingvm.envFunc.window_matchMedia = function (matchMedia_str) {
+    let obj = {}
+    Object.setPrototypeOf(obj, MediaQueryList.prototype)
+    dingvm.toolsFunc.setProtoArr.call(obj, 'media', matchMedia_str)
+
+    return obj
+};
+dingvm.envFunc.window_webkitRequestFileSystem = function (storage_type, space_size, success_callback, error_callback) {
+    debugger
+    try {
+        let fs = {
+            root: {
+                getFile(path, param, callback) {
+                    console.log(`调用了 getFile(webkitRequestFileSystem) 路径：${path} 参数：${param} 回调：${callback.toString()}`)
+                }
+            }
+        }
+        success_callback(fs)
+    } catch (e) {
+        error_callback({})
+    }
+    console.log(`调用了 window_webkitRequestFileSystem 存储类型：${storage_type} 空间大小：${space_size} 成功回调：${success_callback.toString()} 失败回调：${error_callback.toString()}`)
+}

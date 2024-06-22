@@ -1,7 +1,7 @@
 const fs = require('fs')
 
 const files_constructor_prototype = [
-    //> 文档
+    //> Document
     "/constructor_prototype/Node.js",
     "/constructor_prototype/Document.js",
     "/constructor_prototype/HTMLDocument.js",
@@ -10,18 +10,18 @@ const files_constructor_prototype = [
     "/constructor_prototype/tag/CharacterData.js",
     "/constructor_prototype/tag/Text.js",
 
-    //> tag
+    //> tag_base
     "/constructor_prototype/tag/Element.js",
     "/constructor_prototype/tag/HTMLElement.js",
-
+    //> tags
     // "/constructor_prototype/tag/HTMLHtmlElement.js",
     "/constructor_prototype/tag/HTMLSpanElement.js",
     "/constructor_prototype/tag/HTMLDivElement.js",
-    // "/constructor_prototype/tag/HTMLInputElement.js",
+    "/constructor_prototype/tag/HTMLInputElement.js",
     // "/constructor_prototype/tag/HTMLIFrameElement.js",
     // "/constructor_prototype/tag/HTMLUnknownElement.js",
     // "/constructor_prototype/tag/HTMLParagraphElement.js",
-    // "/constructor_prototype/tag/HTMLImageElement.js",
+    "/constructor_prototype/tag/HTMLImageElement.js",
     // "/constructor_prototype/tag/HTMLAnchorElement.js",
     // "/constructor_prototype/tag/HTMLUListElement.js",
     // "/constructor_prototype/tag/HTMLLIElement.js",
@@ -43,15 +43,16 @@ const files_constructor_prototype = [
     // "/constructor_prototype/tag/HTMLScriptElement.js",
     // "/constructor_prototype/tag/HTMLFormElement.js",
     // "/constructor_prototype/tag/HTMLAllCollection.js",
-
+    "/constructor_prototype/tag/HTMLStyleElement.js",
+    //> audio video
     // "/constructor_prototype/tag/HTMLMediaElement.js",
     // "/constructor_prototype/tag/HTMLAudioElement.js",
     // "/constructor_prototype/tag/HTMLVideoElement.js",
 
     //> event
-    // "/constructor_prototype/event/Event.js",
-    // "/constructor_prototype/event/UIEvent.js",
-    // "/constructor_prototype/event/MouseEvent.js",
+    "/constructor_prototype/event/Event.js",
+    "/constructor_prototype/event/UIEvent.js",
+    "/constructor_prototype/event/MouseEvent.js",
     // "/constructor_prototype/event/PointerEvent.js",
 
     //> 类数组
@@ -60,6 +61,8 @@ const files_constructor_prototype = [
 
     //> style CSS
     "/constructor_prototype/CSS/CSSStyleDeclaration.js",
+    "/constructor_prototype/CSS/StyleSheet.js",
+    "/constructor_prototype/CSS/CSSStyleSheet.js",
 
     //> canvas
     // "/constructor_prototype/tag_canvas/CanvasRenderingContext2D.js",
@@ -67,13 +70,14 @@ const files_constructor_prototype = [
     // "/constructor_prototype/tag_canvas/WebGLBuffer.js",
     // "/constructor_prototype/tag_canvas/WebGLProgram.js",
 
-    // other
+    //> other
     // "/constructor_prototype/other/XPathExpression.js"
 ]
 
 const files_instance = [
     "/instance/document.js",
     "/instance/style.js",
+    "/instance/CSS.js",
 ]
 
 const filePath = __dirname

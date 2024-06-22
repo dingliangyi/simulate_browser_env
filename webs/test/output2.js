@@ -74,6 +74,7 @@ dingvm.memory.globalVar.document = {};
 dingvm.memory.globalVar.performance = {};
 dingvm.memory.globalVar.navigator = {};
 dingvm.memory.globalVar.window = {};
+dingvm.memory.globalVar.window.filter_proto_attr = ['TEMPORARY', 'PERSISTENT', 'addEventListener', 'dispatchEvent', 'removeEventListener', 'hasOwnProperty'];
 
 dingvm.memory.asyncEvent = {};// 异步事件
 
@@ -89,7 +90,7 @@ dingvm.timer_map = {
 
 !function () {
     !function () {
-        // 创建pluginArray
+        //* 创建pluginArray
         dingvm.toolsFunc.createPluginArray = function () {
             let pluginArray = {};
             Object.setPrototypeOf(pluginArray, PluginArray.prototype)
@@ -100,7 +101,7 @@ dingvm.timer_map = {
             return pluginArray;
         };
 
-        // 创建MimeTypeArray对象
+        //* 创建MimeTypeArray对象
         dingvm.toolsFunc.createMimeTypeArray = function () {
             let mimeTypeArray = {};
             Object.setPrototypeOf(mimeTypeArray, MimeTypeArray.prototype)
@@ -111,7 +112,7 @@ dingvm.timer_map = {
             return mimeTypeArray;
         };
 
-        // 添加Plugin
+        //* 添加Plugin
         dingvm.toolsFunc.addPlugin = function (plugin) {
             let pluginArray = dingvm.memory.globalVar.pluginArray;
             if (pluginArray === undefined) {
@@ -130,7 +131,7 @@ dingvm.timer_map = {
             return pluginArray;
         };
 
-        // 添加MimeType
+        //* 添加MimeType
         dingvm.toolsFunc.addMimeType = function (mimeType) {
             let mimeTypeArray = dingvm.memory.globalVar.mimeTypeArray;
             if (mimeTypeArray === undefined) {
@@ -157,7 +158,7 @@ dingvm.timer_map = {
             return mimeTypeArray;
         };
 
-        // 创建MimeType
+        //* 创建MimeType
         dingvm.toolsFunc.createMimeType = function (mimeTypeJson, plugin) {
             let mimeType = {};
             Object.setPrototypeOf(mimeType, MimeType.prototype)
@@ -172,7 +173,7 @@ dingvm.timer_map = {
             return mimeType;
         };
 
-        // 创建plugin
+        //* 创建plugin
         dingvm.toolsFunc.createPlugin = function (data) {
             let mimeTypes = data.mimeTypes;
             let plugin = {};
@@ -199,7 +200,7 @@ dingvm.timer_map = {
         };
     }();
 
-    // 获取随机数
+    //* 获取随机数
     dingvm.toolsFunc.random = function (min, max, floating = false) {
         if (floating) {
             return Math.random() * (max - min) + min;
@@ -208,7 +209,7 @@ dingvm.timer_map = {
         }
     }
 
-    // 更新location信息
+    //* 更新location信息
     dingvm.toolsFunc.resetLocation = function (url) {
         let jsonUrl = dingvm.toolsFunc.parseUrl(url);
         dingvm.memory.globalVar._location.protocol = jsonUrl['protocol']
@@ -223,7 +224,7 @@ dingvm.timer_map = {
         dingvm.memory.globalVar._location.ancestorOrigins = {}
     };
 
-    // 十六进制转rgb
+    //* 十六进制转rgb
     dingvm.toolsFunc.hexToRgb = function (hex) {
         if (typeof hex !== "string") return;
         hex = hex.toLowerCase();
@@ -247,7 +248,7 @@ dingvm.timer_map = {
         return hex;
     }
 
-    // 解析url
+    //* 解析url
     dingvm.toolsFunc.parseUrl = function (str) {
         if (!dingvm.toolsFunc.parseUrl || !dingvm.toolsFunc.parseUrl.options) {
             dingvm.toolsFunc.parseUrl.options = {
@@ -289,7 +290,7 @@ dingvm.timer_map = {
         return urlJson;
     };
 
-    // 获取标签原型链上的自己的属性
+    //* 获取标签原型链上的自己的属性
     dingvm.toolsFunc.get_protoOwnAttr = function (key) {
         // debugger
         let result = this.jquery.attr(key);
@@ -300,7 +301,7 @@ dingvm.timer_map = {
         }
     };
 
-    // 解析cookie字符串 -> JSON
+    //* 解析cookie字符串 -> JSON
     dingvm.toolsFunc.parseCookie = function (cookieStr) {
         if (!cookieStr) {
             return {};
@@ -318,7 +319,7 @@ dingvm.timer_map = {
         return cookieObj;
     };
 
-    // 获取代理次数ID
+    //* 获取代理次数ID
     dingvm.toolsFunc.getID = function (name) {
         if (!(name in dingvm.memory.ID)) {
             dingvm.memory.ID[name] = 0;
@@ -327,12 +328,12 @@ dingvm.timer_map = {
         return dingvm.memory.ID[name]++;
     };
 
-    // 代理dom标签
+    //* 代理dom标签
     dingvm.toolsFunc.createProxyObj = function (obj, name) {
         return dingvm.toolsFunc.proxy(obj, `${name}_ID(${dingvm.toolsFunc.getID(name)})`);
     };
 
-    // 获取原型对象上自身属性值
+    //* 获取原型对象上自身属性值
     dingvm.toolsFunc.getProtoArr = function (key) {
         return this[dingvm.memory.symbolData] && this[dingvm.memory.symbolData][key];
     };
@@ -355,7 +356,7 @@ dingvm.timer_map = {
         }
     };
 
-    // hook 插件
+    //* hook 插件
     dingvm.toolsFunc.hook = function (func, funcInfo, isDebug, onEnter, onLeave, isExec) {
         // func ： 原函数，需要hook的函数
         // funcInfo: 是一个对象有 objName，funcName属性
@@ -416,7 +417,7 @@ dingvm.timer_map = {
         return hookFunc;
     };
 
-    // hook 原型对象的属性，本质是替换属性描述符
+    //* hook 原型对象的属性，本质是替换属性描述符
     dingvm.toolsFunc.hookObj = function (obj, objName, propName, isDebug) {
         // obj :需要hook的对象
         // objName: hook对象的名字
@@ -463,7 +464,7 @@ dingvm.timer_map = {
         Object.defineProperty(obj, propName, newDescriptor);
     };
 
-    // hook 对象的原型所有属性
+    //* hook 对象的原型所有属性
     dingvm.toolsFunc.hookProto = function (proto, isDebug) {
         // proto :函数原型
         // isDebug: 是否debugger
@@ -475,7 +476,7 @@ dingvm.timer_map = {
         console.log(`hook ${name}.prototype`);
     };
 
-    //hook window所有属性
+    //* hook window所有属性
     dingvm.toolsFunc.hookGlobal = function (isDebug) {
         for (const key in Object.getOwnPropertyDescriptors(window)) {
             if (typeof window[key] === 'function') {
@@ -495,12 +496,12 @@ dingvm.timer_map = {
         }
     };
 
-    // 获取对象类型
+    //* 获取对象类型
     dingvm.toolsFunc.getType = function (obj) {
         return Object.prototype.toString.call(obj).slice(8, -1);
     };
 
-    // 过滤属性
+    //* 过滤属性
     dingvm.toolsFunc.filterProp = function (prop) {
         for (let i = 0; i < dingvm.memory.filterStrProp.length; i++) {
             if (dingvm.memory.filterStrProp[i] === prop.toString())
@@ -522,18 +523,18 @@ dingvm.timer_map = {
         return false;
     };
 
-    // proxy代理器
+    //* proxy代理器
     dingvm.toolsFunc.proxy = function (obj, objName) {
-        // obj: 原始对象
-        // objName: 原始对象的名字
+        //* obj: 原始对象
+        //* objName: 原始对象的名字
         if (!dingvm.config.proxy) {
             return obj;
         }
-        if (dingvm.memory.symbolProxy in obj) {// 判断对象obj是否是已代理的对象
+        if (dingvm.memory.symbolProxy in obj) {//* 判断对象obj是否是已代理的对象
             return obj[dingvm.memory.symbolProxy];
         }
         let handler = {
-            get: function (target, prop, receiver) {
+            get(target, prop, receiver) {
                 /**
                  * @target: 原始对象
                  * @prop: 属性
@@ -562,7 +563,7 @@ dingvm.timer_map = {
                             // debugger
                             console.table([table]);
                         }
-                        // 过滤不需要递归代理的属性
+                        //* 过滤不需要递归代理的属性
                         if (!dingvm.toolsFunc.filterRecursionProp(prop)) {
                             result = dingvm.toolsFunc.proxy(result, `${objName}.${prop.toString()}`);
                         }
@@ -575,7 +576,7 @@ dingvm.timer_map = {
                 }
                 return result;
             },
-            set: function (target, prop, value, receiver) {
+            set(target, prop, value, receiver) {
                 let result;
                 try {
                     result = Reflect.set(target, prop, value, receiver);
@@ -608,33 +609,23 @@ dingvm.timer_map = {
                 return result;
             },
             getOwnPropertyDescriptor: function (target, prop) {
-                let result;// undefined, 描述符对象
+                let result;//* 描述符对象
                 try {
                     result = Reflect.getOwnPropertyDescriptor(target, prop);
-                    let type = dingvm.toolsFunc.getType(result);
-                    if (prop !== 'constructor') {
-                        try {
-                            if (['self', 'top', 'window'].indexOf(prop) === -1) {
-                                if (typeof result.value !== 'object') {
-                                    console.log(`{getOwnPropertyDescriptor|obj:[${objName}] -> prop:[${prop.toString()}],ret:[${JSON.stringify(result)}]} -> type:[${type}]`);
-                                }
-                            } else {
-                                console.log(`{getOwnPropertyDescriptor|obj:[${objName}] -> prop:[${prop.toString()}],type:[${type}]}`);
-                            }
-                            // console.log(`{getOwnPropertyDescriptor|obj:[${objName}] -> prop:[${prop.toString()}],type:[${type}]}`);
-                        } catch (e) {
-                            console.warn(`{getOwnPropertyDescriptor|obj:[${objName}] -> prop:[${prop.toString()}] -> type:[${type}]} !!! 获取的描述符对象是循环引用`);
-                        }
+                    let table = {
+                        "类型": 'getOwnPropertyDescriptor',
+                        '调用者': target,
+                        '属性': prop.toString(),
+                        '值': result,
+                        '值类型': 'Object'
                     }
-                    // if(typeof result !== "undefined"){
-                    //     result = dingvm.toolsFunc.proxy(result, `${objName}.${prop.toString()}.PropertyDescriptor`);
-                    // }
+                    console.table([table]);
                 } catch (e) {
-                    console.warn(`{getOwnPropertyDescriptor|obj:[${objName}] -> prop:[${prop.toString()}] -> error:[${e.message}]}`);
+                    console.error(`{getOwnPropertyDescriptor:[${objName}] -> prop:[${prop.toString()}] -> error:[${e.message}]}`);
                 }
                 return result;
             },
-            defineProperty: function (target, prop, descriptor) {
+            defineProperty(target, prop, descriptor) {
                 if (prop.toString() === 'Symbol(data)') {
                     return Reflect.defineProperty(target, prop, descriptor)
                 }
@@ -642,153 +633,153 @@ dingvm.timer_map = {
                 let result;
                 try {
                     result = Reflect.defineProperty(target, prop, descriptor);
-                    let type = dingvm.toolsFunc.getType(descriptor);
-                    try {
-                        console.log(`{defineProperty|obj:[${objName}] -> prop:[${prop.toString()}],descriptor:[${JSON.stringify(descriptor)}]} -> type:[${type}]`);
-                    } catch (e) {
-                        console.warn(`{defineProperty|obj:[${objName}] -> prop:[${prop.toString()}] -> type:[${type}]} !!! 定义属性的描述符对象是循环引用`);
+                    let table = {
+                        "类型": 'defineProperty',
+                        '调用者': target,
+                        '属性': prop.toString(),
+                        '值': descriptor,
+                        '值类型': 'Object'
                     }
+                    console.table([table]);
                 } catch (e) {
-                    console.warn(`{defineProperty|obj:[${objName}] -> prop:[${prop.toString()}] -> error:[${e.message}]}`);
+                    console.error(`{defineProperty:[${objName}] -> prop:[${prop.toString()}] -> error:[${e.message}]}`);
                 }
                 return result;
             },
-            // apply: function (target, thisArg, argumentsList) {
-            //     // target: 函数对象
-            //     // thisArg: 调用函数的this指针
-            //     // argumentsList: 数组， 函数的入参组成的一个列表
-            //     // debugger
-            //     let result = {};
-            //     try {
-            //         result = Reflect.apply(target, thisArg, argumentsList);
-            //         let type = dingvm.toolsFunc.getType(result);
-            //
-            //         if (result instanceof Object) {
-            //             try {
-            //                 console.log(`{apply|obj:[${objName}] -> arguments:[${JSON.stringify(argumentsList)}],ret:[${JSON.stringify(result)}]} -> type:[${type}]`);
-            //             } catch (e) {
-            //                 console.warn(`{apply|obj:[${objName}] -> arguments:[${JSON.stringify(argumentsList)}] -> type:[${type}]} !!! 函数返回值是对象、循环引用`);
-            //             }
-            //         } else if (typeof result === "symbol") {
-            //             console.log(`{apply|function:[${objName}], result:[${result.toString()}]}`);
-            //         } else {
-            //             console.log(`{apply|function:[${objName}], result:[${result}]}`);
-            //         }
-            //     } catch (e) {
-            //         debugger
-            //         // console.warn(`{apply|function:[${objName}] -> error:[${e.message}]}`);
-            //     }
-            //     return result;
-            // },
-            // construct: function (target, argArray, newTarget) {
-            //     // target: 函数对象
-            //     // argArray： 参数列表
-            //     // newTarget：代理对象
-            //     let result;
-            //     try {
-            //         result = Reflect.construct(target, argArray, newTarget);
-            //         let type = dingvm.toolsFunc.getType(result);
-            //         try {
-            //             console.log(`{construct|function:[${objName}] -> argArray:[${JSON.stringify(argArray)}],ret:[${JSON.stringify(result)}]} -> type:[${type}]`);
-            //         } catch (e) {
-            //             console.warn(`{construct|function:[${objName}] -> argArray:[${JSON.stringify(argArray)}] -> type:[${type}]} !!! 实例的对象是循环引用`);
-            //         }
-            //     } catch (e) {
-            //         console.warn(`{construct|function:[${objName}],error:[${e.message}]}`);
-            //     }
-            //     return result;
-            // },
-            deleteProperty: function (target, propKey) {
-                console.log(`delete value:[${target[propKey]}]`);
+            deleteProperty(target, propKey) {
                 let result = Reflect.deleteProperty(target, propKey);
-                console.log(`{deleteProperty|obj:[${objName}] -> prop:[${propKey.toString()}], result:[${result}]}`);
+                let table = {
+                    "类型": 'deleteProperty',
+                    '调用者': target,
+                    '属性': propKey.toString(),
+                    '值': result,
+                    '值类型': dingvm.toolsFunc.getType(result)
+                }
+                console.log([table]);
                 return result;
             },
-            has: function (target, propKey) { // in 操作符
-                if (propKey.toString() === 'Symbol(data)') {
+            has(target, propKey) { // in操作符
+                if (propKey.toString() === 'Symbol(data)' || propKey.toString() === 'Symbol(proxy)') {
                     return Reflect.has(target, propKey)
                 }
                 let result = Reflect.has(target, propKey);
-                if (propKey !== dingvm.memory.symbolProxy) {
-                    console.log(`{has|obj:[${objName}] -> prop:[${propKey.toString()}], result:[${result}]}`);
+                let table = {
+                    "类型": 'has',
+                    '调用者': target,
+                    '属性': propKey.toString(),
+                    '值': result,
+                    '值类型': dingvm.toolsFunc.getType(result)
                 }
+                console.table([table]);
                 return result;
             },
-            ownKeys: function (target) {
+            ownKeys(target) {
                 let result = Reflect.ownKeys(target);
-                console.log(`{ownKeys|obj:[${objName}]} -> ret:[${JSON.stringify(result)}]`);
+                let table = {
+                    "类型": 'ownKeys',
+                    '调用者': target,
+                    '属性': '无',
+                    '值': result,
+                    '值类型': dingvm.toolsFunc.getType(result)
+                }
+                console.table([table]);
                 return result
             },
-            getPrototypeOf: function (target) {
+            getPrototypeOf(target) {
                 let result = Reflect.getPrototypeOf(target);
-                console.log(`{getPrototypeOf|obj:[${objName}]} -> ret:[${JSON.stringify(result)}]`);
+                let table = {
+                    "类型": 'getPrototypeOf',
+                    '调用者': target,
+                    '属性': '无',
+                    '值': result,
+                    '值类型': dingvm.toolsFunc.getType(result)
+                }
+                console.table([table]);
                 return result;
             },
-            setPrototypeOf: function (target, proto) {
+            setPrototypeOf(target, proto) {
                 let result = Reflect.setPrototypeOf(target, proto);
-                console.log(`{setPrototypeOf|obj:[${objName}]} -> proto:[${JSON.stringify(proto)}], ret:[${result}]`);
+                let table = {
+                    "类型": 'setPrototypeOf',
+                    '调用者': target,
+                    '属性': proto.toString(),
+                    '值': result,
+                    '值类型': dingvm.toolsFunc.getType(result)
+                }
+                console.table([table]);
                 return result;
             },
-            preventExtensions: function (target) {
+            preventExtensions(target) {
                 let result = Reflect.preventExtensions(target);
-                console.log(`{preventExtensions|obj:[${objName}]}`);
+                let table = {
+                    "类型": 'preventExtensions',
+                    '调用者': target,
+                    '属性': '无',
+                    '值': result,
+                    '值类型': dingvm.toolsFunc.getType(result)
+                }
+                console.table([table]);
                 return result;
             },
-            isExtensible: function (target) {
+            isExtensible(target) {
                 let result = Reflect.isExtensible(target);
-                console.log(`{isExtensible|obj:[${objName}]}`);
+                let table = {
+                    "类型": 'isExtensible',
+                    '调用者': target,
+                    '属性': '无',
+                    '值': result,
+                    '值类型': dingvm.toolsFunc.getType(result)
+                }
+                console.table([table]);
                 return result;
             }
         };
         let handler_func = {
-            apply: function (target, thisArg, argumentsList) {
-                // target: 函数对象
-                // thisArg: 调用函数的this指针
-                // argumentsList: 数组， 函数的入参组成的一个列表
-                // debugger
-                let result = {};
+            apply(target, thisArg, argumentsList) {
+                //* target: 函数对象
+                //* thisArg: 调用函数的this指针
+                //* argumentsList: 数组， 函数的入参组成的一个列表
+                let result;
                 try {
                     result = Reflect.apply(target, thisArg, argumentsList);
-                    let type = dingvm.toolsFunc.getType(result);
-
-                    if (result instanceof Object) {
-                        try {
-                            console.log(`{apply|obj:[${objName}] -> arguments:[${JSON.stringify(argumentsList)}],ret:[${JSON.stringify(result)}]} -> type:[${type}]`);
-                        } catch (e) {
-                            console.warn(`{apply|obj:[${objName}] -> arguments:[${JSON.stringify(argumentsList)}] -> type:[${type}]} !!! 函数返回值是对象、循环引用`);
-                        }
-                    } else if (typeof result === "symbol") {
-                        console.log(`{apply|function:[${objName}], result:[${result.toString()}]}`);
-                    } else {
-                        console.log(`{apply|function:[${objName}], result:[${result}]}`);
+                    let table = {
+                        "类型": `apply 参数: ${argumentsList}`,
+                        '调用者': thisArg,
+                        '属性': target.toString(),
+                        '值': result,
+                        '值类型': dingvm.toolsFunc.getType(result)
                     }
+                    console.table([table]);
                 } catch (e) {
                     debugger
-                    // console.warn(`{apply|function:[${objName}] -> error:[${e.message}]}`);
+                    console.error(`{apply:[${objName}] -> arguments:[${argumentsList}] -> error:[${e.message}]}`);
                 }
                 return result;
             },
-            construct: function (target, argArray, newTarget) {
-                // target: 函数对象
-                // argArray： 参数列表
-                // newTarget：代理对象
+            construct(target, argArray, newTarget) {
+                //* target: 函数对象
+                //* argArray： 参数列表
+                //* newTarget：代理对象
                 let result;
                 try {
                     result = Reflect.construct(target, argArray, newTarget);
-                    let type = dingvm.toolsFunc.getType(result);
-                    try {
-                        console.log(`{construct|function:[${objName}] -> argArray:[${JSON.stringify(argArray)}],ret:[${JSON.stringify(result)}]} -> type:[${type}]`);
-                    } catch (e) {
-                        console.warn(`{construct|function:[${objName}] -> argArray:[${JSON.stringify(argArray)}] -> type:[${type}]} !!! 实例的对象是循环引用`);
+                    let table = {
+                        "类型": `construct 参数: ${argArray}`,
+                        '调用者': 'window',
+                        '属性': target.toString(),
+                        '值': result,
+                        '值类型': dingvm.toolsFunc.getType(result)
                     }
+                    console.table([table]);
                 } catch (e) {
-                    console.warn(`{construct|function:[${objName}],error:[${e.message}]}`);
+                    console.error(`{construct:[${target}] --> error:[${e.message}]}`);
                 }
                 return result;
             },
         }
+
         let proxyObj = new Proxy(obj, handler);
-        proxyObj = new Proxy(proxyObj, handler);
+        proxyObj = new Proxy(proxyObj, handler); //* 代理两层防止检测
         Object.defineProperty(obj, dingvm.memory.symbolProxy, {
             configurable: false,
             enumerable: false,
@@ -797,21 +788,8 @@ dingvm.timer_map = {
         });
         return proxyObj;
     };
-    dingvm.toolsFunc.proxy_setStyle = function (style) {
-        let handler = {
-            set: function (target, prop, value, receiver) {
-                target.myThis.jquery.css(prop, value)
-                // console.log('set style', prop, value)
-                let index = target.length
-                target[index] = prop
-                return Reflect.set(target, prop, value, receiver)
-            }
-        }
 
-        return new Proxy(style, handler);
-    };
-
-    // env函数分发器
+    //* env函数分发器
     dingvm.toolsFunc.dispatch = function (self, ordinaryObj_protoObj, ordinaryObj_protoObj__Name, funcName, argList, defaultValue) {
         /**
          * @ordinaryObj_protoObj__Name 普通对象或原型对象名字
@@ -843,7 +821,7 @@ dingvm.timer_map = {
         }
     };
 
-    // 定义对象属性defineProperty
+    //* 定义对象属性defineProperty
     dingvm.toolsFunc.defineProperty = function (obj, prop, oldDescriptor) {
         let newDescriptor = {};
         newDescriptor.configurable = dingvm.config.proxy || oldDescriptor.configurable;// 如果开启代理必须是true
@@ -875,32 +853,7 @@ dingvm.timer_map = {
         Object.defineProperty(obj, prop, newDescriptor);
     };
 
-    // 函数native化
-    // // 1
-    !function () {
-        const $toString = Function.prototype.toString;
-        const symbol = Symbol(); // 独一无二的属性
-        const myToString = function () {
-            return typeof this === 'function' && this[symbol] || $toString.call(this);
-        }
-
-        function set_native(func, key, value) {
-            Object.defineProperty(func, key, {
-                enumerable: false,
-                configurable: true,
-                writable: true,
-                value: value
-            });
-        }
-
-        delete Function.prototype.toString;
-        set_native(Function.prototype, "toString", myToString);
-        set_native(Function.prototype.toString, symbol, "function toString() { [native code] }");
-        dingvm.toolsFunc.setNative2 = function (func, funcName) {
-            set_native(func, symbol, `function ${funcName || func.name || ''}() { [native code] }`);
-        }
-    }();
-    // // 2
+    //* 函数native化
     !function () {
         const MyGetOwnPropertySymbols = Object.getOwnPropertySymbols;
 
@@ -912,7 +865,7 @@ dingvm.timer_map = {
                     symbolString.indexOf("data") !== -1 ||
                     symbolString.indexOf("proxy") !== -1) {
                     result.splice(i, 1);
-                    i--; // 减少索引以补偿被移除的元素
+                    i--; //* 减少索引以补偿被移除的元素
                 }
             }
             return result;
@@ -933,9 +886,9 @@ dingvm.timer_map = {
             })
         }
 
-        //先删除所有函数的toString方法
+        //* 先删除所有函数的toString方法
         delete Function.prototype.toString
-        //在重定义一个所有函数公用的toString方法
+        //* 在重定义一个所有函数公用的toString方法
         set_native(Function.prototype, "toString", myToString);
         set_native(Function.prototype.toString, myFunction_toString_symbol, "function toString() { [native code] }")
         set_native(Object.getOwnPropertySymbols, myFunction_toString_symbol, `function getOwnPropertySymbols() { [native code] }`)
@@ -944,7 +897,7 @@ dingvm.timer_map = {
         }
     }();
 
-    // 对象重命名
+    //* 对象重命名
     dingvm.toolsFunc.reNameObj = function (obj, name) {
         Object.defineProperty(obj.prototype, Symbol.toStringTag, {
             configurable: true,
@@ -954,7 +907,7 @@ dingvm.timer_map = {
         });
     };
 
-    // 函数重命名
+    //* 函数重命名
     dingvm.toolsFunc.reNameFunc = function (func, name) {
         Object.defineProperty(func, "name", {
             configurable: true,
@@ -964,13 +917,13 @@ dingvm.timer_map = {
         });
     };
 
-    // 函数保护方法
+    //* 函数保护方法
     dingvm.toolsFunc.safeFunc = function (func, name) {
         dingvm.toolsFunc.setNative(func, name);
         dingvm.toolsFunc.reNameFunc(func, name);
     };
 
-    // 迭代器
+    //* 迭代器
     dingvm.toolsFunc.iterator = function () {
         return {
             next: function () {
@@ -986,7 +939,7 @@ dingvm.timer_map = {
     };
     dingvm.toolsFunc.reNameFunc(dingvm.toolsFunc.iterator, "values");
 
-    // 原型保护方法
+    //* 原型保护方法
     dingvm.toolsFunc.safe_constructor_prototype = function (obj, name) {
         dingvm.toolsFunc.setNative(obj, name);
         dingvm.toolsFunc.reNameObj(obj, name);
@@ -996,16 +949,16 @@ dingvm.timer_map = {
         dingvm.toolsFunc.reNameObj(obj, name);
     };
 
-    // 抛错函数
+    //* 抛错函数
     dingvm.toolsFunc.throwError = function (name, message) {
         let e = new TypeError(message);
-        // e.name = name;
-        // e.message = message;
-        e.stack = `${name}: ${message}\n    at snippet://`;
+        e.name = name;
+        e.message = message;
+        e.stack = `${name}: ${message}\n    at ://`;
         throw e;
     };
 
-    // base64编码解码
+    //* base64编码解码
     dingvm.toolsFunc.base64 = {};
     dingvm.toolsFunc.base64.base64EncodeChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
     dingvm.toolsFunc.base64.base64DecodeChars = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 62, -1, -1, -1, 63, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, -1, -1, -1, -1, -1, -1, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1, -1, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1];
@@ -1353,10 +1306,12 @@ dingvm.envFunc.window_openDatabase = function (name, version, displayName, estim
     return undefined
 };
 dingvm.envFunc.window_getComputedStyle = function (element) {
-    return element.style
+    console.log(`调用了 window_getComputedStyle 元素：${element.jquery.toString()}`)
+    Object.setPrototypeOf(style2, CSSStyleDeclaration.prototype)
+    return Object.assign(style2, element.style)
 };
 dingvm.envFunc.window_innerWidth_get = function () {
-    let innerWidth = dingvm.toolsFunc.getProtoArr('innerWidth')
+    let innerWidth = dingvm.toolsFunc.getProtoArr.call(window, 'innerWidth')
     if (innerWidth === undefined) {
         return dingvm.memory.globalVar.width;
     }
@@ -1367,7 +1322,7 @@ dingvm.envFunc.window_innerWidth_set = function () {
     dingvm.toolsFunc.setProtoArr('innerWidth')
 };
 dingvm.envFunc.window_innerHeight_get = function () {
-    let innerHeight = dingvm.toolsFunc.getProtoArr('innerHeight')
+    let innerHeight = dingvm.toolsFunc.getProtoArr.call(window, 'innerHeight')
     if (innerHeight === undefined) {
         return dingvm.memory.globalVar.height;
     }
@@ -1378,7 +1333,7 @@ dingvm.envFunc.window_innerHeight_set = function () {
     dingvm.toolsFunc.setProtoArr('innerHeight')
 };
 dingvm.envFunc.window_outerWidth_get = function () {
-    let outerWidth = dingvm.toolsFunc.getProtoArr('outerWidth')
+    let outerWidth = dingvm.toolsFunc.getProtoArr.call(window, 'outerWidth')
     if (outerWidth === undefined) {
         return dingvm.memory.globalVar.width;
     }
@@ -1389,7 +1344,7 @@ dingvm.envFunc.window_outerWidth_set = function () {
     dingvm.toolsFunc.setProtoArr('outerWidth')
 };
 dingvm.envFunc.window_outerHeight_get = function () {
-    let outerHeight = dingvm.toolsFunc.getProtoArr('outerHeight')
+    let outerHeight = dingvm.toolsFunc.getProtoArr.call(window, 'outerHeight')
     if (outerHeight === undefined) {
         return dingvm.memory.globalVar.height;
     }
@@ -1430,7 +1385,7 @@ dingvm.envFunc.window_visualViewport_get = function () {
     return obj
 };
 dingvm.envFunc.window_external_get = function () {
-    let obj = dingvm.toolsFunc.getProtoArr('external')
+    let obj = dingvm.toolsFunc.getProtoArr.call(window, 'external')
     if (obj) {
         return obj
     }
@@ -1459,9 +1414,9 @@ dingvm.envFunc.window_fetch = function () {
 dingvm.envFunc.window_frames_get = function () {
     return window
 };
-dingvm.envFunc.window_frames_set = function () {
-    debugger
-};
+// dingvm.envFunc.window_frames_set = function () {
+//     debugger
+// };
 dingvm.envFunc.window_origin_get = function () {
     return location.origin
 };
@@ -2188,6 +2143,13 @@ dingvm.envFunc.ElementProto_id_get = function ElementProto_id_get() {
     return this.jquery.attr('id')
 };
 dingvm.envFunc.ElementProto_id_set = function ElementProto_id_set(value) {
+    if (this instanceof HTMLFormElement) {
+        // debugger
+        dingvm.memory.globalVar.window.filter_proto_attr.push(value)
+        window.__proto__.__proto__[value] = this
+        //! 注意在vm2运行时,不能过window.hasOwnProperty()检测
+    }
+
     this.jquery.attr('id', value)
 };
 dingvm.envFunc.ElementProto_innerHTML_get = function ElementProto_innerHTML_get() {
@@ -2607,19 +2569,12 @@ dingvm.envFunc.CSSStyleDeclarationProto_cssText_get = function () {
     return ''
 };
 dingvm.envFunc.CSSStyleDeclarationProto_cssText_set = function (value) {
-    // return dingvm.toolsFunc.setProtoArr.call(this, 'cssText', value)
     this.myThis.jquery.attr('style', value);
-    dingvm.toolsFunc.deleteProtoArr.call(this, 'style')
 };
 dingvm.envFunc.CSSStyleDeclarationProto_length_get = function () {
     let index = 0
-    for (let i = 0; i < 999; i++) {
-        let attr_value = this.item(i)
-        if (attr_value === "") {
-            index += i
-            break
-        }
-    }
+    for (let _ in this.myThis.jquery.css())
+        index++
 
     return index
 };
@@ -2638,6 +2593,7 @@ dingvm.envFunc.CSSStyleDeclarationProto_cssFloat_set = function (value) {
     return dingvm.toolsFunc.setProtoArr.call(this, 'cssFloat', value)
 };
 dingvm.envFunc.CSSStyleDeclarationProto_getPropertyPriority = function () {
+    debugger
     console.log("CSSStyleDeclarationProto_getPropertyPriority", arguments)
 };
 dingvm.envFunc.CSSStyleDeclarationProto_getPropertyValue = function (key) {
@@ -2651,12 +2607,13 @@ dingvm.envFunc.CSSStyleDeclarationProto_getPropertyValue = function (key) {
 };
 dingvm.envFunc.CSSStyleDeclarationProto_item = function (index) {
     // debugger
+    if (typeof index === 'string')
+        return index
+
     let style_ = this
     let value = style_[index]
     if (value === undefined) {
         return ""
-    } else if (value === undefined && typeof index === 'string') {
-        return style_[0] === undefined ? "" : style_[0]
     }
 
     return value
@@ -2678,178 +2635,267 @@ dingvm.envFunc.CSSStyleDeclarationProto_removeProperty = function (key) {
     }
     style_text = css_list.join(';') + ';'
     this.myThis.jquery.attr('style', style_text)
-    let style_ = dingvm.toolsFunc.getProtoArr.call(this.myThis, 'style')
-    // style_[key] = ""
-    dingvm.toolsFunc.defineProperty(style_, key, {
-        configurable: true,
-        enumerable: true,
-        writable: true,
-        value: ''
-    });
-    if (key === 'padding') {
-        style_["paddingTop"] = ""
-        style_["paddingRight"] = ""
-        style_["paddingBottom"] = ""
-        style_["paddingLeft"] = ""
-    } else if (key === 'margin') {
-
-    }
-
-    let length = this.length
-    let temp_attr = []
-    for (let i = 0; i < length; i++) {
-        let css_value = style_[i]
-        delete style_[i]
-        if (css_value !== key) {
-            temp_attr.push(css_value)
-        }
-    }
-    for (let i = 0; i < temp_attr.length; i++) {
-        dingvm.toolsFunc.defineProperty(style_, i, {
-            configurable: true,
-            enumerable: true,
-            writable: true,
-            value: temp_attr[i]
-        });
-    }
 };
 dingvm.envFunc.CSSStyleDeclarationProto_setProperty = function (key, value) {
     // debugger
     this.myThis.jquery.css(key, value)
-    let style_ = dingvm.toolsFunc.getProtoArr.call(this.myThis, 'style')
-    let index_css = key.indexOf('-')
-    if (index_css !== -1) {
-        key = key.substring(0, index_css) + key[index_css + 1].toUpperCase() + key.substring(index_css + 2)
+};;
+dingvm.envFunc.CSS_highlights_get = function () {
+    debugger
+};
+dingvm.envFunc.CSS_Hz = function () {
+    debugger
+};
+dingvm.envFunc.CSS_Q = function () {
+    debugger
+};
+dingvm.envFunc.CSS_ch = function () {
+    debugger
+};
+dingvm.envFunc.CSS_cm = function () {
+    debugger
+};
+dingvm.envFunc.CSS_cqb = function () {
+    debugger
+};
+dingvm.envFunc.CSS_cqh = function () {
+    debugger
+};
+dingvm.envFunc.CSS_cqi = function () {
+    debugger
+};
+dingvm.envFunc.CSS_cqmax = function () {
+    debugger
+};
+dingvm.envFunc.CSS_cqmin = function () {
+    debugger
+};
+dingvm.envFunc.CSS_cqw = function () {
+    debugger
+};
+dingvm.envFunc.CSS_deg = function () {
+    debugger
+};
+dingvm.envFunc.CSS_dpcm = function () {
+    debugger
+};
+dingvm.envFunc.CSS_dpi = function () {
+    debugger
+};
+dingvm.envFunc.CSS_dppx = function () {
+    debugger
+};
+dingvm.envFunc.CSS_em = function () {
+    debugger
+};
+dingvm.envFunc.CSS_escape = function () {
+    debugger
+};
+dingvm.envFunc.CSS_ex = function () {
+    debugger
+};
+dingvm.envFunc.CSS_fr = function () {
+    debugger
+};
+dingvm.envFunc.CSS_grad = function () {
+    debugger
+};
+dingvm.envFunc.CSS_in = function () {
+    debugger
+};
+dingvm.envFunc.CSS_kHz = function () {
+    debugger
+};
+dingvm.envFunc.CSS_mm = function () {
+    debugger
+};
+dingvm.envFunc.CSS_ms = function () {
+    debugger
+};
+dingvm.envFunc.CSS_number = function () {
+    debugger
+};
+dingvm.envFunc.CSS_pc = function () {
+    debugger
+};
+dingvm.envFunc.CSS_percent = function () {
+    debugger
+};
+dingvm.envFunc.CSS_pt = function () {
+    debugger
+};
+dingvm.envFunc.CSS_px = function () {
+    debugger
+};
+dingvm.envFunc.CSS_rad = function () {
+    debugger
+};
+dingvm.envFunc.CSS_registerProperty = function () {
+    debugger
+};
+dingvm.envFunc.CSS_rem = function () {
+    debugger
+};
+dingvm.envFunc.CSS_s = function () {
+    debugger
+};
+dingvm.envFunc.CSS_supports = function (name, value) {
+    if (name === "-webkit-overscroll-behavior" && value === "auto") {
+        return false
     }
-    style_[key] = value
+    if (name === "-o-overscroll-behavior" && value === "auto") {
+        return false
+    }
+    if (name === "-moz-overscroll-behavior" && value === "auto") {
+        return false
+    }
+    if (name === "-ms-overscroll-behavior" && value === "auto") {
+        return false
+    }
+
+    console.log(`${name}: ${value} 样式默认支持 CSS_supports方法返回true`)
+    debugger
+    return true
+};
+dingvm.envFunc.CSS_turn = function () {
+    debugger
+};
+dingvm.envFunc.CSS_vh = function () {
+    debugger
+};
+dingvm.envFunc.CSS_vmax = function () {
+    debugger
+};
+dingvm.envFunc.CSS_vmin = function () {
+    debugger
+};
+dingvm.envFunc.CSS_vw = function () {
+    debugger
+};
+dingvm.envFunc.CSS_cap = function () {
+    debugger
+};
+dingvm.envFunc.CSS_rcap = function () {
+    debugger
+};
+dingvm.envFunc.CSS_dvb = function () {
+    debugger
+};
+dingvm.envFunc.CSS_dvh = function () {
+    debugger
+};
+dingvm.envFunc.CSS_dvi = function () {
+    debugger
+};
+dingvm.envFunc.CSS_dvmax = function () {
+    debugger
+};
+dingvm.envFunc.CSS_dvmin = function () {
+    debugger
+};
+dingvm.envFunc.CSS_dvw = function () {
+    debugger
+};
+dingvm.envFunc.CSS_lvb = function () {
+    debugger
+};
+dingvm.envFunc.CSS_lvh = function () {
+    debugger
+};
+dingvm.envFunc.CSS_lvi = function () {
+    debugger
+};
+dingvm.envFunc.CSS_lvmax = function () {
+    debugger
+};
+dingvm.envFunc.CSS_lvmin = function () {
+    debugger
+};
+dingvm.envFunc.CSS_lvw = function () {
+    debugger
+};
+dingvm.envFunc.CSS_svb = function () {
+    debugger
+};
+dingvm.envFunc.CSS_svh = function () {
+    debugger
+};
+dingvm.envFunc.CSS_svi = function () {
+    debugger
+};
+dingvm.envFunc.CSS_svmax = function () {
+    debugger
+};
+dingvm.envFunc.CSS_svmin = function () {
+    debugger
+};
+dingvm.envFunc.CSS_svw = function () {
+    debugger
+};
+dingvm.envFunc.CSS_vb = function () {
+    debugger
+};
+dingvm.envFunc.CSS_vi = function () {
+    debugger
+};
+dingvm.envFunc.CSS_ic = function () {
+    debugger
+};
+dingvm.envFunc.CSS_lh = function () {
+    debugger
+};
+dingvm.envFunc.CSS_rch = function () {
+    debugger
+};
+dingvm.envFunc.CSS_rex = function () {
+    debugger
+};
+dingvm.envFunc.CSS_ric = function () {
+    debugger
+};
+dingvm.envFunc.CSS_rlh = function () {
+    debugger
+};
+dingvm.envFunc.CSS_x = function () {
+    debugger
+};
+dingvm.envFunc.CSS_paintWorklet_get = function () {
+    debugger
 };
 ;
-dingvm.envFunc.HTMLElementProto_innerText_get = function HTMLElementProto_innerText_get() {
-    return this.jquery.text()
-};
-dingvm.envFunc.HTMLElementProto_innerText_set = function HTMLElementProto_innerText_set(value) {
-    this.jquery.text(value);
-};
-dingvm.envFunc.HTMLElementProto_style_get = function HTMLElementProto_style_get() {
-    // debugger
-    let style_ = dingvm.toolsFunc.get_protoOwnAttr.call(this, "style")
-    if (style_ !== undefined) {
-        return style_
-    } else {
-        style_ = Object.assign(Object.create(CSSStyleDeclaration.prototype), style)
-        style_.myThis = this
-        let styles = this.jquery.css()
-        let index = style_.length
-        for (let key in styles) {
-            //* hex16ToRgb
-            if (key.includes('color') && /^#([0-9a-fA-f]{3}|[0-9a-fA-f]{6})$/.test(styles[key])) {
-                styles[key] = dingvm.toolsFunc.hexToRgb(styles[key])
-            }
-
-            let key_old = key
-            let index_css = key.indexOf('-')
-            if (index_css !== -1) {
-                key = key.substring(0, index_css) + key[index_css + 1].toUpperCase() + key.substring(index_css + 2)
-            }
-            style_[key] = styles[key_old]
-            if (key === "padding") {
-                style_[index++] = "padding-top"
-                style_[index++] = "padding-right"
-                style_[index++] = "padding-bottom"
-                style_[index++] = "padding-left"
-
-                style_["paddingTop"] = styles[key]
-                style_["paddingRight"] = styles[key]
-                style_["paddingBottom"] = styles[key]
-                style_["paddingLeft"] = styles[key]
-            } else if (key === "margin") {
-                //todo 待补
-            } else {
-                style_[index++] = key
-            }
-        }
+dingvm.envFunc.HTMLImageElementProto_width_get = function () {
+    let width = dingvm.toolsFunc.get_protoOwnAttr.call(this, 'width')
+    if (width === undefined) {
+        return 300
     }
 
-    //* 监控style属性
-    if (dingvm.config.proxy_tag_style) {
-        style_ = dingvm.toolsFunc.createProxyObj(style_, 'style')
-    }
-    //* 设置cssText
-    style_ = dingvm.toolsFunc.proxy_setStyle(style_)
-    dingvm.toolsFunc.setProtoArr.call(this, "style", style_)
-
-    return style_
+    return width
 };
-dingvm.envFunc.HTMLElementProto_style_set = function HTMLElementProto_style_set(value) {
-    // let css = value.split(';')
-    // let style_ = Object.assign(Object.create(CSSStyleDeclaration.prototype), style)
-    // style_.jquery = this.jquery
-    //
-    // if (dingvm.config.proxy_tag_style) {
-    //     style_ = dingvm.toolsFunc.createProxyObj(style_, 'style')
-    // }
-    //
-    // for (let i = 0; i < css.length; i++) {
-    //     let css_key = css[i].split(':')[0].trim()
-    //     let index = css_key.indexOf('-')
-    //     if (index !== -1) {
-    //         css_key = css_key.substring(0, index) + css_key[index + 1].toUpperCase() + css_key.substring(index + 2)
-    //     }
-    //     style[css_key] = css[i].split(':')[1].trim()
-    // }
-    this.jquery.attr('style', value)
-    dingvm.toolsFunc.deleteProtoArr.call(this, 'style')
-    // dingvm.toolsFunc.setProtoArr.call(this, 'style', style_)
+dingvm.envFunc.HTMLImageElementProto_width_set = function () {
+    dingvm.toolsFunc.setProtoArr.call(this, 'width')
 };
-dingvm.envFunc.HTMLElementProto_offsetWidth_get = function HTMLElementProto_offsetWidth_get() {
-    let fontFamily = this.style.fontFamily
-
-    if (['monospace', 'sans-serif', 'serif'].includes(fontFamily)) {
-        return 111
+dingvm.envFunc.HTMLImageElementProto_height_get = function () {
+    let height = dingvm.toolsFunc.get_protoOwnAttr.call(this, 'height')
+    if (height === undefined) {
+        return 150
     }
 
-    let fontFamily_ = fontFamily.split(',')
-    fontFamily = fontFamily_[0].slice(1, -1)
-    if (dingvm.memory.globalVar.fontList.includes(fontFamily)) {
-        return 666
-    } else {
-        return 111
-    }
+    return height
 };
-dingvm.envFunc.HTMLElementProto_offsetWidth_set = function HTMLElementProto_offsetWidth_set(value) {
-    return dingvm.toolsFunc.setProtoArr.call(this, 'offsetWidth', value)
+dingvm.envFunc.HTMLImageElementProto_height_set = function () {
+    dingvm.toolsFunc.setProtoArr.call(this, 'height')
 };
-dingvm.envFunc.HTMLElementProto_offsetHeight_get = function HTMLElementProto_offsetHeight_get() {
-    let fontFamily = this.style.fontFamily
-
-    if (['monospace', 'sans-serif', 'serif'].includes(fontFamily)) {
-        return 222
+dingvm.envFunc.HTMLImageElementProto_src_get = function () {
+    let src = dingvm.toolsFunc.get_protoOwnAttr.call(this, 'src')
+    if (src === undefined) {
+        return ''
     }
 
-    let fontFamily_ = fontFamily.split(',')
-    fontFamily = fontFamily_[0].slice(1, -1)
-    if (dingvm.memory.globalVar.fontList.includes(fontFamily)) {
-        return _.random(50, 180, false)
-    } else {
-        return 222
-    }
+    return src
+}
+dingvm.envFunc.HTMLImageElementProto_src_set = function () {
+    dingvm.toolsFunc.setProtoArr.call(this, 'src')
 };
-dingvm.envFunc.HTMLElementProto_offsetHeight_set = function HTMLElementProto_offsetHeight_set(value) {
-    return dingvm.toolsFunc.setProtoArr.call(this, 'offsetHeight', value)
-};
-dingvm.envFunc.HTMLElementProto_accessKey_get = function () {
-    return dingvm.toolsFunc.get_protoOwnAttr.call(this, 'accessKey')
-};
-dingvm.envFunc.HTMLElementProto_accessKey_get = function (value) {
-    this.jquery.attr('accessKey', value)
-};
-dingvm.envFunc.HTMLElementProto_onload_get = function () {
-    return dingvm.toolsFunc.get_protoOwnAttr.call(this, 'onload')
-};
-dingvm.envFunc.HTMLElementProto_onload_set = function (value) {
-    this.jquery.attr('onload', value)
-};
-;
 dingvm.envFunc.HTMLDivElementProto_align_get = function HTMLDivElementProto_align_get() {
     let if_ = dingvm.toolsFunc.get_protoOwnAttr.call(this, 'align')
     if (if_) {
@@ -2876,6 +2922,34 @@ dingvm.envFunc.HTMLCollectionProto_namedItem = function (key) {
         }
     }
     return null
+};
+;
+dingvm.envFunc.HTMLStyleElementProto_disabled_get = function () {
+    return false
+};
+dingvm.envFunc.HTMLStyleElementProto_disabled_set = function (value) {
+    return dingvm.toolsFunc.setProtoArr.call(this, 'disabled', value)
+};
+dingvm.envFunc.HTMLStyleElementProto_media_get = function () {
+    return ''
+};
+dingvm.envFunc.HTMLStyleElementProto_media_set = function (value) {
+    return dingvm.toolsFunc.setProtoArr.call(this, 'media', value)
+};
+dingvm.envFunc.HTMLStyleElementProto_type_get = function () {
+    return 'text/css'
+};
+dingvm.envFunc.HTMLStyleElementProto_type_set = function (value) {
+    return dingvm.toolsFunc.setProtoArr.call(this, 'type', value)
+};
+dingvm.envFunc.HTMLStyleElementProto_sheet_get = function () {
+    
+};
+dingvm.envFunc.HTMLStyleElementProto_blocking_get = function () {
+    debugger
+};
+dingvm.envFunc.HTMLStyleElementProto_blocking_set = function (value) {
+    return dingvm.toolsFunc.setProtoArr.call(this, 'blocking', value)
 };
 ;
 !function () {
@@ -2915,7 +2989,7 @@ dingvm.envFunc.HTMLCollectionProto_namedItem = function (key) {
 // Event对象
 Event = function Event(type) {
     if (arguments.length === 0)
-        plugin.throwError(TypeError, "Failed to construct 'Event': 1 argument required, but only 0 present.");
+        return dingvm.toolsFunc.throwError("TypeError", "Failed to construct 'Event': 1 argument required, but only 0 present.");
     this.type = type;
 
     Object.defineProperty(this, 'isTrusted', {
@@ -3158,7 +3232,7 @@ delete WindowProperties.prototype.constructor;
 Object.setPrototypeOf(WindowProperties.prototype, EventTarget.prototype);
 // Window对象
 Window = function Window(self) {
-    if (self === undefined){
+    if (self === undefined) {
         return dingvm.toolsFunc.throwError("TypeError", "Illegal constructor")
     }
 };
@@ -3167,22 +3241,26 @@ Object.setPrototypeOf(Window.prototype, WindowProperties.prototype);
 dingvm.toolsFunc.defineProperty(Window, "TEMPORARY", {
     configurable: false,
     enumerable: true,
-    writable: false, value: 0
+    writable: false,
+    value: 0
 });
 dingvm.toolsFunc.defineProperty(Window, "PERSISTENT", {
     configurable: false,
     enumerable: true,
-    writable: false, value: 1
+    writable: false,
+    value: 1
 });
 dingvm.toolsFunc.defineProperty(Window.prototype, "TEMPORARY", {
     configurable: false,
     enumerable: true,
-    writable: false, value: 0
+    writable: false,
+    value: 0
 });
 dingvm.toolsFunc.defineProperty(Window.prototype, "PERSISTENT", {
     configurable: false,
     enumerable: true,
-    writable: false, value: 1
+    writable: false,
+    value: 1
 });
 
 // MediaQueryList对象
@@ -4194,6 +4272,259 @@ dingvm.toolsFunc.defineProperty(Storage.prototype, "setItem", {
     writable: true, value: function () {
         return dingvm.toolsFunc.dispatch(this, Storage.prototype, "StorageProto", "setItem", arguments)
     }
+});
+
+// IDBFactory对象
+IDBFactory = function IDBFactory() {
+    return dingvm.toolsFunc.throwError("TypeError", "Illegal constructor")
+};
+dingvm.toolsFunc.safe_constructor_prototype(IDBFactory, "IDBFactory");
+dingvm.toolsFunc.defineProperty(IDBFactory.prototype, "cmp", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, IDBFactory.prototype, "IDBFactoryProto", "cmp", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(IDBFactory.prototype, "databases", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, IDBFactory.prototype, "IDBFactoryProto", "databases", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(IDBFactory.prototype, "deleteDatabase", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, IDBFactory.prototype, "IDBFactoryProto", "deleteDatabase", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(IDBFactory.prototype, "open", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, IDBFactory.prototype, "IDBFactoryProto", "open", arguments)
+    }
+});
+
+// IDBRequest对象
+IDBRequest = function IDBRequest() {
+    return dingvm.toolsFunc.throwError("TypeError", "Illegal constructor")
+};
+dingvm.toolsFunc.safe_constructor_prototype(IDBRequest, "IDBRequest");
+Object.setPrototypeOf(IDBRequest.prototype, EventTarget.prototype);
+dingvm.toolsFunc.defineProperty(IDBRequest.prototype, "result", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, IDBRequest.prototype, "IDBRequestProto", "result_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(IDBRequest.prototype, "error", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, IDBRequest.prototype, "IDBRequestProto", "error_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(IDBRequest.prototype, "source", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, IDBRequest.prototype, "IDBRequestProto", "source_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(IDBRequest.prototype, "transaction", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, IDBRequest.prototype, "IDBRequestProto", "transaction_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(IDBRequest.prototype, "readyState", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, IDBRequest.prototype, "IDBRequestProto", "readyState_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(IDBRequest.prototype, "onsuccess", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, IDBRequest.prototype, "IDBRequestProto", "onsuccess_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, IDBRequest.prototype, "IDBRequestProto", "onsuccess_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(IDBRequest.prototype, "onerror", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, IDBRequest.prototype, "IDBRequestProto", "onerror_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, IDBRequest.prototype, "IDBRequestProto", "onerror_set", arguments)
+    }
+});
+
+// IDBOpenDBRequest对象
+IDBOpenDBRequest = function IDBOpenDBRequest() {
+    return dingvm.toolsFunc.throwError("TypeError", "Illegal constructor")
+};
+dingvm.toolsFunc.safe_constructor_prototype(IDBOpenDBRequest, "IDBOpenDBRequest");
+Object.setPrototypeOf(IDBOpenDBRequest.prototype, IDBRequest.prototype);
+dingvm.toolsFunc.defineProperty(IDBOpenDBRequest.prototype, "onblocked", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, IDBOpenDBRequest.prototype, "IDBOpenDBRequestProto", "onblocked_get", arguments, null)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, IDBOpenDBRequest.prototype, "IDBOpenDBRequestProto", "onblocked_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(IDBOpenDBRequest.prototype, "onupgradeneeded", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, IDBOpenDBRequest.prototype, "IDBOpenDBRequestProto", "onupgradeneeded_get", arguments, null)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, IDBOpenDBRequest.prototype, "IDBOpenDBRequestProto", "onupgradeneeded_set", arguments)
+    }
+});
+
+// Crypto对象
+Crypto = function Crypto() {
+    return dingvm.toolsFunc.throwError("TypeError", "Illegal constructor")
+};
+dingvm.toolsFunc.safe_constructor_prototype(Crypto, "Crypto");
+dingvm.toolsFunc.defineProperty(Crypto.prototype, "getRandomValues", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, Crypto.prototype, "CryptoProto", "getRandomValues", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(Crypto.prototype, "subtle", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, Crypto.prototype, "CryptoProto", "subtle_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(Crypto.prototype, "randomUUID", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, Crypto.prototype, "CryptoProto", "randomUUID", arguments)
+    }
+});
+
+// VisualViewport对象
+VisualViewport = function VisualViewport() {
+    return dingvm.toolsFunc.throwError("TypeError", "Illegal constructor")
+};
+dingvm.toolsFunc.safe_constructor_prototype(VisualViewport, "VisualViewport");
+Object.setPrototypeOf(VisualViewport.prototype, EventTarget.prototype);
+dingvm.toolsFunc.defineProperty(VisualViewport.prototype, "offsetLeft", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, VisualViewport.prototype, "VisualViewportProto", "offsetLeft_get", arguments, 0)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(VisualViewport.prototype, "offsetTop", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, VisualViewport.prototype, "VisualViewportProto", "offsetTop_get", arguments, 0)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(VisualViewport.prototype, "pageLeft", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, VisualViewport.prototype, "VisualViewportProto", "pageLeft_get", arguments, 0)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(VisualViewport.prototype, "pageTop", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, VisualViewport.prototype, "VisualViewportProto", "pageTop_get", arguments, 684)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(VisualViewport.prototype, "width", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, VisualViewport.prototype, "VisualViewportProto", "width_get", arguments, 1471.199951171875)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(VisualViewport.prototype, "height", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, VisualViewport.prototype, "VisualViewportProto", "height_get", arguments, 760)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(VisualViewport.prototype, "scale", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, VisualViewport.prototype, "VisualViewportProto", "scale_get", arguments, 1)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(VisualViewport.prototype, "onresize", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, VisualViewport.prototype, "VisualViewportProto", "onresize_get", arguments, null)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, VisualViewport.prototype, "VisualViewportProto", "onresize_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(VisualViewport.prototype, "onscroll", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, VisualViewport.prototype, "VisualViewportProto", "onscroll_get", arguments, null)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, VisualViewport.prototype, "VisualViewportProto", "onscroll_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(VisualViewport.prototype, "segments", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, VisualViewport.prototype, "VisualViewportProto", "segments_get", arguments, null)
+    },
+    set: undefined
 });
 
 // navigator对象
@@ -9570,6 +9901,1354 @@ dingvm.toolsFunc.defineProperty(HTMLDivElement.prototype, "align", {
     }
 });
 ;
+// HTMLInputElement对象
+HTMLInputElement = function HTMLInputElement() {
+    return dingvm.toolsFunc.throwError("TypeError", "Illegal constructor")
+};
+dingvm.toolsFunc.safe_constructor_prototype(HTMLInputElement, "HTMLInputElement");
+Object.setPrototypeOf(HTMLInputElement.prototype, HTMLElement.prototype);
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "accept", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "accept_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "accept_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "alt", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "alt_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "alt_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "autocomplete", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "autocomplete_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "autocomplete_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "defaultChecked", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "defaultChecked_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "defaultChecked_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "checked", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "checked_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "checked_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "dirName", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "dirName_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "dirName_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "disabled", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "disabled_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "disabled_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "form", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "form_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "files", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "files_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "files_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "formAction", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "formAction_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "formAction_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "formEnctype", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "formEnctype_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "formEnctype_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "formMethod", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "formMethod_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "formMethod_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "formNoValidate", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "formNoValidate_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "formNoValidate_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "formTarget", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "formTarget_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "formTarget_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "height", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "height_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "height_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "indeterminate", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "indeterminate_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "indeterminate_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "list", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "list_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "max", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "max_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "max_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "maxLength", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "maxLength_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "maxLength_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "min", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "min_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "min_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "minLength", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "minLength_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "minLength_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "multiple", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "multiple_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "multiple_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "name", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "name_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "name_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "pattern", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "pattern_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "pattern_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "placeholder", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "placeholder_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "placeholder_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "readOnly", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "readOnly_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "readOnly_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "required", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "required_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "required_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "size", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "size_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "size_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "src", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "src_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "src_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "step", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "step_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "step_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "type", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "type_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "type_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "defaultValue", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "defaultValue_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "defaultValue_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "value", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "value_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "value_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "valueAsDate", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "valueAsDate_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "valueAsDate_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "valueAsNumber", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "valueAsNumber_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "valueAsNumber_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "width", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "width_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "width_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "willValidate", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "willValidate_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "validity", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "validity_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "validationMessage", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "validationMessage_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "labels", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "labels_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "selectionStart", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "selectionStart_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "selectionStart_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "selectionEnd", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "selectionEnd_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "selectionEnd_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "selectionDirection", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "selectionDirection_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "selectionDirection_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "align", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "align_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "align_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "useMap", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "useMap_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "useMap_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "webkitdirectory", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "webkitdirectory_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "webkitdirectory_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "incremental", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "incremental_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "incremental_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "checkValidity", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "checkValidity", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "reportValidity", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "reportValidity", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "select", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "select", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "setCustomValidity", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "setCustomValidity", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "setRangeText", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "setRangeText", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "setSelectionRange", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "setSelectionRange", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "showPicker", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "showPicker", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "stepDown", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "stepDown", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "stepUp", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "stepUp", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLInputElement.prototype, "webkitEntries", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLInputElement.prototype, "HTMLInputElementProto", "webkitEntries_get", arguments)
+    },
+    set: undefined
+});
+;
+// HTMLImageElement对象
+HTMLImageElement = function HTMLImageElement() {
+    return dingvm.toolsFunc.throwError("TypeError", "Illegal constructor")
+};
+dingvm.toolsFunc.safe_constructor_prototype(HTMLImageElement, "HTMLImageElement");
+Object.setPrototypeOf(HTMLImageElement.prototype, HTMLElement.prototype);
+dingvm.toolsFunc.defineProperty(HTMLImageElement.prototype, "alt", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "alt_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "alt_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLImageElement.prototype, "src", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "src_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "src_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLImageElement.prototype, "srcset", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "srcset_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "srcset_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLImageElement.prototype, "sizes", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "sizes_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "sizes_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLImageElement.prototype, "crossOrigin", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "crossOrigin_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "crossOrigin_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLImageElement.prototype, "useMap", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "useMap_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "useMap_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLImageElement.prototype, "isMap", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "isMap_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "isMap_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLImageElement.prototype, "width", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "width_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "width_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLImageElement.prototype, "height", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "height_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "height_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLImageElement.prototype, "naturalWidth", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "naturalWidth_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(HTMLImageElement.prototype, "naturalHeight", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "naturalHeight_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(HTMLImageElement.prototype, "complete", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "complete_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(HTMLImageElement.prototype, "currentSrc", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "currentSrc_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(HTMLImageElement.prototype, "referrerPolicy", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "referrerPolicy_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "referrerPolicy_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLImageElement.prototype, "decoding", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "decoding_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "decoding_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLImageElement.prototype, "name", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "name_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "name_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLImageElement.prototype, "lowsrc", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "lowsrc_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "lowsrc_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLImageElement.prototype, "align", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "align_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "align_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLImageElement.prototype, "hspace", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "hspace_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "hspace_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLImageElement.prototype, "vspace", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "vspace_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "vspace_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLImageElement.prototype, "longDesc", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "longDesc_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "longDesc_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLImageElement.prototype, "border", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "border_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "border_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLImageElement.prototype, "x", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "x_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(HTMLImageElement.prototype, "y", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "y_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(HTMLImageElement.prototype, "decode", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "decode", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLImageElement.prototype, "fetchPriority", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "fetchPriority_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "fetchPriority_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLImageElement.prototype, "loading", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "loading_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLImageElement.prototype, "HTMLImageElementProto", "loading_set", arguments)
+    }
+});
+;
+// HTMLStyleElement对象
+HTMLStyleElement = function HTMLStyleElement() {
+    return dingvm.toolsFunc.throwError("TypeError", "Illegal constructor")
+};
+dingvm.toolsFunc.safe_constructor_prototype(HTMLStyleElement, "HTMLStyleElement");
+Object.setPrototypeOf(HTMLStyleElement.prototype, HTMLElement.prototype);
+dingvm.toolsFunc.defineProperty(HTMLStyleElement.prototype, "disabled", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLStyleElement.prototype, "HTMLStyleElementProto", "disabled_get", arguments, false)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLStyleElement.prototype, "HTMLStyleElementProto", "disabled_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLStyleElement.prototype, "media", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLStyleElement.prototype, "HTMLStyleElementProto", "media_get", arguments, '')
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLStyleElement.prototype, "HTMLStyleElementProto", "media_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLStyleElement.prototype, "type", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLStyleElement.prototype, "HTMLStyleElementProto", "type_get", arguments, 'text/css')
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLStyleElement.prototype, "HTMLStyleElementProto", "type_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(HTMLStyleElement.prototype, "sheet", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLStyleElement.prototype, "HTMLStyleElementProto", "sheet_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(HTMLStyleElement.prototype, "blocking", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLStyleElement.prototype, "HTMLStyleElementProto", "blocking_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, HTMLStyleElement.prototype, "HTMLStyleElementProto", "blocking_set", arguments)
+    }
+});
+;
+// Event对象
+Event = function Event(type) {
+    if (arguments.length === 0)
+        return dingvm.toolsFunc.throwError("TypeError", "Failed to construct 'Event': 1 argument required, but only 0 present.");
+    this.type = type;
+
+    Object.defineProperty(this, 'isTrusted', {
+        enumerable: true,
+        configurable: false,
+        get: function () {
+            return true;
+        },
+        set: undefined
+    })
+};
+dingvm.toolsFunc.safe_constructor_prototype(Event, "Event");
+dingvm.toolsFunc.defineProperty(Event, "NONE", {
+    configurable: false,
+    enumerable: true,
+    writable: false,
+    value: 0
+});
+dingvm.toolsFunc.defineProperty(Event, "CAPTURING_PHASE", {
+    configurable: false,
+    enumerable: true,
+    writable: false,
+    value: 1
+});
+dingvm.toolsFunc.defineProperty(Event, "AT_TARGET", {
+    configurable: false,
+    enumerable: true,
+    writable: false,
+    value: 2
+});
+dingvm.toolsFunc.defineProperty(Event, "BUBBLING_PHASE", {
+    configurable: false,
+    enumerable: true,
+    writable: false,
+    value: 3
+});
+dingvm.toolsFunc.defineProperty(Event.prototype, "type", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, Event.prototype, "EventProto", "type_get", arguments)
+    },
+    set: function () {
+        dingvm.toolsFunc.dispatch(this, Event.prototype, "EventProto", "type_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(Event.prototype, "target", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, Event.prototype, "EventProto", "target_get", arguments)
+    },
+    set: function () {
+        dingvm.toolsFunc.dispatch(this, Event.prototype, "EventProto", "target_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(Event.prototype, "currentTarget", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, Event.prototype, "EventProto", "currentTarget_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(Event.prototype, "eventPhase", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, Event.prototype, "EventProto", "eventPhase_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(Event.prototype, "bubbles", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, Event.prototype, "EventProto", "bubbles_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(Event.prototype, "cancelable", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, Event.prototype, "EventProto", "cancelable_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(Event.prototype, "defaultPrevented", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, Event.prototype, "EventProto", "defaultPrevented_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(Event.prototype, "composed", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, Event.prototype, "EventProto", "composed_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(Event.prototype, "timeStamp", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, Event.prototype, "EventProto", "timeStamp_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(Event.prototype, "srcElement", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, Event.prototype, "EventProto", "srcElement_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(Event.prototype, "returnValue", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, Event.prototype, "EventProto", "returnValue_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, Event.prototype, "EventProto", "returnValue_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(Event.prototype, "cancelBubble", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, Event.prototype, "EventProto", "cancelBubble_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, Event.prototype, "EventProto", "cancelBubble_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(Event.prototype, "NONE", {
+    configurable: false,
+    enumerable: true,
+    writable: false,
+    value: 0
+});
+dingvm.toolsFunc.defineProperty(Event.prototype, "CAPTURING_PHASE", {
+    configurable: false,
+    enumerable: true,
+    writable: false,
+    value: 1
+});
+dingvm.toolsFunc.defineProperty(Event.prototype, "AT_TARGET", {
+    configurable: false,
+    enumerable: true,
+    writable: false,
+    value: 2
+});
+dingvm.toolsFunc.defineProperty(Event.prototype, "BUBBLING_PHASE", {
+    configurable: false,
+    enumerable: true,
+    writable: false,
+    value: 3
+});
+dingvm.toolsFunc.defineProperty(Event.prototype, "composedPath", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, Event.prototype, "EventProto", "composedPath", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(Event.prototype, "initEvent", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, Event.prototype, "EventProto", "initEvent", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(Event.prototype, "preventDefault", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, Event.prototype, "EventProto", "preventDefault", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(Event.prototype, "stopImmediatePropagation", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, Event.prototype, "EventProto", "stopImmediatePropagation", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(Event.prototype, "stopPropagation", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, Event.prototype, "EventProto", "stopPropagation", arguments)
+    }
+});
+;
+// UIEvent对象
+UIEvent = function UIEvent(type) {
+    if (arguments.length === 0)
+        return dingvm.toolsFunc.throwError("TypeError", "Failed to construct 'Event': 1 argument required, but only 0 present.");
+    this.type = type;
+
+    Object.defineProperty(this, 'isTrusted', {
+        enumerable: true,
+        configurable: false,
+        get: function () {
+            return true;
+        },
+        set: undefined
+    })
+};
+dingvm.toolsFunc.safe_constructor_prototype(UIEvent, "UIEvent");
+Object.setPrototypeOf(UIEvent.prototype, Event.prototype);
+dingvm.toolsFunc.defineProperty(UIEvent.prototype, "view", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, UIEvent.prototype, "UIEventProto", "view_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(UIEvent.prototype, "detail", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, UIEvent.prototype, "UIEventProto", "detail_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(UIEvent.prototype, "sourceCapabilities", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, UIEvent.prototype, "UIEventProto", "sourceCapabilities_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(UIEvent.prototype, "which", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, UIEvent.prototype, "UIEventProto", "which_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(UIEvent.prototype, "initUIEvent", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, UIEvent.prototype, "UIEventProto", "initUIEvent", arguments)
+    }
+});
+;
+// MouseEvent对象
+MouseEvent = function MouseEvent(type) {
+    if (arguments.length === 0)
+        return dingvm.toolsFunc.throwError("TypeError", "Failed to construct 'MouseEvent': 1 argument required, but only 0 present.");
+    this.type = type;
+
+    Object.defineProperty(this, 'isTrusted', {
+        enumerable: true,
+        configurable: false,
+        get: function () {
+            return true;
+        },
+        set: undefined
+    })
+};
+dingvm.toolsFunc.safe_constructor_prototype(MouseEvent, "MouseEvent");
+Object.setPrototypeOf(MouseEvent.prototype, UIEvent.prototype);
+dingvm.toolsFunc.defineProperty(MouseEvent.prototype, "screenX", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, MouseEvent.prototype, "MouseEventProto", "screenX_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(MouseEvent.prototype, "screenY", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, MouseEvent.prototype, "MouseEventProto", "screenY_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(MouseEvent.prototype, "clientX", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, MouseEvent.prototype, "MouseEventProto", "clientX_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(MouseEvent.prototype, "clientY", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, MouseEvent.prototype, "MouseEventProto", "clientY_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(MouseEvent.prototype, "ctrlKey", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, MouseEvent.prototype, "MouseEventProto", "ctrlKey_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(MouseEvent.prototype, "shiftKey", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, MouseEvent.prototype, "MouseEventProto", "shiftKey_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(MouseEvent.prototype, "altKey", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, MouseEvent.prototype, "MouseEventProto", "altKey_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(MouseEvent.prototype, "metaKey", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, MouseEvent.prototype, "MouseEventProto", "metaKey_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(MouseEvent.prototype, "button", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, MouseEvent.prototype, "MouseEventProto", "button_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(MouseEvent.prototype, "buttons", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, MouseEvent.prototype, "MouseEventProto", "buttons_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(MouseEvent.prototype, "relatedTarget", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, MouseEvent.prototype, "MouseEventProto", "relatedTarget_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(MouseEvent.prototype, "pageX", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, MouseEvent.prototype, "MouseEventProto", "pageX_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(MouseEvent.prototype, "pageY", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, MouseEvent.prototype, "MouseEventProto", "pageY_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(MouseEvent.prototype, "x", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, MouseEvent.prototype, "MouseEventProto", "x_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(MouseEvent.prototype, "y", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, MouseEvent.prototype, "MouseEventProto", "y_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(MouseEvent.prototype, "offsetX", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, MouseEvent.prototype, "MouseEventProto", "offsetX_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(MouseEvent.prototype, "offsetY", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, MouseEvent.prototype, "MouseEventProto", "offsetY_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(MouseEvent.prototype, "movementX", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, MouseEvent.prototype, "MouseEventProto", "movementX_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(MouseEvent.prototype, "movementY", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, MouseEvent.prototype, "MouseEventProto", "movementY_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(MouseEvent.prototype, "fromElement", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, MouseEvent.prototype, "MouseEventProto", "fromElement_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(MouseEvent.prototype, "toElement", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, MouseEvent.prototype, "MouseEventProto", "toElement_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(MouseEvent.prototype, "layerX", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, MouseEvent.prototype, "MouseEventProto", "layerX_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(MouseEvent.prototype, "layerY", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, MouseEvent.prototype, "MouseEventProto", "layerY_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(MouseEvent.prototype, "getModifierState", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, MouseEvent.prototype, "MouseEventProto", "getModifierState", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(MouseEvent.prototype, "initMouseEvent", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, MouseEvent.prototype, "MouseEventProto", "initMouseEvent", arguments)
+    }
+});
+;
 // NodeList对象
 NodeList = function NodeList() {
     return dingvm.toolsFunc.throwError("TypeError", "Illegal constructor")
@@ -9747,6 +11426,150 @@ dingvm.toolsFunc.defineProperty(CSSStyleDeclaration.prototype, "forEach", {
     writable: true,
     value: function () {
         return dingvm.toolsFunc.dispatch(this, CSSStyleDeclaration.prototype, "CSSStyleDeclarationProto", "forEach", arguments)
+    }
+});
+;
+// StyleSheet对象
+StyleSheet = function StyleSheet() {
+    return dingvm.toolsFunc.throwError("TypeError", "Illegal constructor")
+};
+dingvm.toolsFunc.safe_constructor_prototype(StyleSheet, "StyleSheet");
+dingvm.toolsFunc.defineProperty(StyleSheet.prototype, "type", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, StyleSheet.prototype, "StyleSheetProto", "type_get", arguments, 'text/css')
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(StyleSheet.prototype, "href", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, StyleSheet.prototype, "StyleSheetProto", "href_get", arguments, null)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(StyleSheet.prototype, "ownerNode", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, StyleSheet.prototype, "StyleSheetProto", "ownerNode_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(StyleSheet.prototype, "parentStyleSheet", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, StyleSheet.prototype, "StyleSheetProto", "parentStyleSheet_get", arguments, null)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(StyleSheet.prototype, "title", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, StyleSheet.prototype, "StyleSheetProto", "title_get", arguments, null)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(StyleSheet.prototype, "media", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, StyleSheet.prototype, "StyleSheetProto", "media_get", arguments)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, StyleSheet.prototype, "StyleSheetProto", "media_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(StyleSheet.prototype, "disabled", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, StyleSheet.prototype, "StyleSheetProto", "disabled_get", arguments, false)
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, StyleSheet.prototype, "StyleSheetProto", "disabled_set", arguments)
+    }
+});
+;
+// CSSStyleSheet对象
+CSSStyleSheet = function CSSStyleSheet() {
+};
+dingvm.toolsFunc.safe_constructor_prototype(CSSStyleSheet, "CSSStyleSheet");
+Object.setPrototypeOf(CSSStyleSheet.prototype, StyleSheet.prototype);
+dingvm.toolsFunc.defineProperty(CSSStyleSheet.prototype, "ownerRule", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, CSSStyleSheet.prototype, "CSSStyleSheetProto", "ownerRule_get", arguments, null)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(CSSStyleSheet.prototype, "cssRules", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, CSSStyleSheet.prototype, "CSSStyleSheetProto", "cssRules_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(CSSStyleSheet.prototype, "rules", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, CSSStyleSheet.prototype, "CSSStyleSheetProto", "rules_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(CSSStyleSheet.prototype, "addRule", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSSStyleSheet.prototype, "CSSStyleSheetProto", "addRule", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSSStyleSheet.prototype, "deleteRule", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSSStyleSheet.prototype, "CSSStyleSheetProto", "deleteRule", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSSStyleSheet.prototype, "insertRule", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSSStyleSheet.prototype, "CSSStyleSheetProto", "insertRule", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSSStyleSheet.prototype, "removeRule", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSSStyleSheet.prototype, "CSSStyleSheetProto", "removeRule", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSSStyleSheet.prototype, "replace", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSSStyleSheet.prototype, "CSSStyleSheetProto", "replace", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSSStyleSheet.prototype, "replaceSync", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSSStyleSheet.prototype, "CSSStyleSheetProto", "replaceSync", arguments)
     }
 });
 ;
@@ -10382,7 +12205,1552 @@ style = {
     "y": "",
     "zIndex": "",
     "zoom": ""
+}
+
+style2 = {
+    "0": "accent-color",
+    "1": "align-content",
+    "2": "align-items",
+    "3": "align-self",
+    "4": "alignment-baseline",
+    "5": "animation-composition",
+    "6": "animation-delay",
+    "7": "animation-direction",
+    "8": "animation-duration",
+    "9": "animation-fill-mode",
+    "10": "animation-iteration-count",
+    "11": "animation-name",
+    "12": "animation-play-state",
+    "13": "animation-range-end",
+    "14": "animation-range-start",
+    "15": "animation-timeline",
+    "16": "animation-timing-function",
+    "17": "app-region",
+    "18": "appearance",
+    "19": "backdrop-filter",
+    "20": "backface-visibility",
+    "21": "background-attachment",
+    "22": "background-blend-mode",
+    "23": "background-clip",
+    "24": "background-color",
+    "25": "background-image",
+    "26": "background-origin",
+    "27": "background-position",
+    "28": "background-repeat",
+    "29": "background-size",
+    "30": "baseline-shift",
+    "31": "baseline-source",
+    "32": "block-size",
+    "33": "border-block-end-color",
+    "34": "border-block-end-style",
+    "35": "border-block-end-width",
+    "36": "border-block-start-color",
+    "37": "border-block-start-style",
+    "38": "border-block-start-width",
+    "39": "border-bottom-color",
+    "40": "border-bottom-left-radius",
+    "41": "border-bottom-right-radius",
+    "42": "border-bottom-style",
+    "43": "border-bottom-width",
+    "44": "border-collapse",
+    "45": "border-end-end-radius",
+    "46": "border-end-start-radius",
+    "47": "border-image-outset",
+    "48": "border-image-repeat",
+    "49": "border-image-slice",
+    "50": "border-image-source",
+    "51": "border-image-width",
+    "52": "border-inline-end-color",
+    "53": "border-inline-end-style",
+    "54": "border-inline-end-width",
+    "55": "border-inline-start-color",
+    "56": "border-inline-start-style",
+    "57": "border-inline-start-width",
+    "58": "border-left-color",
+    "59": "border-left-style",
+    "60": "border-left-width",
+    "61": "border-right-color",
+    "62": "border-right-style",
+    "63": "border-right-width",
+    "64": "border-start-end-radius",
+    "65": "border-start-start-radius",
+    "66": "border-top-color",
+    "67": "border-top-left-radius",
+    "68": "border-top-right-radius",
+    "69": "border-top-style",
+    "70": "border-top-width",
+    "71": "bottom",
+    "72": "box-shadow",
+    "73": "box-sizing",
+    "74": "break-after",
+    "75": "break-before",
+    "76": "break-inside",
+    "77": "buffered-rendering",
+    "78": "caption-side",
+    "79": "caret-color",
+    "80": "clear",
+    "81": "clip",
+    "82": "clip-path",
+    "83": "clip-rule",
+    "84": "color",
+    "85": "color-interpolation",
+    "86": "color-interpolation-filters",
+    "87": "color-rendering",
+    "88": "column-count",
+    "89": "column-gap",
+    "90": "column-rule-color",
+    "91": "column-rule-style",
+    "92": "column-rule-width",
+    "93": "column-span",
+    "94": "column-width",
+    "95": "contain-intrinsic-block-size",
+    "96": "contain-intrinsic-height",
+    "97": "contain-intrinsic-inline-size",
+    "98": "contain-intrinsic-size",
+    "99": "contain-intrinsic-width",
+    "100": "container-name",
+    "101": "container-type",
+    "102": "content",
+    "103": "cursor",
+    "104": "cx",
+    "105": "cy",
+    "106": "d",
+    "107": "direction",
+    "108": "display",
+    "109": "dominant-baseline",
+    "110": "empty-cells",
+    "111": "fill",
+    "112": "fill-opacity",
+    "113": "fill-rule",
+    "114": "filter",
+    "115": "flex-basis",
+    "116": "flex-direction",
+    "117": "flex-grow",
+    "118": "flex-shrink",
+    "119": "flex-wrap",
+    "120": "float",
+    "121": "flood-color",
+    "122": "flood-opacity",
+    "123": "font-family",
+    "124": "font-kerning",
+    "125": "font-optical-sizing",
+    "126": "font-palette",
+    "127": "font-size",
+    "128": "font-stretch",
+    "129": "font-style",
+    "130": "font-synthesis-small-caps",
+    "131": "font-synthesis-style",
+    "132": "font-synthesis-weight",
+    "133": "font-variant",
+    "134": "font-variant-alternates",
+    "135": "font-variant-caps",
+    "136": "font-variant-east-asian",
+    "137": "font-variant-ligatures",
+    "138": "font-variant-numeric",
+    "139": "font-variant-position",
+    "140": "font-weight",
+    "141": "grid-auto-columns",
+    "142": "grid-auto-flow",
+    "143": "grid-auto-rows",
+    "144": "grid-column-end",
+    "145": "grid-column-start",
+    "146": "grid-row-end",
+    "147": "grid-row-start",
+    "148": "grid-template-areas",
+    "149": "grid-template-columns",
+    "150": "grid-template-rows",
+    "151": "height",
+    "152": "hyphenate-character",
+    "153": "hyphenate-limit-chars",
+    "154": "hyphens",
+    "155": "image-orientation",
+    "156": "image-rendering",
+    "157": "initial-letter",
+    "158": "inline-size",
+    "159": "inset-block-end",
+    "160": "inset-block-start",
+    "161": "inset-inline-end",
+    "162": "inset-inline-start",
+    "163": "isolation",
+    "164": "justify-content",
+    "165": "justify-items",
+    "166": "justify-self",
+    "167": "left",
+    "168": "letter-spacing",
+    "169": "lighting-color",
+    "170": "line-break",
+    "171": "line-height",
+    "172": "list-style-image",
+    "173": "list-style-position",
+    "174": "list-style-type",
+    "175": "margin-block-end",
+    "176": "margin-block-start",
+    "177": "margin-bottom",
+    "178": "margin-inline-end",
+    "179": "margin-inline-start",
+    "180": "margin-left",
+    "181": "margin-right",
+    "182": "margin-top",
+    "183": "marker-end",
+    "184": "marker-mid",
+    "185": "marker-start",
+    "186": "mask-clip",
+    "187": "mask-composite",
+    "188": "mask-image",
+    "189": "mask-mode",
+    "190": "mask-origin",
+    "191": "mask-position",
+    "192": "mask-repeat",
+    "193": "mask-size",
+    "194": "mask-type",
+    "195": "math-depth",
+    "196": "math-shift",
+    "197": "math-style",
+    "198": "max-block-size",
+    "199": "max-height",
+    "200": "max-inline-size",
+    "201": "max-width",
+    "202": "min-block-size",
+    "203": "min-height",
+    "204": "min-inline-size",
+    "205": "min-width",
+    "206": "mix-blend-mode",
+    "207": "object-fit",
+    "208": "object-position",
+    "209": "object-view-box",
+    "210": "offset-anchor",
+    "211": "offset-distance",
+    "212": "offset-path",
+    "213": "offset-position",
+    "214": "offset-rotate",
+    "215": "opacity",
+    "216": "order",
+    "217": "orphans",
+    "218": "outline-color",
+    "219": "outline-offset",
+    "220": "outline-style",
+    "221": "outline-width",
+    "222": "overflow-anchor",
+    "223": "overflow-clip-margin",
+    "224": "overflow-wrap",
+    "225": "overflow-x",
+    "226": "overflow-y",
+    "227": "overlay",
+    "228": "overscroll-behavior-block",
+    "229": "overscroll-behavior-inline",
+    "230": "padding-block-end",
+    "231": "padding-block-start",
+    "232": "padding-bottom",
+    "233": "padding-inline-end",
+    "234": "padding-inline-start",
+    "235": "padding-left",
+    "236": "padding-right",
+    "237": "padding-top",
+    "238": "paint-order",
+    "239": "perspective",
+    "240": "perspective-origin",
+    "241": "pointer-events",
+    "242": "position",
+    "243": "r",
+    "244": "resize",
+    "245": "right",
+    "246": "rotate",
+    "247": "row-gap",
+    "248": "ruby-position",
+    "249": "rx",
+    "250": "ry",
+    "251": "scale",
+    "252": "scroll-behavior",
+    "253": "scroll-margin-block-end",
+    "254": "scroll-margin-block-start",
+    "255": "scroll-margin-inline-end",
+    "256": "scroll-margin-inline-start",
+    "257": "scroll-padding-block-end",
+    "258": "scroll-padding-block-start",
+    "259": "scroll-padding-inline-end",
+    "260": "scroll-padding-inline-start",
+    "261": "scroll-timeline-axis",
+    "262": "scroll-timeline-name",
+    "263": "scrollbar-color",
+    "264": "scrollbar-gutter",
+    "265": "scrollbar-width",
+    "266": "shape-image-threshold",
+    "267": "shape-margin",
+    "268": "shape-outside",
+    "269": "shape-rendering",
+    "270": "speak",
+    "271": "stop-color",
+    "272": "stop-opacity",
+    "273": "stroke",
+    "274": "stroke-dasharray",
+    "275": "stroke-dashoffset",
+    "276": "stroke-linecap",
+    "277": "stroke-linejoin",
+    "278": "stroke-miterlimit",
+    "279": "stroke-opacity",
+    "280": "stroke-width",
+    "281": "tab-size",
+    "282": "table-layout",
+    "283": "text-align",
+    "284": "text-align-last",
+    "285": "text-anchor",
+    "286": "text-decoration",
+    "287": "text-decoration-color",
+    "288": "text-decoration-line",
+    "289": "text-decoration-skip-ink",
+    "290": "text-decoration-style",
+    "291": "text-emphasis-color",
+    "292": "text-emphasis-position",
+    "293": "text-emphasis-style",
+    "294": "text-indent",
+    "295": "text-overflow",
+    "296": "text-rendering",
+    "297": "text-shadow",
+    "298": "text-size-adjust",
+    "299": "text-transform",
+    "300": "text-underline-position",
+    "301": "text-wrap",
+    "302": "timeline-scope",
+    "303": "top",
+    "304": "touch-action",
+    "305": "transform",
+    "306": "transform-origin",
+    "307": "transform-style",
+    "308": "transition-behavior",
+    "309": "transition-delay",
+    "310": "transition-duration",
+    "311": "transition-property",
+    "312": "transition-timing-function",
+    "313": "translate",
+    "314": "unicode-bidi",
+    "315": "user-select",
+    "316": "vector-effect",
+    "317": "vertical-align",
+    "318": "view-timeline-axis",
+    "319": "view-timeline-inset",
+    "320": "view-timeline-name",
+    "321": "view-transition-name",
+    "322": "visibility",
+    "323": "white-space-collapse",
+    "324": "widows",
+    "325": "width",
+    "326": "will-change",
+    "327": "word-break",
+    "328": "word-spacing",
+    "329": "writing-mode",
+    "330": "x",
+    "331": "y",
+    "332": "z-index",
+    "333": "zoom",
+    "334": "-webkit-border-horizontal-spacing",
+    "335": "-webkit-border-image",
+    "336": "-webkit-border-vertical-spacing",
+    "337": "-webkit-box-align",
+    "338": "-webkit-box-decoration-break",
+    "339": "-webkit-box-direction",
+    "340": "-webkit-box-flex",
+    "341": "-webkit-box-ordinal-group",
+    "342": "-webkit-box-orient",
+    "343": "-webkit-box-pack",
+    "344": "-webkit-box-reflect",
+    "345": "-webkit-font-smoothing",
+    "346": "-webkit-line-break",
+    "347": "-webkit-line-clamp",
+    "348": "-webkit-locale",
+    "349": "-webkit-mask-box-image",
+    "350": "-webkit-mask-box-image-outset",
+    "351": "-webkit-mask-box-image-repeat",
+    "352": "-webkit-mask-box-image-slice",
+    "353": "-webkit-mask-box-image-source",
+    "354": "-webkit-mask-box-image-width",
+    "355": "-webkit-print-color-adjust",
+    "356": "-webkit-rtl-ordering",
+    "357": "-webkit-tap-highlight-color",
+    "358": "-webkit-text-combine",
+    "359": "-webkit-text-decorations-in-effect",
+    "360": "-webkit-text-fill-color",
+    "361": "-webkit-text-orientation",
+    "362": "-webkit-text-security",
+    "363": "-webkit-text-stroke-color",
+    "364": "-webkit-text-stroke-width",
+    "365": "-webkit-user-drag",
+    "366": "-webkit-user-modify",
+    "367": "-webkit-writing-mode",
+    "accentColor": "auto",
+    "additiveSymbols": "",
+    "alignContent": "normal",
+    "alignItems": "flex-start",
+    "alignSelf": "auto",
+    "alignmentBaseline": "auto",
+    "all": "",
+    "animation": "none 0s ease 0s 1 normal none running",
+    "animationComposition": "replace",
+    "animationDelay": "0s",
+    "animationDirection": "normal",
+    "animationDuration": "0s",
+    "animationFillMode": "none",
+    "animationIterationCount": "1",
+    "animationName": "none",
+    "animationPlayState": "running",
+    "animationRange": "normal",
+    "animationRangeEnd": "normal",
+    "animationRangeStart": "normal",
+    "animationTimeline": "auto",
+    "animationTimingFunction": "ease",
+    "appRegion": "none",
+    "appearance": "none",
+    "ascentOverride": "",
+    "aspectRatio": "auto",
+    "backdropFilter": "none",
+    "backfaceVisibility": "visible",
+    "background": "rgb(78, 110, 242) none repeat scroll 0px 0px / auto padding-box border-box",
+    "backgroundAttachment": "scroll",
+    "backgroundBlendMode": "normal",
+    "backgroundClip": "border-box",
+    "backgroundColor": "rgb(78, 110, 242)",
+    "backgroundImage": "none",
+    "backgroundOrigin": "padding-box",
+    "backgroundPosition": "0px 0px",
+    "backgroundPositionX": "0px",
+    "backgroundPositionY": "0px",
+    "backgroundRepeat": "repeat",
+    "backgroundSize": "auto",
+    "basePalette": "",
+    "baselineShift": "0px",
+    "baselineSource": "auto",
+    "blockSize": "44px",
+    "border": "0px none rgb(255, 255, 255)",
+    "borderBlock": "0px none rgb(255, 255, 255)",
+    "borderBlockColor": "rgb(255, 255, 255)",
+    "borderBlockEnd": "0px none rgb(255, 255, 255)",
+    "borderBlockEndColor": "rgb(255, 255, 255)",
+    "borderBlockEndStyle": "none",
+    "borderBlockEndWidth": "0px",
+    "borderBlockStart": "0px none rgb(255, 255, 255)",
+    "borderBlockStartColor": "rgb(255, 255, 255)",
+    "borderBlockStartStyle": "none",
+    "borderBlockStartWidth": "0px",
+    "borderBlockStyle": "none",
+    "borderBlockWidth": "0px",
+    "borderBottom": "0px none rgb(255, 255, 255)",
+    "borderBottomColor": "rgb(255, 255, 255)",
+    "borderBottomLeftRadius": "0px",
+    "borderBottomRightRadius": "10px",
+    "borderBottomStyle": "none",
+    "borderBottomWidth": "0px",
+    "borderCollapse": "separate",
+    "borderColor": "rgb(255, 255, 255)",
+    "borderEndEndRadius": "10px",
+    "borderEndStartRadius": "0px",
+    "borderImage": "none",
+    "borderImageOutset": "0",
+    "borderImageRepeat": "stretch",
+    "borderImageSlice": "100%",
+    "borderImageSource": "none",
+    "borderImageWidth": "1",
+    "borderInline": "0px none rgb(255, 255, 255)",
+    "borderInlineColor": "rgb(255, 255, 255)",
+    "borderInlineEnd": "0px none rgb(255, 255, 255)",
+    "borderInlineEndColor": "rgb(255, 255, 255)",
+    "borderInlineEndStyle": "none",
+    "borderInlineEndWidth": "0px",
+    "borderInlineStart": "0px none rgb(255, 255, 255)",
+    "borderInlineStartColor": "rgb(255, 255, 255)",
+    "borderInlineStartStyle": "none",
+    "borderInlineStartWidth": "0px",
+    "borderInlineStyle": "none",
+    "borderInlineWidth": "0px",
+    "borderLeft": "0px none rgb(255, 255, 255)",
+    "borderLeftColor": "rgb(255, 255, 255)",
+    "borderLeftStyle": "none",
+    "borderLeftWidth": "0px",
+    "borderRadius": "0px 10px 10px 0px",
+    "borderRight": "0px none rgb(255, 255, 255)",
+    "borderRightColor": "rgb(255, 255, 255)",
+    "borderRightStyle": "none",
+    "borderRightWidth": "0px",
+    "borderSpacing": "0px 0px",
+    "borderStartEndRadius": "10px",
+    "borderStartStartRadius": "0px",
+    "borderStyle": "none",
+    "borderTop": "0px none rgb(255, 255, 255)",
+    "borderTopColor": "rgb(255, 255, 255)",
+    "borderTopLeftRadius": "0px",
+    "borderTopRightRadius": "10px",
+    "borderTopStyle": "none",
+    "borderTopWidth": "0px",
+    "borderWidth": "0px",
+    "bottom": "auto",
+    "boxShadow": "none",
+    "boxSizing": "border-box",
+    "breakAfter": "auto",
+    "breakBefore": "auto",
+    "breakInside": "auto",
+    "bufferedRendering": "auto",
+    "captionSide": "top",
+    "caretColor": "rgb(255, 255, 255)",
+    "clear": "none",
+    "clip": "auto",
+    "clipPath": "none",
+    "clipRule": "nonzero",
+    "color": "rgb(255, 255, 255)",
+    "colorInterpolation": "srgb",
+    "colorInterpolationFilters": "linearrgb",
+    "colorRendering": "auto",
+    "colorScheme": "normal",
+    "columnCount": "auto",
+    "columnFill": "balance",
+    "columnGap": "normal",
+    "columnRule": "0px none rgb(255, 255, 255)",
+    "columnRuleColor": "rgb(255, 255, 255)",
+    "columnRuleStyle": "none",
+    "columnRuleWidth": "0px",
+    "columnSpan": "none",
+    "columnWidth": "auto",
+    "columns": "auto auto",
+    "contain": "none",
+    "containIntrinsicBlockSize": "none",
+    "containIntrinsicHeight": "none",
+    "containIntrinsicInlineSize": "none",
+    "containIntrinsicSize": "none",
+    "containIntrinsicWidth": "none",
+    "container": "none",
+    "containerName": "none",
+    "containerType": "normal",
+    "content": "normal",
+    "contentVisibility": "visible",
+    "counterIncrement": "none",
+    "counterReset": "none",
+    "counterSet": "none",
+    "cursor": "pointer",
+    "cx": "0px",
+    "cy": "0px",
+    "d": "none",
+    "descentOverride": "",
+    "direction": "ltr",
+    "display": "inline-block",
+    "dominantBaseline": "auto",
+    "emptyCells": "show",
+    "fallback": "",
+    "fill": "rgb(0, 0, 0)",
+    "fillOpacity": "1",
+    "fillRule": "nonzero",
+    "filter": "none",
+    "flex": "0 1 auto",
+    "flexBasis": "auto",
+    "flexDirection": "row",
+    "flexFlow": "row nowrap",
+    "flexGrow": "0",
+    "flexShrink": "1",
+    "flexWrap": "nowrap",
+    "float": "none",
+    "floodColor": "rgb(0, 0, 0)",
+    "floodOpacity": "1",
+    "font": "17px / 45px Arial, sans-serif",
+    "fontDisplay": "",
+    "fontFamily": "Arial, sans-serif",
+    "fontFeatureSettings": "normal",
+    "fontKerning": "auto",
+    "fontOpticalSizing": "auto",
+    "fontPalette": "normal",
+    "fontSize": "17px",
+    "fontStretch": "100%",
+    "fontStyle": "normal",
+    "fontSynthesis": "weight style small-caps",
+    "fontSynthesisSmallCaps": "auto",
+    "fontSynthesisStyle": "auto",
+    "fontSynthesisWeight": "auto",
+    "fontVariant": "normal",
+    "fontVariantAlternates": "normal",
+    "fontVariantCaps": "normal",
+    "fontVariantEastAsian": "normal",
+    "fontVariantLigatures": "normal",
+    "fontVariantNumeric": "normal",
+    "fontVariantPosition": "normal",
+    "fontVariationSettings": "normal",
+    "fontWeight": "400",
+    "forcedColorAdjust": "auto",
+    "gap": "normal",
+    "grid": "none / none / none / row / auto / auto",
+    "gridArea": "auto",
+    "gridAutoColumns": "auto",
+    "gridAutoFlow": "row",
+    "gridAutoRows": "auto",
+    "gridColumn": "auto",
+    "gridColumnEnd": "auto",
+    "gridColumnGap": "normal",
+    "gridColumnStart": "auto",
+    "gridGap": "normal normal",
+    "gridRow": "auto",
+    "gridRowEnd": "auto",
+    "gridRowGap": "normal",
+    "gridRowStart": "auto",
+    "gridTemplate": "none",
+    "gridTemplateAreas": "none",
+    "gridTemplateColumns": "none",
+    "gridTemplateRows": "none",
+    "height": "44px",
+    "hyphenateCharacter": "auto",
+    "hyphenateLimitChars": "auto",
+    "hyphens": "manual",
+    "imageOrientation": "from-image",
+    "imageRendering": "auto",
+    "inherits": "",
+    "initialLetter": "normal",
+    "initialValue": "",
+    "inlineSize": "108px",
+    "inset": "auto",
+    "insetBlock": "auto",
+    "insetBlockEnd": "auto",
+    "insetBlockStart": "auto",
+    "insetInline": "auto",
+    "insetInlineEnd": "auto",
+    "insetInlineStart": "auto",
+    "isolation": "auto",
+    "justifyContent": "normal",
+    "justifyItems": "normal",
+    "justifySelf": "auto",
+    "left": "auto",
+    "letterSpacing": "normal",
+    "lightingColor": "rgb(255, 255, 255)",
+    "lineBreak": "auto",
+    "lineGapOverride": "",
+    "lineHeight": "45px",
+    "listStyle": "outside none none",
+    "listStyleImage": "none",
+    "listStylePosition": "outside",
+    "listStyleType": "none",
+    "margin": "0px",
+    "marginBlock": "0px",
+    "marginBlockEnd": "0px",
+    "marginBlockStart": "0px",
+    "marginBottom": "0px",
+    "marginInline": "0px",
+    "marginInlineEnd": "0px",
+    "marginInlineStart": "0px",
+    "marginLeft": "0px",
+    "marginRight": "0px",
+    "marginTop": "0px",
+    "marker": "none",
+    "markerEnd": "none",
+    "markerMid": "none",
+    "markerStart": "none",
+    "mask": "none",
+    "maskClip": "border-box",
+    "maskComposite": "add",
+    "maskImage": "none",
+    "maskMode": "match-source",
+    "maskOrigin": "border-box",
+    "maskPosition": "0% 0%",
+    "maskRepeat": "repeat",
+    "maskSize": "auto",
+    "maskType": "luminance",
+    "mathDepth": "0",
+    "mathShift": "normal",
+    "mathStyle": "normal",
+    "maxBlockSize": "none",
+    "maxHeight": "none",
+    "maxInlineSize": "none",
+    "maxWidth": "none",
+    "minBlockSize": "0px",
+    "minHeight": "0px",
+    "minInlineSize": "0px",
+    "minWidth": "0px",
+    "mixBlendMode": "normal",
+    "negative": "",
+    "objectFit": "fill",
+    "objectPosition": "50% 50%",
+    "objectViewBox": "none",
+    "offset": "none 0px auto 0deg",
+    "offsetAnchor": "auto",
+    "offsetDistance": "0px",
+    "offsetPath": "none",
+    "offsetPosition": "normal",
+    "offsetRotate": "auto 0deg",
+    "opacity": "1",
+    "order": "0",
+    "orphans": "2",
+    "outline": "rgb(255, 255, 255) none 0px",
+    "outlineColor": "rgb(255, 255, 255)",
+    "outlineOffset": "0px",
+    "outlineStyle": "none",
+    "outlineWidth": "0px",
+    "overflow": "visible",
+    "overflowAnchor": "auto",
+    "overflowClipMargin": "0px",
+    "overflowWrap": "normal",
+    "overflowX": "visible",
+    "overflowY": "visible",
+    "overlay": "none",
+    "overrideColors": "",
+    "overscrollBehavior": "auto",
+    "overscrollBehaviorBlock": "auto",
+    "overscrollBehaviorInline": "auto",
+    "overscrollBehaviorX": "auto",
+    "overscrollBehaviorY": "auto",
+    "pad": "",
+    "padding": "0px",
+    "paddingBlock": "0px",
+    "paddingBlockEnd": "0px",
+    "paddingBlockStart": "0px",
+    "paddingBottom": "0px",
+    "paddingInline": "0px",
+    "paddingInlineEnd": "0px",
+    "paddingInlineStart": "0px",
+    "paddingLeft": "0px",
+    "paddingRight": "0px",
+    "paddingTop": "0px",
+    "page": "auto",
+    "pageBreakAfter": "auto",
+    "pageBreakBefore": "auto",
+    "pageBreakInside": "auto",
+    "pageOrientation": "",
+    "paintOrder": "normal",
+    "perspective": "none",
+    "perspectiveOrigin": "54px 22px",
+    "placeContent": "normal",
+    "placeItems": "flex-start normal",
+    "placeSelf": "auto",
+    "pointerEvents": "auto",
+    "position": "static",
+    "prefix": "",
+    "quotes": "auto",
+    "r": "0px",
+    "range": "",
+    "resize": "none",
+    "right": "auto",
+    "rotate": "none",
+    "rowGap": "normal",
+    "rubyPosition": "over",
+    "rx": "auto",
+    "ry": "auto",
+    "scale": "none",
+    "scrollBehavior": "auto",
+    "scrollMargin": "0px",
+    "scrollMarginBlock": "0px",
+    "scrollMarginBlockEnd": "0px",
+    "scrollMarginBlockStart": "0px",
+    "scrollMarginBottom": "0px",
+    "scrollMarginInline": "0px",
+    "scrollMarginInlineEnd": "0px",
+    "scrollMarginInlineStart": "0px",
+    "scrollMarginLeft": "0px",
+    "scrollMarginRight": "0px",
+    "scrollMarginTop": "0px",
+    "scrollPadding": "auto",
+    "scrollPaddingBlock": "auto",
+    "scrollPaddingBlockEnd": "auto",
+    "scrollPaddingBlockStart": "auto",
+    "scrollPaddingBottom": "auto",
+    "scrollPaddingInline": "auto",
+    "scrollPaddingInlineEnd": "auto",
+    "scrollPaddingInlineStart": "auto",
+    "scrollPaddingLeft": "auto",
+    "scrollPaddingRight": "auto",
+    "scrollPaddingTop": "auto",
+    "scrollSnapAlign": "none",
+    "scrollSnapStop": "normal",
+    "scrollSnapType": "none",
+    "scrollTimeline": "none",
+    "scrollTimelineAxis": "block",
+    "scrollTimelineName": "none",
+    "scrollbarColor": "auto",
+    "scrollbarGutter": "auto",
+    "scrollbarWidth": "auto",
+    "shapeImageThreshold": "0",
+    "shapeMargin": "0px",
+    "shapeOutside": "none",
+    "shapeRendering": "auto",
+    "size": "",
+    "sizeAdjust": "",
+    "speak": "normal",
+    "speakAs": "",
+    "src": "",
+    "stopColor": "rgb(0, 0, 0)",
+    "stopOpacity": "1",
+    "stroke": "none",
+    "strokeDasharray": "none",
+    "strokeDashoffset": "0px",
+    "strokeLinecap": "butt",
+    "strokeLinejoin": "miter",
+    "strokeMiterlimit": "4",
+    "strokeOpacity": "1",
+    "strokeWidth": "1px",
+    "suffix": "",
+    "symbols": "",
+    "syntax": "",
+    "system": "",
+    "tabSize": "8",
+    "tableLayout": "auto",
+    "textAlign": "center",
+    "textAlignLast": "auto",
+    "textAnchor": "start",
+    "textCombineUpright": "none",
+    "textDecoration": "none solid rgb(255, 255, 255)",
+    "textDecorationColor": "rgb(255, 255, 255)",
+    "textDecorationLine": "none",
+    "textDecorationSkipInk": "auto",
+    "textDecorationStyle": "solid",
+    "textDecorationThickness": "auto",
+    "textEmphasis": "none rgb(255, 255, 255)",
+    "textEmphasisColor": "rgb(255, 255, 255)",
+    "textEmphasisPosition": "over",
+    "textEmphasisStyle": "none",
+    "textIndent": "0px",
+    "textOrientation": "mixed",
+    "textOverflow": "clip",
+    "textRendering": "auto",
+    "textShadow": "none",
+    "textSizeAdjust": "auto",
+    "textTransform": "none",
+    "textUnderlineOffset": "auto",
+    "textUnderlinePosition": "auto",
+    "textWrap": "nowrap",
+    "timelineScope": "none",
+    "top": "auto",
+    "touchAction": "auto",
+    "transform": "none",
+    "transformBox": "view-box",
+    "transformOrigin": "54px 22px",
+    "transformStyle": "flat",
+    "transition": "all 0s ease 0s",
+    "transitionBehavior": "normal",
+    "transitionDelay": "0s",
+    "transitionDuration": "0s",
+    "transitionProperty": "all",
+    "transitionTimingFunction": "ease",
+    "translate": "none",
+    "unicodeBidi": "normal",
+    "unicodeRange": "",
+    "userSelect": "none",
+    "vectorEffect": "none",
+    "verticalAlign": "baseline",
+    "viewTimeline": "none",
+    "viewTimelineAxis": "block",
+    "viewTimelineInset": "auto",
+    "viewTimelineName": "none",
+    "viewTransitionName": "none",
+    "visibility": "visible",
+    "webkitAlignContent": "normal",
+    "webkitAlignItems": "flex-start",
+    "webkitAlignSelf": "auto",
+    "webkitAnimation": "none 0s ease 0s 1 normal none running",
+    "webkitAnimationDelay": "0s",
+    "webkitAnimationDirection": "normal",
+    "webkitAnimationDuration": "0s",
+    "webkitAnimationFillMode": "none",
+    "webkitAnimationIterationCount": "1",
+    "webkitAnimationName": "none",
+    "webkitAnimationPlayState": "running",
+    "webkitAnimationTimingFunction": "ease",
+    "webkitAppRegion": "none",
+    "webkitAppearance": "none",
+    "webkitBackfaceVisibility": "visible",
+    "webkitBackgroundClip": "border-box",
+    "webkitBackgroundOrigin": "padding-box",
+    "webkitBackgroundSize": "auto",
+    "webkitBorderAfter": "0px none rgb(255, 255, 255)",
+    "webkitBorderAfterColor": "rgb(255, 255, 255)",
+    "webkitBorderAfterStyle": "none",
+    "webkitBorderAfterWidth": "0px",
+    "webkitBorderBefore": "0px none rgb(255, 255, 255)",
+    "webkitBorderBeforeColor": "rgb(255, 255, 255)",
+    "webkitBorderBeforeStyle": "none",
+    "webkitBorderBeforeWidth": "0px",
+    "webkitBorderBottomLeftRadius": "0px",
+    "webkitBorderBottomRightRadius": "10px",
+    "webkitBorderEnd": "0px none rgb(255, 255, 255)",
+    "webkitBorderEndColor": "rgb(255, 255, 255)",
+    "webkitBorderEndStyle": "none",
+    "webkitBorderEndWidth": "0px",
+    "webkitBorderHorizontalSpacing": "0px",
+    "webkitBorderImage": "none",
+    "webkitBorderRadius": "0px 10px 10px 0px",
+    "webkitBorderStart": "0px none rgb(255, 255, 255)",
+    "webkitBorderStartColor": "rgb(255, 255, 255)",
+    "webkitBorderStartStyle": "none",
+    "webkitBorderStartWidth": "0px",
+    "webkitBorderTopLeftRadius": "0px",
+    "webkitBorderTopRightRadius": "10px",
+    "webkitBorderVerticalSpacing": "0px",
+    "webkitBoxAlign": "stretch",
+    "webkitBoxDecorationBreak": "slice",
+    "webkitBoxDirection": "normal",
+    "webkitBoxFlex": "0",
+    "webkitBoxOrdinalGroup": "1",
+    "webkitBoxOrient": "horizontal",
+    "webkitBoxPack": "start",
+    "webkitBoxReflect": "none",
+    "webkitBoxShadow": "none",
+    "webkitBoxSizing": "border-box",
+    "webkitClipPath": "none",
+    "webkitColumnBreakAfter": "auto",
+    "webkitColumnBreakBefore": "auto",
+    "webkitColumnBreakInside": "auto",
+    "webkitColumnCount": "auto",
+    "webkitColumnGap": "normal",
+    "webkitColumnRule": "0px none rgb(255, 255, 255)",
+    "webkitColumnRuleColor": "rgb(255, 255, 255)",
+    "webkitColumnRuleStyle": "none",
+    "webkitColumnRuleWidth": "0px",
+    "webkitColumnSpan": "none",
+    "webkitColumnWidth": "auto",
+    "webkitColumns": "auto auto",
+    "webkitFilter": "none",
+    "webkitFlex": "0 1 auto",
+    "webkitFlexBasis": "auto",
+    "webkitFlexDirection": "row",
+    "webkitFlexFlow": "row nowrap",
+    "webkitFlexGrow": "0",
+    "webkitFlexShrink": "1",
+    "webkitFlexWrap": "nowrap",
+    "webkitFontFeatureSettings": "normal",
+    "webkitFontSmoothing": "auto",
+    "webkitHyphenateCharacter": "auto",
+    "webkitJustifyContent": "normal",
+    "webkitLineBreak": "auto",
+    "webkitLineClamp": "none",
+    "webkitLocale": "auto",
+    "webkitLogicalHeight": "44px",
+    "webkitLogicalWidth": "108px",
+    "webkitMarginAfter": "0px",
+    "webkitMarginBefore": "0px",
+    "webkitMarginEnd": "0px",
+    "webkitMarginStart": "0px",
+    "webkitMask": "none",
+    "webkitMaskBoxImage": "none",
+    "webkitMaskBoxImageOutset": "0",
+    "webkitMaskBoxImageRepeat": "stretch",
+    "webkitMaskBoxImageSlice": "0 fill",
+    "webkitMaskBoxImageSource": "none",
+    "webkitMaskBoxImageWidth": "auto",
+    "webkitMaskClip": "border-box",
+    "webkitMaskComposite": "add",
+    "webkitMaskImage": "none",
+    "webkitMaskOrigin": "border-box",
+    "webkitMaskPosition": "0% 0%",
+    "webkitMaskPositionX": "0%",
+    "webkitMaskPositionY": "0%",
+    "webkitMaskRepeat": "repeat",
+    "webkitMaskSize": "auto",
+    "webkitMaxLogicalHeight": "none",
+    "webkitMaxLogicalWidth": "none",
+    "webkitMinLogicalHeight": "0px",
+    "webkitMinLogicalWidth": "0px",
+    "webkitOpacity": "1",
+    "webkitOrder": "0",
+    "webkitPaddingAfter": "0px",
+    "webkitPaddingBefore": "0px",
+    "webkitPaddingEnd": "0px",
+    "webkitPaddingStart": "0px",
+    "webkitPerspective": "none",
+    "webkitPerspectiveOrigin": "54px 22px",
+    "webkitPerspectiveOriginX": "",
+    "webkitPerspectiveOriginY": "",
+    "webkitPrintColorAdjust": "economy",
+    "webkitRtlOrdering": "logical",
+    "webkitRubyPosition": "before",
+    "webkitShapeImageThreshold": "0",
+    "webkitShapeMargin": "0px",
+    "webkitShapeOutside": "none",
+    "webkitTapHighlightColor": "rgba(0, 0, 0, 0.18)",
+    "webkitTextCombine": "none",
+    "webkitTextDecorationsInEffect": "none",
+    "webkitTextEmphasis": "none rgb(255, 255, 255)",
+    "webkitTextEmphasisColor": "rgb(255, 255, 255)",
+    "webkitTextEmphasisPosition": "over",
+    "webkitTextEmphasisStyle": "none",
+    "webkitTextFillColor": "rgb(255, 255, 255)",
+    "webkitTextOrientation": "vertical-right",
+    "webkitTextSecurity": "none",
+    "webkitTextSizeAdjust": "auto",
+    "webkitTextStroke": "",
+    "webkitTextStrokeColor": "rgb(255, 255, 255)",
+    "webkitTextStrokeWidth": "0px",
+    "webkitTransform": "none",
+    "webkitTransformOrigin": "54px 22px",
+    "webkitTransformOriginX": "",
+    "webkitTransformOriginY": "",
+    "webkitTransformOriginZ": "",
+    "webkitTransformStyle": "flat",
+    "webkitTransition": "all 0s ease 0s",
+    "webkitTransitionDelay": "0s",
+    "webkitTransitionDuration": "0s",
+    "webkitTransitionProperty": "all",
+    "webkitTransitionTimingFunction": "ease",
+    "webkitUserDrag": "auto",
+    "webkitUserModify": "read-only",
+    "webkitUserSelect": "none",
+    "webkitWritingMode": "horizontal-tb",
+    "whiteSpace": "pre",
+    "whiteSpaceCollapse": "preserve",
+    "widows": "2",
+    "width": "108px",
+    "willChange": "auto",
+    "wordBreak": "normal",
+    "wordSpacing": "0px",
+    "wordWrap": "normal",
+    "writingMode": "horizontal-tb",
+    "x": "0px",
+    "y": "0px",
+    "zIndex": "auto",
+    "zoom": "1"
 };
+// CSS对象
+CSS = {};
+dingvm.toolsFunc.defineProperty(CSS, "highlights", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "highlights_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(CSS, "Hz", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "Hz", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "Q", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "Q", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "ch", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "ch", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "cm", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "cm", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "cqb", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "cqb", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "cqh", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "cqh", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "cqi", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "cqi", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "cqmax", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "cqmax", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "cqmin", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "cqmin", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "cqw", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "cqw", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "deg", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "deg", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "dpcm", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "dpcm", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "dpi", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "dpi", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "dppx", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "dppx", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "em", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "em", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "escape", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "escape", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "ex", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "ex", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "fr", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "fr", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "grad", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "grad", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "in", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "in", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "kHz", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "kHz", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "mm", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "mm", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "ms", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "ms", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "number", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "number", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "pc", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "pc", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "percent", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "percent", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "pt", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "pt", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "px", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "px", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "rad", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "rad", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "registerProperty", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "registerProperty", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "rem", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "rem", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "s", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "s", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "supports", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "supports", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "turn", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "turn", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "vh", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "vh", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "vmax", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "vmax", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "vmin", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "vmin", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "vw", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "vw", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "cap", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "cap", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "rcap", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "rcap", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "dvb", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "dvb", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "dvh", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "dvh", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "dvi", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "dvi", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "dvmax", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "dvmax", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "dvmin", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "dvmin", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "dvw", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "dvw", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "lvb", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "lvb", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "lvh", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "lvh", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "lvi", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "lvi", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "lvmax", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "lvmax", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "lvmin", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "lvmin", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "lvw", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "lvw", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "svb", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "svb", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "svh", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "svh", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "svi", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "svi", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "svmax", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "svmax", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "svmin", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "svmin", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "svw", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "svw", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "vb", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "vb", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "vi", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "vi", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "ic", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "ic", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "lh", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "lh", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "rch", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "rch", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "rex", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "rex", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "ric", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "ric", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "rlh", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "rlh", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "x", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "x", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(CSS, "paintWorklet", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, CSS, "CSS", "paintWorklet_get", arguments)
+    },
+    set: undefined
+});
+;
 // window对象
 // 删除浏览器中不存在的对象
 delete global;
@@ -10391,30 +13759,37 @@ delete Buffer;
 delete buffer;
 delete VMError;
 delete process;
-delete Thread;
 delete SharedArrayBuffer;
 delete KNBCore;
 delete root;
-delete module;
-delete __filename;
-delete __dirname;
-delete Thread;
+delete globalThis['module'];
+delete globalThis['__filename'];
+delete globalThis['__dirname'];
+delete globalThis['Thread'];
 delete globalThis[Symbol.toStringTag];
 delete WindowProperties;
 
 
 frames = parent = top = self = window = globalThis;
+// frames = parent = top = self = window = {};
 
-
+// debugger
 if (vm2) {
     window.__proto__ = Window.prototype;
+    let hop = window.__proto__.__proto__.__proto__.__proto__.hasOwnProperty;
+    window.__proto__.__proto__.__proto__.__proto__.hasOwnProperty = function (attr) {
+        if (dingvm.memory.globalVar.window.filter_proto_attr.includes(attr)) {
+            return false
+        }
+        return hop.call(this, attr)
+    }
+    dingvm.toolsFunc.safeFunc(window.__proto__.__proto__.__proto__.__proto__.hasOwnProperty, 'hasOwnProperty')
 } else {
     Object.setPrototypeOf(window, Window.prototype);
 }
 //! Object.setPrototypeOf()函数在vm2环境里下设置window(全局对象)的__proto__失效
 
-//*--------------------------------------------------------------------------
-//todo 属性
+//*-------------------------------------------------------------------------- 全局属性
 dingvm.toolsFunc.defineProperty(window, "name", {
     configurable: true, enumerable: true,
     get: function () {
@@ -10462,9 +13837,9 @@ dingvm.toolsFunc.defineProperty(window, "frames", {
     get: function () {
         return dingvm.toolsFunc.dispatch(this, window, "window", "frames_get", arguments)
     },
-    set: function () {
-        return dingvm.toolsFunc.dispatch(this, window, "window", "frames_set", arguments)
-    }
+    // set: function () {
+    //     return dingvm.toolsFunc.dispatch(this, window, "window", "frames_set", arguments)
+    // }
 });
 dingvm.toolsFunc.defineProperty(window, "indexedDB", {
     configurable: true,
@@ -10633,92 +14008,104 @@ dingvm.toolsFunc.defineProperty(window, "webkitRequestFileSystem", {
     }
 });
 
-//*--------------------------------------------------------------------------
-//todo 方法
+//*-------------------------------------------------------------------------- 全局方法
 alert = function () {
+    debugger
 };
 dingvm.toolsFunc.safeFunc(alert, 'alert');
 
 scrollBy = function () {
+    debugger
 };
 dingvm.toolsFunc.safeFunc(scrollBy, 'scrollBy');
 
 scrollTo = function () {
+    debugger
 };
 dingvm.toolsFunc.safeFunc(scrollTo, 'scrollTo');
 
 PerformancePaintTiming = function PerformancePaintTiming() {
+    debugger
 };
 dingvm.toolsFunc.safeFunc(PerformancePaintTiming, 'PerformancePaintTiming');
 
 SVGGraphicsElement = function SVGGraphicsElement() {
+    debugger
 };
 dingvm.toolsFunc.safeFunc(SVGGraphicsElement, 'SVGGraphicsElement');
 
 CDATASection = function CDATASection() {
+    debugger
 };
 dingvm.toolsFunc.safeFunc(CDATASection, "CDATASection");
 
 Path2D = function Path2D() {
+    debugger
 };
 dingvm.toolsFunc.safeFunc(Path2D, "Path2D");
 
 MediaEncryptedEvent = function MediaEncryptedEvent() {
+    debugger
 };
 dingvm.toolsFunc.safeFunc(MediaEncryptedEvent, "MediaEncryptedEvent");
 
 ScreenOrientation = function ScreenOrientation() {
+    debugger
 };
 dingvm.toolsFunc.safeFunc(ScreenOrientation, "ScreenOrientation");
 
 SourceBuffer = function SourceBuffer() {
+    debugger
 };
 dingvm.toolsFunc.safeFunc(SourceBuffer, "SourceBuffer");
 
 SpeechSynthesisUtterance = function SpeechSynthesisUtterance() {
+    debugger
 };
 dingvm.toolsFunc.safeFunc(SpeechSynthesisUtterance, "SpeechSynthesisUtterance");
 
 HTMLFrameSetElement = function HTMLFrameSetElement() {
+    debugger
 };
 dingvm.toolsFunc.safeFunc(HTMLFrameSetElement, "HTMLFrameSetElement");
 
 DOMParser = function DOMParser() {
+    debugger
 };
 dingvm.toolsFunc.safeFunc(DOMParser, "DOMParser");
 
 webkitResolveLocalFileSystemURL = function webkitResolveLocalFileSystemURL() {
+    debugger
 };
 dingvm.toolsFunc.safeFunc(webkitResolveLocalFileSystemURL, 'webkitResolveLocalFileSystemURL');
 
 webkitSpeechGrammar = function () {
+    debugger
 };
 dingvm.toolsFunc.safeFunc(webkitSpeechGrammar, 'webkitSpeechGrammar');
 
-class Blob {
-    constructor() {
-        console.log('调用了 Blob')
+Blob = function Blob() {
+    if (!(this instanceof Blob)) {
+        dingvm.toolsFunc.throwError('TypeError', 'Failed to construct Blob: Please use the \'new\' operator, this DOM object constructor cannot be called as a function.')
     }
-}
+    console.log('调用了 Blob')
+};
+dingvm.toolsFunc.safeFunc(Blob, 'Blob');
 
-//*--------------------------------------------------------------------------
-
-function Image(width, height) {
+Image = function Image(width, height) {
+    if (!(this instanceof Image)) {
+        dingvm.toolsFunc.throwError('TypeError', 'Failed to construct Image: Please use the \'new\' operator, this DOM object constructor cannot be called as a function.')
+    }
     let img = document.createElement('img');
     img.width = width;
     img.height = height;
 
     return img
-}
-
+};
 dingvm.toolsFunc.safeFunc(Image, 'Image');
-dingvm.toolsFunc.defineProperty(window, "Image", {
-    enumerable: false,
-});
 
-//*--------------------------------------------------------------------------
-
-//* 常见属性值
+//*-------------------------------------------------------------------------- 常见属性值
+//#region
 window.length = 0;
 window.scrollX = 0;
 window.scrollY = 0;
@@ -10842,7 +14229,8 @@ window.onpopstate = null;
 window.onrejectionhandled = null;
 window.onstorage = null;
 window.onunhandledrejection = null;
-window.onunload = null;;
+window.onunload = null;
+//#endregion;
 // 全局变量初始化
 !function () {
 
@@ -10960,21 +14348,28 @@ window.onunload = null;;
 
 }();;
 // 需要代理的对象(先开始全局对象)
-localStorage = dingvm.toolsFunc.proxy(localStorage, "localStorage");
-sessionStorage = dingvm.toolsFunc.proxy(sessionStorage, "sessionStorage");
-location = dingvm.toolsFunc.proxy(location, "location");
-document = dingvm.toolsFunc.proxy(document, "document");
-navigator = dingvm.toolsFunc.proxy(navigator, "navigator");
-history = dingvm.toolsFunc.proxy(history, "history");
-screen = dingvm.toolsFunc.proxy(screen, "screen");
-parent = top = self = window = dingvm.toolsFunc.proxy(window, "window"); // me too
-// globalThis = window 或 global = window 会出现大量信息，但好像并没有用，都是内置属性和函数的信息 下面伪造this也一样
+// localStorage = dingvm.toolsFunc.proxy(localStorage, "localStorage");
+// sessionStorage = dingvm.toolsFunc.proxy(sessionStorage, "sessionStorage");
+// location = dingvm.toolsFunc.proxy(location, "location");
+// document = dingvm.toolsFunc.proxy(document, "document");
+// navigator = dingvm.toolsFunc.proxy(navigator, "navigator");
+// history = dingvm.toolsFunc.proxy(history, "history");
+// screen = dingvm.toolsFunc.proxy(screen, "screen");
+frames = parent = top = self = window = dingvm.toolsFunc.proxy(window, "window");
 
-//todo 伪造this  注意不能用自执行函数(function定义的)执行被加密的代码，不然this不是被代理的window
+
+//todo 伪造this  注意不能用自执行函数执行被加密的代码，不然this不是被代理的window
 // window.code = function() { 被加密的代码 } window.code()
 
 //todo 如果代理失效，单独使用下面这个方法
-// window = {}
+// for (let name in global) {
+//     if (name === 'global' || name === 'window') {
+//         continue;
+//     }
+//     window[name] = global[name]
+//     delete global[name]
+//     console.log(name)
+// }
 // window = dingvm.toolsFunc.proxy(window,"window");
 // Object.setPrototypeOf(globalThis,window);
 // global删不删看情况
@@ -11111,10 +14506,6 @@ delete globalThis['Database'];
 delete globalThis['SQLTransaction'];;
 debugger
 
-divs = document.getElementsByTagName('div')
-a = divs.namedItem('2')
-b = divs.namedItem('22')
-console.log(a)
-console.log(b)
+
 
 debugger;

@@ -13,7 +13,7 @@ const {get_document, get_env_code, get_tools_code, get_file} = require('./readfi
 //> --------------------------------------------------------------------------------------------
 
 // 名称
-const name = "test";
+const name = "test"; //! 改1
 // 日志
 fs.writeFileSync(`./webs/${name}/log.txt`, "");
 // 加载网页html并解析
@@ -39,8 +39,8 @@ let codeTest = function () {
     // 删除不是全局的构造器
     let delete_NoGlobal_constructor = get_file("tools", "delete_NoGlobal_constructor")
     // 网页关键代码
-    const debugCode = get_file(`webs/${name}`, "web-js");
-    // 异步执行的代码
+    const debugCode = get_file(`webs/${name}`, "web-js"); //! 改2
+    //! 异步执行的代码
     // const asyncCode = user.getCode(name, "async");
     const asyncCode = "";
     // 整合代码

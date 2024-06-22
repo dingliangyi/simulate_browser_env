@@ -2,6 +2,13 @@ dingvm.envFunc.ElementProto_id_get = function ElementProto_id_get() {
     return this.jquery.attr('id')
 };
 dingvm.envFunc.ElementProto_id_set = function ElementProto_id_set(value) {
+    if (this instanceof HTMLFormElement) {
+        // debugger
+        dingvm.memory.globalVar.window.filter_proto_attr.push(value)
+        window.__proto__.__proto__[value] = this
+        //! 注意在vm2运行时,不能过window.hasOwnProperty()检测
+    }
+
     this.jquery.attr('id', value)
 };
 dingvm.envFunc.ElementProto_innerHTML_get = function ElementProto_innerHTML_get() {

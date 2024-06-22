@@ -1,6 +1,6 @@
 // HTMLAllCollection对象
 HTMLAllCollection = function HTMLAllCollection() {
-    return dingvm.toolsFunc.throwError("TypeError", "Illegal constructor")
+    return dingvm.toolsFunc.throwError("TypeError", "Illegal constructor");
 };
 dingvm.toolsFunc.safe_constructor_prototype(HTMLAllCollection, "HTMLAllCollection");
 dingvm.toolsFunc.defineProperty(HTMLAllCollection.prototype, "length", {

@@ -1,6 +1,5 @@
-//!属性
+//>----------------------------------------------------------------------------------- 属性
 dingvm.envFunc.CanvasRenderingContext2DProto_fillStyle_get = function () {
-    // let style = dingvm.toolsFunc.getProtoArr('fillStyle')
     let style = this.getedContext.fillStyle
     if (!style) {
         return "#000000"
@@ -10,10 +9,9 @@ dingvm.envFunc.CanvasRenderingContext2DProto_fillStyle_get = function () {
 };
 dingvm.envFunc.CanvasRenderingContext2DProto_fillStyle_set = function (value) {
     this.getedContext.fillStyle = value
-    // dingvm.toolsFunc.setProtoArr('fillStyle', value)
 };
 dingvm.envFunc.CanvasRenderingContext2DProto_direction_get = function () {
-    let result = dingvm.toolsFunc.getProtoArr('direction')
+    let result = dingvm.toolsFunc.getProtoArr.call(this, 'direction')
     if (!result) {
         return "ltr"
     }
@@ -24,7 +22,7 @@ dingvm.envFunc.CanvasRenderingContext2DProto_direction_set = function (value) {
     dingvm.toolsFunc.setProtoArr('direction', value)
 };
 dingvm.envFunc.CanvasRenderingContext2DProto_filter_get = function () {
-    let result = dingvm.toolsFunc.getProtoArr('filter')
+    let result = dingvm.toolsFunc.getProtoArr.call(this, 'filter')
     if (!result) {
         return "none"
     }
@@ -35,7 +33,7 @@ dingvm.envFunc.CanvasRenderingContext2DProto_filter_set = function (value) {
     dingvm.toolsFunc.setProtoArr('filter', value)
 };
 dingvm.envFunc.CanvasRenderingContext2DProto_font_get = function () {
-    let result = dingvm.toolsFunc.getProtoArr('font')
+    let result = dingvm.toolsFunc.getProtoArr.call(this, 'font')
     if (!result) {
         return "10px sans-serif"
     }
@@ -47,7 +45,7 @@ dingvm.envFunc.CanvasRenderingContext2DProto_font_set = function (value) {
     dingvm.toolsFunc.setProtoArr('font', value)
 };
 dingvm.envFunc.CanvasRenderingContext2DProto_fontKerning_get = function () {
-    let result = dingvm.toolsFunc.getProtoArr('fontKerning')
+    let result = dingvm.toolsFunc.getProtoArr.call(this, 'fontKerning')
     if (!result) {
         return "auto"
     }
@@ -58,7 +56,7 @@ dingvm.envFunc.CanvasRenderingContext2DProto_fontKerning_set = function (value) 
     dingvm.toolsFunc.setProtoArr('fontKerning', value)
 };
 dingvm.envFunc.CanvasRenderingContext2DProto_fontStretch_get = function () {
-    let result = dingvm.toolsFunc.getProtoArr('fontStretch')
+    let result = dingvm.toolsFunc.getProtoArr.call(this, 'fontStretch')
     if (!result) {
         return "normal"
     }
@@ -69,7 +67,7 @@ dingvm.envFunc.CanvasRenderingContext2DProto_fontStretch_set = function (value) 
     dingvm.toolsFunc.setProtoArr('fontStretch', value)
 };
 dingvm.envFunc.CanvasRenderingContext2DProto_fontVariantCaps_get = function () {
-    let result = dingvm.toolsFunc.getProtoArr('fontVariantCaps')
+    let result = dingvm.toolsFunc.getProtoArr.call(this, 'fontVariantCaps')
     if (!result) {
         return "normal"
     }
@@ -80,7 +78,7 @@ dingvm.envFunc.CanvasRenderingContext2DProto_fontVariantCaps_set = function (val
     dingvm.toolsFunc.setProtoArr('fontVariantCaps', value)
 };
 dingvm.envFunc.CanvasRenderingContext2DProto_globalAlpha_get = function () {
-    let result = dingvm.toolsFunc.getProtoArr('globalAlpha')
+    let result = dingvm.toolsFunc.getProtoArr.call(this, 'globalAlpha')
     if (!result) {
         return 1
     }
@@ -91,7 +89,6 @@ dingvm.envFunc.CanvasRenderingContext2DProto_globalAlpha_set = function (value) 
     dingvm.toolsFunc.setProtoArr('globalAlpha', value)
 };
 dingvm.envFunc.CanvasRenderingContext2DProto_globalCompositeOperation_get = function () {
-    // let result = dingvm.toolsFunc.getProtoArr('globalCompositeOperation')
     let result = this.getedContext.globalCompositeOperation
     if (!result) {
         return "source-over"
@@ -100,11 +97,10 @@ dingvm.envFunc.CanvasRenderingContext2DProto_globalCompositeOperation_get = func
     return result
 };
 dingvm.envFunc.CanvasRenderingContext2DProto_globalCompositeOperation_set = function (value) {
-    // dingvm.toolsFunc.setProtoArr('globalCompositeOperation', value)
     this.getedContext.globalCompositeOperation = value
 };
 dingvm.envFunc.CanvasRenderingContext2DProto_imageSmoothingEnabled_get = function () {
-    let result = dingvm.toolsFunc.getProtoArr('imageSmoothingEnabled')
+    let result = dingvm.toolsFunc.getProtoArr.call(this, 'imageSmoothingEnabled')
     if (!result) {
         return true
     }
@@ -115,7 +111,7 @@ dingvm.envFunc.CanvasRenderingContext2DProto_imageSmoothingEnabled_set = functio
     dingvm.toolsFunc.setProtoArr('imageSmoothingEnabled', value)
 };
 dingvm.envFunc.CanvasRenderingContext2DProto_imageSmoothingQuality_get = function () {
-    let result = dingvm.toolsFunc.getProtoArr('imageSmoothingQuality')
+    let result = dingvm.toolsFunc.getProtoArr.call(this, 'imageSmoothingQuality')
     if (!result) {
         return "low"
     }
@@ -126,7 +122,7 @@ dingvm.envFunc.CanvasRenderingContext2DProto_imageSmoothingQuality_set = functio
     dingvm.toolsFunc.setProtoArr('imageSmoothingQuality', value)
 };
 dingvm.envFunc.CanvasRenderingContext2DProto_letterSpacing_get = function () {
-    let result = dingvm.toolsFunc.getProtoArr('letterSpacing')
+    let result = dingvm.toolsFunc.getProtoArr.call(this, 'letterSpacing')
     if (!result) {
         return "0px"
     }
@@ -137,7 +133,7 @@ dingvm.envFunc.CanvasRenderingContext2DProto_letterSpacing_set = function (value
     dingvm.toolsFunc.setProtoArr('letterSpacing', value)
 };
 dingvm.envFunc.CanvasRenderingContext2DProto_lineCap_get = function () {
-    let result = dingvm.toolsFunc.getProtoArr('lineCap')
+    let result = dingvm.toolsFunc.getProtoArr.call(this, 'lineCap')
     if (!result) {
         return "butt"
     }
@@ -148,7 +144,7 @@ dingvm.envFunc.CanvasRenderingContext2DProto_lineCap_set = function (value) {
     dingvm.toolsFunc.setProtoArr('lineCap', value)
 };
 dingvm.envFunc.CanvasRenderingContext2DProto_lineDashOffset_get = function () {
-    let result = dingvm.toolsFunc.getProtoArr('lineDashOffset')
+    let result = dingvm.toolsFunc.getProtoArr.call(this, 'lineDashOffset')
     if (!result) {
         return 0
     }
@@ -159,7 +155,7 @@ dingvm.envFunc.CanvasRenderingContext2DProto_lineDashOffset_set = function (valu
     dingvm.toolsFunc.setProtoArr('lineDashOffset', value)
 };
 dingvm.envFunc.CanvasRenderingContext2DProto_lineJoin_get = function () {
-    let result = dingvm.toolsFunc.getProtoArr('lineJoin')
+    let result = dingvm.toolsFunc.getProtoArr.call(this, 'lineJoin')
     if (!result) {
         return "miter"
     }
@@ -170,7 +166,7 @@ dingvm.envFunc.CanvasRenderingContext2DProto_lineJoin_set = function (value) {
     dingvm.toolsFunc.setProtoArr('lineJoin', value)
 };
 dingvm.envFunc.CanvasRenderingContext2DProto_lineWidth_get = function () {
-    let result = dingvm.toolsFunc.getProtoArr('lineWidth')
+    let result = dingvm.toolsFunc.getProtoArr.call(this, 'lineWidth')
     if (!result) {
         return 1
     }
@@ -181,7 +177,7 @@ dingvm.envFunc.CanvasRenderingContext2DProto_lineWidth_set = function (value) {
     dingvm.toolsFunc.setProtoArr('lineWidth', value)
 };
 dingvm.envFunc.CanvasRenderingContext2DProto_miterLimit_get = function () {
-    let result = dingvm.toolsFunc.getProtoArr('miterLimit')
+    let result = dingvm.toolsFunc.getProtoArr.call(this, 'miterLimit')
     if (!result) {
         return 10
     }
@@ -192,7 +188,7 @@ dingvm.envFunc.CanvasRenderingContext2DProto_miterLimit_set = function (value) {
     dingvm.toolsFunc.setProtoArr('miterLimit', value)
 };
 dingvm.envFunc.CanvasRenderingContext2DProto_shadowBlur_get = function () {
-    let result = dingvm.toolsFunc.getProtoArr('shadowBlur')
+    let result = dingvm.toolsFunc.getProtoArr.call(this, 'shadowBlur')
     if (!result) {
         return 0
     }
@@ -203,7 +199,7 @@ dingvm.envFunc.CanvasRenderingContext2DProto_shadowBlur_set = function (value) {
     dingvm.toolsFunc.setProtoArr('shadowBlur', value)
 };
 dingvm.envFunc.CanvasRenderingContext2DProto_shadowColor_get = function () {
-    let result = dingvm.toolsFunc.getProtoArr('shadowColor')
+    let result = dingvm.toolsFunc.getProtoArr.call(this, 'shadowColor')
     if (!result) {
         return "rgba(0, 0, 0, 0)"
     }
@@ -214,7 +210,7 @@ dingvm.envFunc.CanvasRenderingContext2DProto_shadowColor_set = function (value) 
     dingvm.toolsFunc.setProtoArr('shadowColor', value)
 };
 dingvm.envFunc.CanvasRenderingContext2DProto_shadowOffsetX_get = function () {
-    let result = dingvm.toolsFunc.getProtoArr('shadowOffsetX')
+    let result = dingvm.toolsFunc.getProtoArr.call(this, 'shadowOffsetX')
     if (!result) {
         return 0
     }
@@ -225,7 +221,7 @@ dingvm.envFunc.CanvasRenderingContext2DProto_shadowOffsetX_set = function (value
     dingvm.toolsFunc.setProtoArr('shadowOffsetX', value)
 };
 dingvm.envFunc.CanvasRenderingContext2DProto_shadowOffsetY_get = function () {
-    let result = dingvm.toolsFunc.getProtoArr('shadowOffsetY')
+    let result = dingvm.toolsFunc.getProtoArr.call(this, 'shadowOffsetY')
     if (!result) {
         return 0
     }
@@ -236,7 +232,7 @@ dingvm.envFunc.CanvasRenderingContext2DProto_shadowOffsetY_set = function (value
     dingvm.toolsFunc.setProtoArr('shadowOffsetY', value)
 };
 dingvm.envFunc.CanvasRenderingContext2DProto_strokeStyle_get = function () {
-    let result = dingvm.toolsFunc.getProtoArr('strokeStyle')
+    let result = dingvm.toolsFunc.getProtoArr.call(this, 'strokeStyle')
     if (!result) {
         return "#000000"
     }
@@ -247,7 +243,7 @@ dingvm.envFunc.CanvasRenderingContext2DProto_strokeStyle_set = function (value) 
     dingvm.toolsFunc.setProtoArr('strokeStyle', value)
 };
 dingvm.envFunc.CanvasRenderingContext2DProto_textAlign_get = function () {
-    let result = dingvm.toolsFunc.getProtoArr('textAlign')
+    let result = dingvm.toolsFunc.getProtoArr.call(this, 'textAlign')
     if (!result) {
         return "start"
     }
@@ -258,7 +254,7 @@ dingvm.envFunc.CanvasRenderingContext2DProto_textAlign_set = function (value) {
     dingvm.toolsFunc.setProtoArr('textAlign', value)
 };
 dingvm.envFunc.CanvasRenderingContext2DProto_textBaseline_get = function () {
-    let result = dingvm.toolsFunc.getProtoArr('textBaseline')
+    let result = dingvm.toolsFunc.getProtoArr.call(this, 'textBaseline')
     if (!result) {
         return "alphabetic"
     }
@@ -270,7 +266,7 @@ dingvm.envFunc.CanvasRenderingContext2DProto_textBaseline_set = function (value)
     dingvm.toolsFunc.setProtoArr('textBaseline', value)
 };
 dingvm.envFunc.CanvasRenderingContext2DProto_textRendering_get = function () {
-    let result = dingvm.toolsFunc.getProtoArr('textRendering')
+    let result = dingvm.toolsFunc.getProtoArr.call(this, 'textRendering')
     if (!result) {
         return "auto"
     }
@@ -281,7 +277,7 @@ dingvm.envFunc.CanvasRenderingContext2DProto_textRendering_set = function (value
     dingvm.toolsFunc.setProtoArr('textRendering', value)
 };
 dingvm.envFunc.CanvasRenderingContext2DProto_wordSpacing_get = function () {
-    let result = dingvm.toolsFunc.getProtoArr('wordSpacing')
+    let result = dingvm.toolsFunc.getProtoArr.call(this, 'wordSpacing')
     if (!result) {
         return "0px"
     }
@@ -292,7 +288,7 @@ dingvm.envFunc.CanvasRenderingContext2DProto_wordSpacing_set = function (value) 
     dingvm.toolsFunc.setProtoArr('wordSpacing', value)
 };
 
-//! 方法
+//>----------------------------------------------------------------------------------- 方法
 dingvm.envFunc.CanvasRenderingContext2DProto_fillRect = function () {
     // arguments[2] = arguments[2] + _.random(15)
     // arguments[3] = arguments[3] + _.random(15)

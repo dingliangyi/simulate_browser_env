@@ -6,34 +6,20 @@ let promise = dingvm.memory.asyncEvent.promise;
 // let listeners = undefined;
 let listeners = dingvm.memory.asyncEvent.listener;
 
-
 function clone_prototype(obj) {
     let __proto__ = Object.getPrototypeOf(obj);
     return Object.assign(Object.create(__proto__), obj);
 }
 
-//!微任务
+//> ---------------------------------------------------------------- 微任务
+
 if (promise !== undefined) {
     for (let i = 0; i < promise.length; i++) {
         promise[i]();
     }
 }
 
-//! 异步任务
-
-if (setTimeoutEvent !== undefined) {
-    for (let i = 0; i < setTimeoutEvent.length; i++) {
-        let event = setTimeoutEvent[i];
-        if (event === undefined) {
-            continue;
-        }
-        let func = event.callback;
-        let args = event.args;
-        dingvm.node_func.setTimeout(func, ...args);
-    }
-}
-
-//! ----------------------------------------------------------------
+//> ---------------------------------------------------------------- 异步任务
 
 debugger
 if (listeners !== undefined) {
@@ -190,5 +176,17 @@ if (listeners !== undefined) {
 
             }
         }
+    }
+}
+
+if (setTimeoutEvent !== undefined) {
+    for (let i = 0; i < setTimeoutEvent.length; i++) {
+        let event = setTimeoutEvent[i];
+        if (event === undefined) {
+            continue;
+        }
+        let func = event.callback;
+        let args = event.args;
+        dingvm.node_func.setTimeout(func, ...args);
     }
 }

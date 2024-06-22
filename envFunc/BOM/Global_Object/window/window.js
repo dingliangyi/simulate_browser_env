@@ -28,10 +28,12 @@ dingvm.envFunc.window_openDatabase = function (name, version, displayName, estim
     return undefined
 };
 dingvm.envFunc.window_getComputedStyle = function (element) {
-    return element.style
+    console.log(`调用了 window_getComputedStyle 元素：${element.jquery.toString()}`)
+    Object.setPrototypeOf(style2, CSSStyleDeclaration.prototype)
+    return Object.assign(style2, element.style)
 };
 dingvm.envFunc.window_innerWidth_get = function () {
-    let innerWidth = dingvm.toolsFunc.getProtoArr('innerWidth')
+    let innerWidth = dingvm.toolsFunc.getProtoArr.call(window, 'innerWidth')
     if (innerWidth === undefined) {
         return dingvm.memory.globalVar.width;
     }
@@ -42,7 +44,7 @@ dingvm.envFunc.window_innerWidth_set = function () {
     dingvm.toolsFunc.setProtoArr('innerWidth')
 };
 dingvm.envFunc.window_innerHeight_get = function () {
-    let innerHeight = dingvm.toolsFunc.getProtoArr('innerHeight')
+    let innerHeight = dingvm.toolsFunc.getProtoArr.call(window, 'innerHeight')
     if (innerHeight === undefined) {
         return dingvm.memory.globalVar.height;
     }
@@ -53,7 +55,7 @@ dingvm.envFunc.window_innerHeight_set = function () {
     dingvm.toolsFunc.setProtoArr('innerHeight')
 };
 dingvm.envFunc.window_outerWidth_get = function () {
-    let outerWidth = dingvm.toolsFunc.getProtoArr('outerWidth')
+    let outerWidth = dingvm.toolsFunc.getProtoArr.call(window, 'outerWidth')
     if (outerWidth === undefined) {
         return dingvm.memory.globalVar.width;
     }
@@ -64,7 +66,7 @@ dingvm.envFunc.window_outerWidth_set = function () {
     dingvm.toolsFunc.setProtoArr('outerWidth')
 };
 dingvm.envFunc.window_outerHeight_get = function () {
-    let outerHeight = dingvm.toolsFunc.getProtoArr('outerHeight')
+    let outerHeight = dingvm.toolsFunc.getProtoArr.call(window, 'outerHeight')
     if (outerHeight === undefined) {
         return dingvm.memory.globalVar.height;
     }
@@ -105,7 +107,7 @@ dingvm.envFunc.window_visualViewport_get = function () {
     return obj
 };
 dingvm.envFunc.window_external_get = function () {
-    let obj = dingvm.toolsFunc.getProtoArr('external')
+    let obj = dingvm.toolsFunc.getProtoArr.call(window, 'external')
     if (obj) {
         return obj
     }
@@ -134,9 +136,9 @@ dingvm.envFunc.window_fetch = function () {
 dingvm.envFunc.window_frames_get = function () {
     return window
 };
-dingvm.envFunc.window_frames_set = function () {
-    debugger
-};
+// dingvm.envFunc.window_frames_set = function () {
+//     debugger
+// };
 dingvm.envFunc.window_origin_get = function () {
     return location.origin
 };

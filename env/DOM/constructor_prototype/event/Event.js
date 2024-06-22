@@ -1,7 +1,7 @@
 // Event对象
 Event = function Event(type) {
     if (arguments.length === 0)
-        plugin.throwError(TypeError, "Failed to construct 'Event': 1 argument required, but only 0 present.");
+        return dingvm.toolsFunc.throwError("TypeError", "Failed to construct 'Event': 1 argument required, but only 0 present.");
     this.type = type;
 
     Object.defineProperty(this, 'isTrusted', {

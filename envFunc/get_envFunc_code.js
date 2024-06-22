@@ -5,38 +5,40 @@ const files_envFunc = [
     "/BOM/EventTarget_prototype.js",
     "/BOM/Storage_prototype.js",
 
-    //! BOM全局对象
+    //> BOM全局对象
     "/BOM/Global_Object/location.js",
     "/BOM/Global_Object/History_prototype.js",
-
+    //> screen
     "/BOM/Global_Object/Screen/Screen_prototype.js",
     "/BOM/Global_Object/Screen/ScreenOrientation_prototype.js",
-
+    //> window
     "/BOM/Global_Object/window/window.js",
     "/BOM/Global_Object/window/chrome.js",
     "/BOM/Global_Object/window/MediaQueryList_prototype.js",
 
-
-    //! navigator
+    //> navigator
     "/BOM/navigator/navigator plugin.js",
     "/BOM/navigator/Navigator_prototype.js",
     "/BOM/navigator/BatteryManager_prototype.js",
 
-    //! xhr
-    // "/BOM/xhr/XMLHttpRequestEventTarget_prototype.js",
-    // "/BOM/xhr/XMLHttpRequest_prototype.js",
+    //> 数据通信 API
+    //> xhr
+    // "/BOM/communication/xhr/XMLHttpRequestEventTarget_prototype.js",
+    // "/BOM/communication/xhr/XMLHttpRequest_prototype.js",
+    //> RTC
+    // "/BOM/communication/RTC/RTCPeerConnection_prototype.js",
 
-    //! performance
+    //> performance
     // "/BOM/performance/Performance_prototype.js",
     // "/BOM/performance/PerformanceNavigation_prototype.js",
 
-    //! DB
+    //> DB
     // "/BOM/DB/DataBase_prototype.js", // todo 浏览器已经不支持
     // "/BOM/DB/IDBFactory_prototype.js",
     // "/BOM/DB/IDBOpenDBRequest_prototype.js",
     // "/BOM/DB/IDBRequest_prototype.js",
 
-    //! audio
+    //> audio
     // "/BOM/audio/OfflineAudioContext_prototype.js",
     // "/BOM/audio/BaseAudioContext_prototype.js",
     // "/BOM/audio/AudioParam_prototype.js",
@@ -47,28 +49,27 @@ const files_envFunc = [
     // "/BOM/audio/AudioBuffer_prototype.js",
     // "/BOM/audio/OfflineAudioCompletionEvent_prototype.js",
 
-    //! 其他
-    // "/BOM/NetworkInformation_prototype.js",
-    // "/BOM/EventCounts_prototype.js",
-    // "/BOM/VisualViewport_prototype.js",
+    //> 监视 API
+    // "/BOM/observer/MutationObserver_prototype.js",
 
-    //! 基本
+    //> base
     "/DOM/document.js",
     "/DOM/Document_prototype.js",
     "/DOM/Element_prototype.js",
     "/DOM/Node_prototype.js",
 
-    //! event
+    //> event
     "/DOM/Event.js",
     // "/DOM/MouseEvent_prototype.js",
 
-    //! css
-    "/DOM/CSSStyleDeclaration_prototype.js",
+    //> css
+    "/DOM/css/CSSStyleDeclaration_prototype.js",
+    "/DOM/css/CSS.js",
 
-    //! tag
-    "/DOM/tag/HTMLElement_prototype.js",
+    //> tag
+    // "/DOM/tag/HTMLElement_prototype.js",
     // "/DOM/tag/HTMLIFrameElement_prototype.js",
-    // "/DOM/tag/HTMLImageElement_prototype.js",
+    "/DOM/tag/HTMLImageElement_prototype.js",
     // "/DOM/tag/HTMLAnchorElement_prototype.js",
     // "/DOM/tag/HTMLCanvasElement_prototype.js",
     "/DOM/tag/HTMLDivElement_prototype.js",
@@ -77,14 +78,18 @@ const files_envFunc = [
     // "/DOM/tag/HTMLFormElement_prototype.js",
     // "/DOM/tag/HTMLAllCollection_prototype.js",
     // "/DOM/tag/HTMLScriptElement_prototype.js",
-    "/DOM/tag/HTMLCollection_prototype.js"
+    "/DOM/tag/HTMLCollection_prototype.js",
+    "/DOM/tag/HTMLStyleElement_prototype.js",
 
-    //! other
-    // "/DOM/other/XPathExpression_prototype.js",
-
-    //! canvas
+    //> canvas
     // "/DOM/canvas/WebGLRenderingContext_prototype.js",
     // "/DOM/canvas/CanvasRenderingContext2D_prototype.js",
+
+    //> 其他
+    // "/DOM/other/XPathExpression_prototype.js",
+    // "/BOM/NetworkInformation_prototype.js",
+    // "/BOM/EventCounts_prototype.js",
+    // "/BOM/VisualViewport_prototype.js",
 ]
 
 const filePath = __dirname

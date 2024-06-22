@@ -6,30 +6,37 @@ delete Buffer;
 delete buffer;
 delete VMError;
 delete process;
-delete Thread;
 delete SharedArrayBuffer;
 delete KNBCore;
 delete root;
-delete module;
-delete __filename;
-delete __dirname;
-delete Thread;
+delete globalThis['module'];
+delete globalThis['__filename'];
+delete globalThis['__dirname'];
+delete globalThis['Thread'];
 delete globalThis[Symbol.toStringTag];
 delete WindowProperties;
 
 
 frames = parent = top = self = window = globalThis;
+// frames = parent = top = self = window = {};
 
-
+// debugger
 if (vm2) {
     window.__proto__ = Window.prototype;
+    let hop = window.__proto__.__proto__.__proto__.__proto__.hasOwnProperty;
+    window.__proto__.__proto__.__proto__.__proto__.hasOwnProperty = function (attr) {
+        if (dingvm.memory.globalVar.window.filter_proto_attr.includes(attr)) {
+            return false
+        }
+        return hop.call(this, attr)
+    }
+    dingvm.toolsFunc.safeFunc(window.__proto__.__proto__.__proto__.__proto__.hasOwnProperty, 'hasOwnProperty')
 } else {
     Object.setPrototypeOf(window, Window.prototype);
 }
 //! Object.setPrototypeOf()函数在vm2环境里下设置window(全局对象)的__proto__失效
 
-//*--------------------------------------------------------------------------
-//todo 属性
+//*-------------------------------------------------------------------------- 全局属性
 dingvm.toolsFunc.defineProperty(window, "name", {
     configurable: true, enumerable: true,
     get: function () {
@@ -77,9 +84,9 @@ dingvm.toolsFunc.defineProperty(window, "frames", {
     get: function () {
         return dingvm.toolsFunc.dispatch(this, window, "window", "frames_get", arguments)
     },
-    set: function () {
-        return dingvm.toolsFunc.dispatch(this, window, "window", "frames_set", arguments)
-    }
+    // set: function () {
+    //     return dingvm.toolsFunc.dispatch(this, window, "window", "frames_set", arguments)
+    // }
 });
 dingvm.toolsFunc.defineProperty(window, "indexedDB", {
     configurable: true,
@@ -248,92 +255,104 @@ dingvm.toolsFunc.defineProperty(window, "webkitRequestFileSystem", {
     }
 });
 
-//*--------------------------------------------------------------------------
-//todo 方法
+//*-------------------------------------------------------------------------- 全局方法
 alert = function () {
+    debugger
 };
 dingvm.toolsFunc.safeFunc(alert, 'alert');
 
 scrollBy = function () {
+    debugger
 };
 dingvm.toolsFunc.safeFunc(scrollBy, 'scrollBy');
 
 scrollTo = function () {
+    debugger
 };
 dingvm.toolsFunc.safeFunc(scrollTo, 'scrollTo');
 
 PerformancePaintTiming = function PerformancePaintTiming() {
+    debugger
 };
 dingvm.toolsFunc.safeFunc(PerformancePaintTiming, 'PerformancePaintTiming');
 
 SVGGraphicsElement = function SVGGraphicsElement() {
+    debugger
 };
 dingvm.toolsFunc.safeFunc(SVGGraphicsElement, 'SVGGraphicsElement');
 
 CDATASection = function CDATASection() {
+    debugger
 };
 dingvm.toolsFunc.safeFunc(CDATASection, "CDATASection");
 
 Path2D = function Path2D() {
+    debugger
 };
 dingvm.toolsFunc.safeFunc(Path2D, "Path2D");
 
 MediaEncryptedEvent = function MediaEncryptedEvent() {
+    debugger
 };
 dingvm.toolsFunc.safeFunc(MediaEncryptedEvent, "MediaEncryptedEvent");
 
 ScreenOrientation = function ScreenOrientation() {
+    debugger
 };
 dingvm.toolsFunc.safeFunc(ScreenOrientation, "ScreenOrientation");
 
 SourceBuffer = function SourceBuffer() {
+    debugger
 };
 dingvm.toolsFunc.safeFunc(SourceBuffer, "SourceBuffer");
 
 SpeechSynthesisUtterance = function SpeechSynthesisUtterance() {
+    debugger
 };
 dingvm.toolsFunc.safeFunc(SpeechSynthesisUtterance, "SpeechSynthesisUtterance");
 
 HTMLFrameSetElement = function HTMLFrameSetElement() {
+    debugger
 };
 dingvm.toolsFunc.safeFunc(HTMLFrameSetElement, "HTMLFrameSetElement");
 
 DOMParser = function DOMParser() {
+    debugger
 };
 dingvm.toolsFunc.safeFunc(DOMParser, "DOMParser");
 
 webkitResolveLocalFileSystemURL = function webkitResolveLocalFileSystemURL() {
+    debugger
 };
 dingvm.toolsFunc.safeFunc(webkitResolveLocalFileSystemURL, 'webkitResolveLocalFileSystemURL');
 
 webkitSpeechGrammar = function () {
+    debugger
 };
 dingvm.toolsFunc.safeFunc(webkitSpeechGrammar, 'webkitSpeechGrammar');
 
-class Blob {
-    constructor() {
-        console.log('调用了 Blob')
+Blob = function Blob() {
+    if (!(this instanceof Blob)) {
+        dingvm.toolsFunc.throwError('TypeError', 'Failed to construct Blob: Please use the \'new\' operator, this DOM object constructor cannot be called as a function.')
     }
-}
+    console.log('调用了 Blob')
+};
+dingvm.toolsFunc.safeFunc(Blob, 'Blob');
 
-//*--------------------------------------------------------------------------
-
-function Image(width, height) {
+Image = function Image(width, height) {
+    if (!(this instanceof Image)) {
+        dingvm.toolsFunc.throwError('TypeError', 'Failed to construct Image: Please use the \'new\' operator, this DOM object constructor cannot be called as a function.')
+    }
     let img = document.createElement('img');
     img.width = width;
     img.height = height;
 
     return img
-}
-
+};
 dingvm.toolsFunc.safeFunc(Image, 'Image');
-dingvm.toolsFunc.defineProperty(window, "Image", {
-    enumerable: false,
-});
 
-//*--------------------------------------------------------------------------
-
-//* 常见属性值
+//*-------------------------------------------------------------------------- 常见属性值
+//#region
 window.length = 0;
 window.scrollX = 0;
 window.scrollY = 0;
@@ -458,3 +477,4 @@ window.onrejectionhandled = null;
 window.onstorage = null;
 window.onunhandledrejection = null;
 window.onunload = null;
+//#endregion

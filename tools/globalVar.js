@@ -28,7 +28,7 @@
     dingvm.toolsFunc.createPlugin({
         "description": "Portable Document Format",
         "filename": "internal-pdf-viewer",
-        "name": "Chrome PDF Plugin",
+        "name": "Microsoft Edge PDF Plugin",
         "mimeTypes": [{
             "type": 'application/x-google-chrome-pdf',
             "suffixes": 'pdf',
@@ -38,25 +38,11 @@
     dingvm.toolsFunc.createPlugin({
         "description": "",
         "filename": "mhjfbmdgcfjbbpaeojofohoefgiehjai",
-        "name": "Chrome PDF Viewer",
+        "name": "Microsoft Edge PDF Viewer",
         "mimeTypes": [{
             "type": 'application/pdf',
             "suffixes": 'pdf',
             "description": ''
-        }]
-    });
-    dingvm.toolsFunc.createPlugin({
-        "description": "",
-        "filename": "internal-nacl-plugin",
-        "name": "Native Client",
-        "mimeTypes": [{
-            "type": 'application/x-nacl',
-            "suffixes": '',
-            "description": 'Native Client Executable'
-        }, {
-            "type": 'application/x-pnacl',
-            "suffixes": '',
-            "description": 'Portable Native Client Executable'
         }]
     });
 
@@ -112,5 +98,60 @@
         const time_func = timer[key];
         dingvm.toolsFunc.safeFunc(time_func, time_func.name)
     }
+
+    //* 堆栈检测
+    Error.prepareStackTrace = function (error, structuredStackTrace) {
+        // 过滤掉node相关的堆栈, 以及调试的文件名堆栈
+        let stack_base = (function () {
+            let _stack_info = structuredStackTrace.map(_stack => {
+                let _func_name = _stack.getFunctionName();
+                if (_func_name) {
+                    if (_func_name.includes('Module') || _func_name.includes('executeUserEntryPoint') || _func_name.includes('runInContext')) {
+                        // console.log(_func_name)
+                        return
+                    }
+                    if (['run', 'sandBox3', 'base.apply'].includes(_func_name)) {
+                        // console.log(_func_name)
+                        return
+                    }
+                    if (['Location', 'History'].includes(_func_name)) {
+                        // console.log(_func_name)
+                        return
+                    }
+                }
+
+                let _file_name = _stack.getFileName();
+                if (_file_name) {
+                    if (_file_name.includes('run_main_module') || _file_name.indexOf('sandBox3') === -1
+                        || _file_name.indexOf('modules/cjs/loader') === -1
+                    ) {
+                        // console.log(_file_name)
+                        return
+                    }
+                }
+                return _stack;
+            });
+            return _stack_info.filter(_stack => {
+                return _stack
+            });
+        }());
+
+        return error.toString() + '\n' + stack_base.map(_stack => {
+            // console.log(_stack + "")
+            let _fileName = _stack.getFileName() === null ? '<anonymous>' : _stack.getFileName();
+            let _functionName = _stack.getFunctionName() ? _stack.getFunctionName() : '';
+            let _typeName = _stack.getTypeName();
+            _typeName = _typeName === 'Window' ? '' : `${_typeName}.`;
+
+            if (_functionName) {
+                if (_fileName === '<anonymous>') {
+                    return `    at ${_typeName}${_functionName} (${_fileName})`;
+                }
+                return `    at ${_typeName}${_functionName} (${_fileName}:${_stack.getLineNumber()}:${_stack.getColumnNumber()})`;
+            }
+            return `    at ${_fileName}:${_stack.getLineNumber()}:${_stack.getColumnNumber()}`;
+
+        }).join('\n');
+    };
 
 }();

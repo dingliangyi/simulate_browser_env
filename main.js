@@ -8,6 +8,7 @@ const getContextWebgl = require('gl')
 // const cheerio = require('cheerio')
 const {indexedDB: indexedDB_} = require("fake-indexeddb");
 
+const {get_document_all} = require('../node_plugin/build/Release/document_all.node')
 const {read_html_code} = require('./env/get_html_code')
 const {get_document, get_env_code, get_tools_code, get_file} = require('./readfile')
 //> --------------------------------------------------------------------------------------------
@@ -46,7 +47,7 @@ let codeTest = function () {
     // 整合代码
     return `${configCode}${toolsCode}${logCode}${envCode}${globalVarCode}${proxyObjCode}${userVarCode}${delete_NoGlobal_constructor}${debugCode}${asyncCode}`;
 }()
-fs.writeFileSync(`./webs/${name}/output.js`, codeTest);
+fs.writeFileSync(`./webs/${name}/output_not_run.js`, codeTest);
 
 //> --------------------------------------------------------------------------------------------
 //* 套娃iframeEnv
@@ -87,7 +88,8 @@ const vm = new VM({
         clearTimeout: clearTimeout,
         _,
         CryptoJS,
-        ldObj,
+        // ldObj,
+        get_document_all,
         createCanvas,
         getContextWebgl,
         indexedDB_,
@@ -123,7 +125,7 @@ const vm = new VM({
     // 替换vm2_if
     code = code.replace('dingvm.config.vm2_if = true;', 'dingvm.config.vm2_if = false;')
 
-    fs.writeFileSync(`./webs/${name}/output2.js`, code);
+    fs.writeFileSync(`./webs/${name}/output_run.js`, code);
 }()
 
 

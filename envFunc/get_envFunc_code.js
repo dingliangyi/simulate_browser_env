@@ -67,7 +67,7 @@ const files_envFunc = [
     "/DOM/css/CSS.js",
 
     //> tag
-    // "/DOM/tag/HTMLElement_prototype.js",
+    "/DOM/tag/HTMLElement_prototype.js",
     // "/DOM/tag/HTMLIFrameElement_prototype.js",
     "/DOM/tag/HTMLImageElement_prototype.js",
     // "/DOM/tag/HTMLAnchorElement_prototype.js",
@@ -75,7 +75,7 @@ const files_envFunc = [
     "/DOM/tag/HTMLDivElement_prototype.js",
     // "/DOM/tag/HTMLInputElement_prototype.js",
     // "/DOM/tag/HTMLMetaElement_prototype.js",
-    // "/DOM/tag/HTMLFormElement_prototype.js",
+    "/DOM/tag/HTMLFormElement_prototype.js",
     // "/DOM/tag/HTMLAllCollection_prototype.js",
     // "/DOM/tag/HTMLScriptElement_prototype.js",
     "/DOM/tag/HTMLCollection_prototype.js",

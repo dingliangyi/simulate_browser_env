@@ -290,6 +290,46 @@ dingvm.envFunc.DocumentProto_querySelector = function (selector) {
 
     return result
 };
+dingvm.envFunc.DocumentProto_querySelectorAll = function (selector) {
+    if (selector === '*') {
+        return dingvm.memory.globalVar.all
+    }
+    let temp = $(selector)
+    let result = []
+    for (let i = 0; i < temp.length; i++) {
+        let temp2 = {}
+        switch (temp[0].name) {
+            case 'div':
+                Object.setPrototypeOf(temp2, HTMLDivElement.prototype)
+                break
+            case 'input':
+                Object.setPrototypeOf(temp2, HTMLInputElement.prototype)
+                break
+            case 'h2':
+                Object.setPrototypeOf(temp2, HTMLHeadingElement.prototype)
+                break
+            case 'iframe':
+                Object.setPrototypeOf(temp2, HTMLIFrameElement.prototype)
+                break
+            case 'span':
+                Object.setPrototypeOf(temp2, HTMLSpanElement.prototype)
+                break
+            case 'meta':
+                Object.setPrototypeOf(temp2, HTMLMetaElement.prototype)
+                break
+            case 'i':
+                Object.setPrototypeOf(temp2, HTMLIFrameElement.prototype)
+                break
+            default:
+                console.log(`DocumentProto_getElementsByTagName_${tagName}未实现`);
+                debugger;
+        }
+        temp2.jquery = $(temp[i])
+        result.push(temp2)
+    }
+    Object.setPrototypeOf(result, HTMLCollection.prototype)
+    return result
+};
 dingvm.envFunc.DocumentProto_referrer_get = function () {
     return ''
 };

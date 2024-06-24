@@ -41,17 +41,6 @@
     //* 固定文档加载状态 "interactive" "complete" "loading"
     dingvm.memory.globalVar.document.readyState = 'interactive';
 
-    debugger
-    //! 最后执行
-    //* 执行网页js 1.链接js文件 2.嵌入js代码
-    // let scripts = $('script');
-    // for (let i = 0; i < scripts.length; i++) {
-    //     document.script_position = $(scripts[i]);
-    //     let script_code = $(scripts[i]).html();
-    //     eval(script_code);
-    //     delete document['script_position'];
-    // }
-
     //* 初始化宽度、高度
     dingvm.memory.globalVar.width = dingvm.toolsFunc.random(480, 800);
     dingvm.memory.globalVar.height = dingvm.toolsFunc.random(720, 1278);
@@ -70,59 +59,15 @@
     // Object.freeze(window)
     Object.freeze(navigator);
 
-    //* 堆栈检测
-    Error.prepareStackTrace = function (error, structuredStackTrace) {
-        // 过滤掉node相关的堆栈, 以及调试的文件名堆栈
-        let stack_base = (function () {
-            let _stack_info = structuredStackTrace.map(_stack => {
-                let _func_name = _stack.getFunctionName();
-                if (_func_name) {
-                    if (_func_name.includes('Module') || _func_name.includes('executeUserEntryPoint') || _func_name.includes('runInContext')) {
-                        // console.log(_func_name)
-                        return
-                    }
-                    if (['run', 'sandBox3', 'base.apply'].includes(_func_name)) {
-                        // console.log(_func_name)
-                        return
-                    }
-                    if (['Location', 'History'].includes(_func_name)) {
-                        // console.log(_func_name)
-                        return
-                    }
-                }
-
-                let _file_name = _stack.getFileName();
-                if (_file_name) {
-                    if (_file_name.includes('run_main_module') || _file_name.indexOf('sandBox3') === -1
-                        || _file_name.indexOf('modules/cjs/loader') === -1
-                    ) {
-                        // console.log(_file_name)
-                        return
-                    }
-                }
-                return _stack;
-            });
-            return _stack_info.filter(_stack => {
-                return _stack
-            });
-        }());
-
-        return error.toString() + '\n' + stack_base.map(_stack => {
-            // console.log(_stack + "")
-            let _fileName = _stack.getFileName() === null ? '<anonymous>' : _stack.getFileName();
-            let _functionName = _stack.getFunctionName() ? _stack.getFunctionName() : '';
-            let _typeName = _stack.getTypeName();
-            _typeName = _typeName === 'Window' ? '' : `${_typeName}.`;
-
-            if (_functionName) {
-                if (_fileName === '<anonymous>') {
-                    return `    at ${_typeName}${_functionName} (${_fileName})`;
-                }
-                return `    at ${_typeName}${_functionName} (${_fileName}:${_stack.getLineNumber()}:${_stack.getColumnNumber()})`;
-            }
-            return `    at ${_fileName}:${_stack.getLineNumber()}:${_stack.getColumnNumber()}`;
-
-        }).join('\n');
-    };
+    debugger
+    //! 最后执行
+    //* 执行网页js 1.链接js文件 2.嵌入js代码
+    // let scripts = $('script');
+    // for (let i = 0; i < scripts.length; i++) {
+    //     document.script_position = $(scripts[i]);
+    //     let script_code = $(scripts[i]).html();
+    //     eval(script_code);
+    //     delete document['script_position'];
+    // }
 
 }();

@@ -4,14 +4,15 @@ const files_constructor_prototype = [
     "/constructor_prototype/EventTarget.js",
 
     //> BOM全局对象
+    //> window
     "/constructor_prototype/Global_Object/window/WindowProperties.js",
     "/constructor_prototype/Global_Object/window/Window.js",
     "/constructor_prototype/Global_Object/window/MediaQueryList.js",
-
+    //> location navigator history
     "/constructor_prototype/Global_Object/Location.js",
     "/constructor_prototype/Global_Object/Navigator.js",
     "/constructor_prototype/Global_Object/History.js",
-
+    //> screen
     "/constructor_prototype/Global_Object/Screen/ScreenOrientation.js",
     "/constructor_prototype/Global_Object/Screen/Screen.js",
 
@@ -21,9 +22,8 @@ const files_constructor_prototype = [
     "/constructor_prototype/plugin/PluginArray.js",
     "/constructor_prototype/plugin/MimeType.js",
     "/constructor_prototype/plugin/MimeTypeArray.js",
-
     //> 电池
-    // "/constructor_prototype/BatteryManager.js",
+    "/constructor_prototype/BatteryManager.js",
 
     //> 离线与存储 API 原型
     "/constructor_prototype/Storage.js",

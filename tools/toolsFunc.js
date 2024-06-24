@@ -1,6 +1,7 @@
 // 插件功能相关
 
 !function () {
+    //* plugin
     !function () {
         //* 创建pluginArray
         dingvm.toolsFunc.createPluginArray = function () {
@@ -99,13 +100,27 @@
             dingvm.toolsFunc.setProtoArr.call(plugin, "length", mimeTypes.length);
             for (let i = 0; i < mimeTypes.length; i++) {
                 let mimeType = dingvm.toolsFunc.createMimeType(mimeTypes[i], plugin);
-                plugin[i] = mimeType;
+                Object.defineProperty(plugin, i, {
+                    value: mimeType,
+                    configurable: true,
+                    enumerable: true,
+                    writable: false
+                });
                 Object.defineProperty(plugin, mimeTypes[i].type, {
                     value: mimeType,
+                    configurable: true,
                     writable: false,
-                    enumerable: false,
-                    configurable: true
+                    enumerable: false
                 });
+                plugin = new Proxy(plugin, {
+                    get: function (target, prop, receiver) {
+                        let result = Reflect.get(target, prop, receiver);
+                        if (['description', 'filename', 'length', 'name'].includes(prop.toString())) {
+                            return result;
+                        }
+                        return dingvm.toolsFunc.createMimeType(mimeTypes[i], plugin);
+                    }
+                })
             }
             dingvm.toolsFunc.addPlugin(plugin);
             return plugin;

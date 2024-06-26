@@ -52,7 +52,7 @@ dingvm.envFunc.ElementProto_children_get = function ElementProto_children_get() 
         let temp = $(children[i])
         let tagName = temp[0].name
         let temp2 = {}
-        switch (tagName) {
+        switch (tagName.toLowerCase()) {
             case 'div':
                 Object.setPrototypeOf(temp2, HTMLDivElement.prototype)
                 break
@@ -87,7 +87,7 @@ dingvm.envFunc.ElementProto_getElementsByTagName = function (tagName) {
     let result = []
     for (let i = 0; i < temp.length; i++) {
         let temp2 = {}
-        switch (tagName) {
+        switch (tagName.toLowerCase()) {
             case 'div':
                 Object.setPrototypeOf(temp2, HTMLDivElement.prototype)
                 break
@@ -133,7 +133,7 @@ dingvm.envFunc.ElementProto_querySelector = function () {
     }
 
     let result = {}
-    switch (temp[0].name) {
+    switch (temp[0].name.toLowerCase()) {
         case "div":
             Object.setPrototypeOf(result, HTMLDivElement.prototype)
             break
@@ -167,7 +167,7 @@ dingvm.envFunc.ElementProto_querySelectorAll = function (selector) {
     let result = []
     for (let i = 0; i < temp.length; i++) {
         let temp2 = {}
-        switch (temp[0].name) {
+        switch (temp[0].name.toLowerCase()) {
             case 'div':
                 Object.setPrototypeOf(temp2, HTMLDivElement.prototype)
                 break
@@ -190,7 +190,7 @@ dingvm.envFunc.ElementProto_querySelectorAll = function (selector) {
                 Object.setPrototypeOf(temp2, HTMLIFrameElement.prototype)
                 break
             default:
-                console.log(`DocumentProto_getElementsByTagName_${tagName}未实现`);
+                console.log(`ElementProto_getElementsByTagName_${tagName}未实现`);
                 debugger;
         }
         temp2.jquery = $(temp[i])
@@ -204,4 +204,84 @@ dingvm.envFunc.ElementProto_tagName_get = function () {
 };
 dingvm.envFunc.ElementProto_getAttributeNames = function () {
     return []
+};
+dingvm.envFunc.ElementProto_getElementsByClassName = function (className) {
+    let elements = $(`.${className}`);
+    let result = [];
+    for (let i = 0; i < elements.length; i++) {
+        let element = {};
+        switch (elements[i].name.toLowerCase()) {
+            case 'div':
+                Object.setPrototypeOf(element, HTMLDivElement.prototype);
+                break;
+            case 'input':
+                Object.setPrototypeOf(element, HTMLInputElement.prototype);
+                break;
+            case 'span':
+                Object.setPrototypeOf(element, HTMLSpanElement.prototype);
+                break;
+            case 'iframe':
+                Object.setPrototypeOf(element, HTMLIFrameElement.prototype);
+                break;
+            default:
+                console.log(`ElementProto_getElementsByClassName_${elements[i].name}未实现`);
+                debugger;
+        }
+
+        Object.defineProperty(element, 'jquery', {
+            configurable: true,
+            enumerable: false,
+            writable: true,
+            value: $(elements[i])
+        });
+        result.push(element);
+    }
+
+    Object.setPrototypeOf(result, HTMLCollection.prototype);
+    return result;
+};
+dingvm.envFunc.ElementProto_className_get = function () {
+    return dingvm.toolsFunc.get_protoOwnAttr.call(this, 'className')
+};
+dingvm.envFunc.ElementProto_attributes_get = function () {
+    debugger
+    let attrs = this.jquery[0].attribs;
+    let result = {};
+    let length = 0;
+    for (let attr in attrs) {
+        let attribute1 = assign(attr);
+        dingvm.toolsFunc.setProtoArr.call(attribute1, 'name', attr);
+        result[attr] = attribute1;
+
+        let attribute2 = assign(attr);
+        dingvm.toolsFunc.setProtoArr.call(attribute2, 'name', length);
+        result[length] = attribute2;
+        length++;
+    }
+    dingvm.toolsFunc.setProtoArr.call(result, 'length', length);
+    Object.setPrototypeOf(result, NamedNodeMap.prototype);
+
+    function assign(attr) {
+        let attribute = {};
+        Object.setPrototypeOf(attribute, Attr.prototype);
+        dingvm.toolsFunc.setProtoArr.call(attribute, 'value', attrs[attr]);
+        dingvm.toolsFunc.setProtoArr.call(attribute, 'nodeValue', attrs[attr]);
+        dingvm.toolsFunc.setProtoArr.call(attribute, 'textContent', attrs[attr]);
+        dingvm.toolsFunc.setProtoArr.call(attribute, 'ownerElement', this)
+        return attribute;
+    }
+
+    return result;
+};
+dingvm.envFunc.ElementProto_scrollTop_get = function () {
+    return 0
+};
+dingvm.envFunc.ElementProto_scrollLeft_get = function () {
+    return 0
+};
+dingvm.envFunc.ElementProto_clientTop_get = function () {
+    return 0
+};
+dingvm.envFunc.ElementProto_clientLeft_get = function () {
+    return 0
 };

@@ -57,7 +57,8 @@
                 args: arg
             })
 
-            const timer_obj = dingvm.node_func.setTimeout(callback, ...arg);
+            // const timer_obj = dingvm.node_func.setTimeout(callback, ...arg);
+            const timer_obj = {};
             const timer_id = parseInt(Object.keys(dingvm.timer_map).sort((a, b) => {
                 return a - b;
             }).pop()) + 1;
@@ -73,7 +74,8 @@
                 args: arg
             })
 
-            const timer_obj = dingvm.node_func.setInterval(callback, ...arg);
+            // const timer_obj = dingvm.node_func.setInterval(callback, ...arg);
+            const timer_obj = {};
             const timer_id = parseInt(Object.keys(dingvm.timer_map).sort((a, b) => {
                 return a - b;
             }).pop()) + 1;
@@ -82,11 +84,11 @@
         },
         clearTimeout(timer_id) {
             const timer_obj = dingvm.timer_map[timer_id];
-            return dingvm.node_func.clearTimeout(timer_obj)
+            // return dingvm.node_func.clearTimeout(timer_obj)
         },
         clearInterval(timer_id) {
             const timer_obj = dingvm.timer_map[timer_id];
-            return dingvm.node_func.clearInterval(timer_obj)
+            // return dingvm.node_func.clearInterval(timer_obj)
         }
     };
     setTimeout = timer.setTimeout;

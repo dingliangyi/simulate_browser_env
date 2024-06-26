@@ -17,7 +17,10 @@ dingvm.envFunc.HTMLStyleElementProto_type_set = function (value) {
     return dingvm.toolsFunc.setProtoArr.call(this, 'type', value)
 };
 dingvm.envFunc.HTMLStyleElementProto_sheet_get = function () {
-    
+    let obj = {}
+    Object.setPrototypeOf(obj, CSSStyleSheet.prototype)
+
+    return obj
 };
 dingvm.envFunc.HTMLStyleElementProto_blocking_get = function () {
     debugger

@@ -8,20 +8,22 @@ const files_constructor_prototype = [
     "/constructor_prototype/Global_Object/window/WindowProperties.js",
     "/constructor_prototype/Global_Object/window/Window.js",
     "/constructor_prototype/Global_Object/window/MediaQueryList.js",
-    //> location navigator history
+    //> location history
     "/constructor_prototype/Global_Object/Location.js",
-    "/constructor_prototype/Global_Object/Navigator.js",
     "/constructor_prototype/Global_Object/History.js",
     //> screen
     "/constructor_prototype/Global_Object/Screen/ScreenOrientation.js",
     "/constructor_prototype/Global_Object/Screen/Screen.js",
 
-
+    //> navigator
+    "/constructor_prototype/Global_Object/navigator/Navigator.js",
+    "/constructor_prototype/Global_Object/navigator/NavigatorUAData.js",
+    "/constructor_prototype/Global_Object/navigator/XRSystem.js",
     //> plugin
-    "/constructor_prototype/plugin/Plugin.js",
-    "/constructor_prototype/plugin/PluginArray.js",
-    "/constructor_prototype/plugin/MimeType.js",
-    "/constructor_prototype/plugin/MimeTypeArray.js",
+    "/constructor_prototype/Global_Object/navigator/plugin/Plugin.js",
+    "/constructor_prototype/Global_Object/navigator/plugin/PluginArray.js",
+    "/constructor_prototype/Global_Object/navigator/plugin/MimeType.js",
+    "/constructor_prototype/Global_Object/navigator/plugin/MimeTypeArray.js",
     //> 电池
     "/constructor_prototype/BatteryManager.js",
 

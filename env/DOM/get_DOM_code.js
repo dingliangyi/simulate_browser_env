@@ -72,6 +72,9 @@ const files_constructor_prototype = [
 
     //> other
     // "/constructor_prototype/other/XPathExpression.js"
+    "/constructor_prototype/other/NamedNodeMap.js",
+    "/constructor_prototype/other/Attr.js",
+    "/constructor_prototype/other/DOMImplementation.js",
 ]
 
 const files_instance = [

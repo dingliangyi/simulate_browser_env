@@ -13,3 +13,6 @@ dingvm.envFunc.EventProto_target_set = function EventProto_target_set(value) {
 dingvm.envFunc.EventProto_timeStamp_get = function Event_timeStamp_get() {
     return dingvm.toolsFunc.getProtoArr.call(this, "timeStamp");
 };
+dingvm.envFunc.EventProto_srcElement_get = function () {
+    debugger
+};

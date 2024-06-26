@@ -10,3 +10,6 @@ Object.getOwnPropertyDescriptors(HTMLDivElement)
 //todo 在window原型链上设置的属性，vm2运行时 无法过window.hasOwnProperty()检测
 //todo 已解决form标签id、默认属性问题。
 //todo (未解决) 如果针对性检测在原型链上设置属性，再检测，需要代理所有原型set，把设置的属性添加在 dingvm.memory.globalVar.window.filter_proto_attr
+
+// todo Element remove removeAttribute getBoundingClientRect
+// todo Node insertBefore lastChild cloneNode

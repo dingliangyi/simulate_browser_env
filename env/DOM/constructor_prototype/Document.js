@@ -11,7 +11,7 @@ dingvm.toolsFunc.defineProperty(Document.prototype, "implementation", {
     },
     set: undefined
 });
-dingvm.toolsFunc.defineProperty(Document.prototype, "URL",{
+dingvm.toolsFunc.defineProperty(Document.prototype, "URL", {
     configurable: true,
     enumerable: true,
     get: function () {

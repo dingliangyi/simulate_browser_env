@@ -17,9 +17,11 @@ const files_envFunc = [
     "/BOM/Global_Object/window/MediaQueryList_prototype.js",
 
     //> navigator
-    "/BOM/navigator/navigator plugin.js",
-    "/BOM/navigator/Navigator_prototype.js",
-    "/BOM/navigator/BatteryManager_prototype.js",
+    "/BOM/Global_Object/navigator/navigator plugin.js",
+    "/BOM/Global_Object/navigator/Navigator_prototype.js",
+    "/BOM/Global_Object/navigator/BatteryManager_prototype.js",
+    "/BOM/Global_Object/navigator/NavigatorUAData_prototype.js",
+    "/BOM/Global_Object/navigator/XRSystem_prototype.js",
 
     //> 数据通信 API
     //> xhr
@@ -59,8 +61,8 @@ const files_envFunc = [
     "/DOM/Node_prototype.js",
 
     //> event
-    "/DOM/Event.js",
-    // "/DOM/MouseEvent_prototype.js",
+    "/DOM/event/Event.js",
+    "/DOM/event/MouseEvent_prototype.js",
 
     //> css
     "/DOM/css/CSSStyleDeclaration_prototype.js",
@@ -80,6 +82,8 @@ const files_envFunc = [
     // "/DOM/tag/HTMLScriptElement_prototype.js",
     "/DOM/tag/HTMLCollection_prototype.js",
     "/DOM/tag/HTMLStyleElement_prototype.js",
+    "/DOM/tag/CharacterData_prototype.js",
+    "/DOM/tag/Text_prototype.js",
 
     //> canvas
     // "/DOM/canvas/WebGLRenderingContext_prototype.js",
@@ -87,6 +91,9 @@ const files_envFunc = [
 
     //> 其他
     // "/DOM/other/XPathExpression_prototype.js",
+    "/DOM/other/Attr_prototype.js",
+    "/DOM/other/NamedNodeMap_prototype.js",
+
     // "/BOM/NetworkInformation_prototype.js",
     // "/BOM/EventCounts_prototype.js",
     // "/BOM/VisualViewport_prototype.js",

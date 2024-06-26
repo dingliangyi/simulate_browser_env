@@ -147,3 +147,15 @@ dingvm.envFunc.NavigatorProto_sendBeacon = function (url, data) {
 dingvm.envFunc.NavigatorProto_javaEnabled = function () {
     return false
 }
+dingvm.envFunc.NavigatorProto_userAgentData_get = function () {
+    let obj = {}
+    Object.setPrototypeOf(obj, NavigatorUAData.prototype)
+
+    return obj
+}
+dingvm.envFunc.NavigatorProto_xr_get = function () {
+    let obj = {}
+    Object.setPrototypeOf(obj, XRSystem.prototype)
+
+    return obj
+}

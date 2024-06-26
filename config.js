@@ -57,6 +57,7 @@ dingvm.memory.globalVar.performance = {};
 dingvm.memory.globalVar.navigator = {};
 dingvm.memory.globalVar.window = {};
 dingvm.memory.globalVar.window.filter_proto_attr = ['TEMPORARY', 'PERSISTENT', 'addEventListener', 'dispatchEvent', 'removeEventListener', 'hasOwnProperty'];
+dingvm.memory.globalVar.BatteryManager = {};
 
 dingvm.memory.asyncEvent = {};// 异步事件
 

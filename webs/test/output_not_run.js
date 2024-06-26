@@ -57,6 +57,7 @@ dingvm.memory.globalVar.performance = {};
 dingvm.memory.globalVar.navigator = {};
 dingvm.memory.globalVar.window = {};
 dingvm.memory.globalVar.window.filter_proto_attr = ['TEMPORARY', 'PERSISTENT', 'addEventListener', 'dispatchEvent', 'removeEventListener', 'hasOwnProperty'];
+dingvm.memory.globalVar.BatteryManager = {};
 
 dingvm.memory.asyncEvent = {};// 异步事件
 
@@ -1712,15 +1713,27 @@ dingvm.envFunc.NavigatorProto_sendBeacon = function (url, data) {
 };
 dingvm.envFunc.NavigatorProto_javaEnabled = function () {
     return false
+}
+dingvm.envFunc.NavigatorProto_userAgentData_get = function () {
+    let obj = {}
+    Object.setPrototypeOf(obj, NavigatorUAData.prototype)
+
+    return obj
+}
+dingvm.envFunc.NavigatorProto_xr_get = function () {
+    let obj = {}
+    Object.setPrototypeOf(obj, XRSystem.prototype)
+
+    return obj
 };
 dingvm.envFunc.BatteryManagerProto_charging_get = function () {
-    return true
+    return dingvm.memory.globalVar.BatteryManager.charging
 };
 dingvm.envFunc.BatteryManagerProto_chargingTime_get = function () {
-    return Infinity
+    return  dingvm.memory.globalVar.BatteryManager.chargingTime
 };
 dingvm.envFunc.BatteryManagerProto_level_get = function () {
-    return 0.92
+    return dingvm.memory.globalVar.BatteryManager.level
 };;
 dingvm.envFunc.document_location_get = function () {
     return location
@@ -1737,7 +1750,7 @@ dingvm.envFunc.DocumentProto_getElementById = function DocumentProto_getElementB
     let result = null;
     if (temp !== undefined) {
         result = {}
-        switch (temp[0].name) {
+        switch (temp[0].name.toLowerCase()) {
             case "div":
                 Object.setPrototypeOf(result, HTMLDivElement.prototype)
                 break
@@ -1766,7 +1779,7 @@ dingvm.envFunc.DocumentProto_getElementById = function DocumentProto_getElementB
 dingvm.envFunc.DocumentProto_createElement = function createElement(tagName) {
     // debugger;
     let result = {}
-    switch (tagName) {
+    switch (tagName.toLowerCase()) {
         case 'div':
             result.jquery = get_document('<div></div>')('div')
             Object.setPrototypeOf(result, HTMLDivElement.prototype)
@@ -1845,7 +1858,7 @@ dingvm.envFunc.DocumentProto_getElementsByTagName = function DocumentProto_getEl
     let result = []
     for (let i = 0; i < temp.length; i++) {
         let temp2 = {}
-        switch (tagName) {
+        switch (tagName.toLowerCase()) {
             case 'div':
                 Object.setPrototypeOf(temp2, HTMLDivElement.prototype)
                 break
@@ -1972,10 +1985,19 @@ dingvm.envFunc.DocumentProto_compatMode_get = function () {
 };
 dingvm.envFunc.DocumentProto_createEvent = function (type) {
     let event = {}
-    if (type === 'TouchEvent') {
-        dingvm.toolsFunc.throwError('DOMException', "Failed to execute 'createEvent' on 'Document': The provided event type ('TouchEvent') is invalid.")
-    } else {
-        Object.setPrototypeOf(event, Event.prototype)
+    switch (type.toUpperCase()) {
+        case 'MOUSEEVENT':
+            Object.setPrototypeOf(event, MouseEvent.prototype)
+            break
+        case 'TOUCHEVENT':
+            dingvm.toolsFunc.throwError('DOMException', "Failed to execute 'createEvent' on 'Document': The provided event type ('TouchEvent') is invalid.")
+            break
+        case "EVENT":
+            Object.setPrototypeOf(event, Event.prototype)
+            break
+        default:
+            console.log(`DocumentProto_createEvent_${type}未实现`);
+            debugger
     }
 
     return event
@@ -1988,7 +2010,7 @@ dingvm.envFunc.DocumentProto_querySelector = function (selector) {
     }
 
     let result = {}
-    switch (temp[0].name) {
+    switch (temp[0].name.toLowerCase()) {
         case "div":
             Object.setPrototypeOf(result, HTMLDivElement.prototype)
             break
@@ -2003,6 +2025,9 @@ dingvm.envFunc.DocumentProto_querySelector = function (selector) {
             break
         case 'script':
             Object.setPrototypeOf(result, HTMLScriptElement.prototype)
+            break
+        case 'form':
+            Object.setPrototypeOf(result, HTMLFormElement.prototype)
             break
         default:
             console.log(`DocumentProto_querySelector_${temp[0].name}未实现`);
@@ -2025,7 +2050,7 @@ dingvm.envFunc.DocumentProto_querySelectorAll = function (selector) {
     let result = []
     for (let i = 0; i < temp.length; i++) {
         let temp2 = {}
-        switch (temp[0].name) {
+        switch (temp[0].name.toLowerCase()) {
             case 'div':
                 Object.setPrototypeOf(temp2, HTMLDivElement.prototype)
                 break
@@ -2114,7 +2139,7 @@ dingvm.envFunc.DocumentProto_getElementsByName = function () {
     let result = []
     for (let i = 0; i < temp.length; i++) {
         let temp2 = {}
-        switch (temp[i].name) {
+        switch (temp[i].name.toLowerCase()) {
             case "div":
                 Object.setPrototypeOf(temp2, HTMLDivElement.prototype)
                 break
@@ -2175,7 +2200,90 @@ dingvm.envFunc.DocumentProto_onmousemove_get = function () {
 };
 dingvm.envFunc.DocumentProto_onselectionchange_get = function () {
     return null
-};;
+};
+dingvm.envFunc.DocumentProto_forms_get = function () {
+    const forms = $('form');
+    const documentForms = {};
+    let length = 0;
+    forms.each((i, form) => {
+        const formName = $(form).attr('name');
+        const id = $(form).attr('id');
+        if (formName) {
+            documentForms[formName] = $(form);
+            documentForms[length] = $(form);
+        }
+        if (id) {
+            documentForms[id] = $(form);
+        }
+        length++;
+    });
+    Object.setPrototypeOf(documentForms, HTMLCollection.prototype);
+    dingvm.toolsFunc.setProtoArr.call(documentForms, 'length', length);
+    return documentForms;
+};
+dingvm.envFunc.DocumentProto_getElementsByClassName = function (className) {
+    let elements = $(`.${className}`);
+    let result = [];
+    for (let i = 0; i < elements.length; i++) {
+        let element = {};
+        switch (elements[i].name.toLowerCase()) {
+            case 'div':
+                Object.setPrototypeOf(element, HTMLDivElement.prototype);
+                break;
+            case 'input':
+                Object.setPrototypeOf(element, HTMLInputElement.prototype);
+                break;
+            case 'span':
+                Object.setPrototypeOf(element, HTMLSpanElement.prototype);
+                break;
+            case 'iframe':
+                Object.setPrototypeOf(element, HTMLIFrameElement.prototype);
+                break;
+            default:
+                console.log(`DocumentProto_getElementsByClassName_${elements[i].name}未实现`);
+                debugger;
+        }
+
+        Object.defineProperty(element, 'jquery', {
+            configurable: true,
+            enumerable: false,
+            writable: true,
+            value: $(elements[i])
+        });
+        result.push(element);
+    }
+
+    Object.setPrototypeOf(result, HTMLCollection.prototype);
+    return result;
+};
+dingvm.envFunc.DocumentProto_createTextNode = function (text) {
+    let textNode = {};
+    Object.setPrototypeOf(textNode, Text.prototype);
+    dingvm.toolsFunc.setProtoArr.call(textNode, 'nodeValue', text);
+    return textNode;
+};
+dingvm.envFunc.DocumentProto_lastModified_get = function () {
+    let date = new Date();
+    let month = date.getMonth() + 1
+    month = month > 11 ? month : '0' + month
+    let day = date.getDate()
+    let year = date.getFullYear()
+    let hours = date.getHours()
+    let minutes = date.getMinutes()
+    let seconds = date.getSeconds()
+    return `${month}/${day}/${year} ${hours}->${minutes}->${seconds}`
+};
+dingvm.envFunc.DocumentProto_implementation_get = function () {
+    let obj = {};
+    Object.setPrototypeOf(obj, DOMImplementation.prototype);
+    return obj;
+};
+dingvm.envFunc.DocumentProto_scrollingElement_get = function () {
+    let obj = {};
+    obj.jquery = get_document('<html></html>')('html');
+    Object.setPrototypeOf(obj, HTMLElement.prototype);
+    return obj;
+};
 dingvm.envFunc.ElementProto_id_get = function ElementProto_id_get() {
     return this.jquery.attr('id')
 };
@@ -2230,7 +2338,7 @@ dingvm.envFunc.ElementProto_children_get = function ElementProto_children_get() 
         let temp = $(children[i])
         let tagName = temp[0].name
         let temp2 = {}
-        switch (tagName) {
+        switch (tagName.toLowerCase()) {
             case 'div':
                 Object.setPrototypeOf(temp2, HTMLDivElement.prototype)
                 break
@@ -2265,7 +2373,7 @@ dingvm.envFunc.ElementProto_getElementsByTagName = function (tagName) {
     let result = []
     for (let i = 0; i < temp.length; i++) {
         let temp2 = {}
-        switch (tagName) {
+        switch (tagName.toLowerCase()) {
             case 'div':
                 Object.setPrototypeOf(temp2, HTMLDivElement.prototype)
                 break
@@ -2311,7 +2419,7 @@ dingvm.envFunc.ElementProto_querySelector = function () {
     }
 
     let result = {}
-    switch (temp[0].name) {
+    switch (temp[0].name.toLowerCase()) {
         case "div":
             Object.setPrototypeOf(result, HTMLDivElement.prototype)
             break
@@ -2345,7 +2453,7 @@ dingvm.envFunc.ElementProto_querySelectorAll = function (selector) {
     let result = []
     for (let i = 0; i < temp.length; i++) {
         let temp2 = {}
-        switch (temp[0].name) {
+        switch (temp[0].name.toLowerCase()) {
             case 'div':
                 Object.setPrototypeOf(temp2, HTMLDivElement.prototype)
                 break
@@ -2368,7 +2476,7 @@ dingvm.envFunc.ElementProto_querySelectorAll = function (selector) {
                 Object.setPrototypeOf(temp2, HTMLIFrameElement.prototype)
                 break
             default:
-                console.log(`DocumentProto_getElementsByTagName_${tagName}未实现`);
+                console.log(`ElementProto_getElementsByTagName_${tagName}未实现`);
                 debugger;
         }
         temp2.jquery = $(temp[i])
@@ -2382,6 +2490,86 @@ dingvm.envFunc.ElementProto_tagName_get = function () {
 };
 dingvm.envFunc.ElementProto_getAttributeNames = function () {
     return []
+};
+dingvm.envFunc.ElementProto_getElementsByClassName = function (className) {
+    let elements = $(`.${className}`);
+    let result = [];
+    for (let i = 0; i < elements.length; i++) {
+        let element = {};
+        switch (elements[i].name.toLowerCase()) {
+            case 'div':
+                Object.setPrototypeOf(element, HTMLDivElement.prototype);
+                break;
+            case 'input':
+                Object.setPrototypeOf(element, HTMLInputElement.prototype);
+                break;
+            case 'span':
+                Object.setPrototypeOf(element, HTMLSpanElement.prototype);
+                break;
+            case 'iframe':
+                Object.setPrototypeOf(element, HTMLIFrameElement.prototype);
+                break;
+            default:
+                console.log(`ElementProto_getElementsByClassName_${elements[i].name}未实现`);
+                debugger;
+        }
+
+        Object.defineProperty(element, 'jquery', {
+            configurable: true,
+            enumerable: false,
+            writable: true,
+            value: $(elements[i])
+        });
+        result.push(element);
+    }
+
+    Object.setPrototypeOf(result, HTMLCollection.prototype);
+    return result;
+};
+dingvm.envFunc.ElementProto_className_get = function () {
+    return dingvm.toolsFunc.get_protoOwnAttr.call(this, 'className')
+};
+dingvm.envFunc.ElementProto_attributes_get = function () {
+    debugger
+    let attrs = this.jquery[0].attribs;
+    let result = {};
+    let length = 0;
+    for (let attr in attrs) {
+        let attribute1 = assign(attr);
+        dingvm.toolsFunc.setProtoArr.call(attribute1, 'name', attr);
+        result[attr] = attribute1;
+
+        let attribute2 = assign(attr);
+        dingvm.toolsFunc.setProtoArr.call(attribute2, 'name', length);
+        result[length] = attribute2;
+        length++;
+    }
+    dingvm.toolsFunc.setProtoArr.call(result, 'length', length);
+    Object.setPrototypeOf(result, NamedNodeMap.prototype);
+
+    function assign(attr) {
+        let attribute = {};
+        Object.setPrototypeOf(attribute, Attr.prototype);
+        dingvm.toolsFunc.setProtoArr.call(attribute, 'value', attrs[attr]);
+        dingvm.toolsFunc.setProtoArr.call(attribute, 'nodeValue', attrs[attr]);
+        dingvm.toolsFunc.setProtoArr.call(attribute, 'textContent', attrs[attr]);
+        dingvm.toolsFunc.setProtoArr.call(attribute, 'ownerElement', this)
+        return attribute;
+    }
+
+    return result;
+};
+dingvm.envFunc.ElementProto_scrollTop_get = function () {
+    return 0
+};
+dingvm.envFunc.ElementProto_scrollLeft_get = function () {
+    return 0
+};
+dingvm.envFunc.ElementProto_clientTop_get = function () {
+    return 0
+};
+dingvm.envFunc.ElementProto_clientLeft_get = function () {
+    return 0
 };;
 dingvm.envFunc.NodeProto_appendChild = function NodeProto_appendChild(node) {
     // debugger;
@@ -2401,9 +2589,9 @@ dingvm.envFunc.NodeProto_nextSibling_get = function NodeProto_nextSibling_get() 
     if (!nextSibling)
         return null
 
-    switch (result.jquery[0].type.toLocaleLowerCase()) {
+    switch (result.jquery[0].type.toLowerCase()) {
         case 'tag':
-            switch (result.jquery[0].name.toLocaleLowerCase()) {
+            switch (result.jquery[0].name.toLowerCase()) {
                 case 'input':
                     Object.setPrototypeOf(result, HTMLInputElement.prototype)
                     break
@@ -2414,12 +2602,12 @@ dingvm.envFunc.NodeProto_nextSibling_get = function NodeProto_nextSibling_get() 
                     Object.setPrototypeOf(result, HTMLSpanElement.prototype)
                     break
                 default:
-                    console.log(`NodeProto_nextSibling_${result.jquery[0].name.toLocaleLowerCase()}未实现`);
+                    console.log(`NodeProto_nextSibling_${result.jquery[0].name}未实现`);
                     debugger
             }
             break
         case 'script':
-            switch (result.jquery[0].name.toLocaleLowerCase()) {
+            switch (result.jquery[0].name.toLowerCase()) {
                 case 'script':
                     Object.setPrototypeOf(result, HTMLScriptElement.prototype)
                     break
@@ -2437,9 +2625,13 @@ dingvm.envFunc.NodeProto_nextSibling_get = function NodeProto_nextSibling_get() 
     return result
 };
 dingvm.envFunc.NodeProto_nodeName_get = function NodeProto_nodeName_get() {
+    if (Object.prototype.toString.call(this) === '[object Attr]') {
+        return dingvm.toolsFunc.getProtoArr.call(this, 'name')
+    }
+
     if (this === document)
         return '#document'
-    switch (this.jquery[0].type) {
+    switch (this.jquery[0].type.toLowerCase()) {
         case 'tag':
             return this.jquery[0].name.toLocaleUpperCase()
         case 'script':
@@ -2451,9 +2643,13 @@ dingvm.envFunc.NodeProto_nodeName_get = function NodeProto_nodeName_get() {
     }
 };
 dingvm.envFunc.NodeProto_nodeType_get = function NodeProto_nodeType_get() {
+    if (Object.prototype.toString.call(this) === '[object Attr]') {
+        return 2
+    }
+
     if (this === document)
         return 9
-    switch (this.jquery[0].type) {
+    switch (this.jquery[0].type.toLowerCase()) {
         case 'tag':
             return 1
         case 'script':
@@ -2468,7 +2664,7 @@ dingvm.envFunc.NodeProto_parentNode_get = function NodeProto_parentNode_get() {
     // debugger
     let temp = this.jquery.parent()
     let result = {}
-    switch (temp[0].name) {
+    switch (temp[0].name.toLowerCase()) {
         case 'input':
             Object.setPrototypeOf(result, HTMLInputElement.prototype)
             break
@@ -2507,7 +2703,7 @@ dingvm.envFunc.NodeProto_parentElement_get = function () {
 
     let temp = this.jquery.parent()
     let result = {}
-    switch (temp[0].name) {
+    switch (temp[0].name.toLowerCase()) {
         case 'input':
             Object.setPrototypeOf(result, HTMLInputElement.prototype)
             break
@@ -2544,9 +2740,9 @@ dingvm.envFunc.NodeProto_firstChild_get = function () {
     let result = {}
     result.jquery = firstChild
 
-    switch (result.jquery[0].type.toLocaleLowerCase()) {
+    switch (result.jquery[0].type.toLowerCase()) {
         case 'tag':
-            switch (result.jquery[0].name.toLocaleLowerCase()) {
+            switch (result.jquery[0].name.toLowerCase()) {
                 case 'input':
                     Object.setPrototypeOf(result, HTMLInputElement.prototype)
                     break
@@ -2557,12 +2753,12 @@ dingvm.envFunc.NodeProto_firstChild_get = function () {
                     Object.setPrototypeOf(result, HTMLSpanElement.prototype)
                     break
                 default:
-                    console.log(`NodeProto_firstChild_get_${result.jquery[0].name.toLocaleLowerCase()}未实现`);
+                    console.log(`NodeProto_firstChild_get_${result.jquery[0].name}未实现`);
                     debugger
             }
             break
         case 'script':
-            switch (result.jquery[0].name.toLocaleLowerCase()) {
+            switch (result.jquery[0].name.toLowerCase()) {
                 case 'script':
                     Object.setPrototypeOf(result, HTMLScriptElement.prototype)
                     break
@@ -2587,7 +2783,7 @@ dingvm.envFunc.NodeProto_childNodes_get = function () {
         let temp = $(children[i])
         let tagName = temp[0].name
         let temp2 = {}
-        switch (tagName) {
+        switch (tagName.toLowerCase()) {
             case 'div':
                 Object.setPrototypeOf(temp2, HTMLDivElement.prototype)
                 break
@@ -2607,7 +2803,7 @@ dingvm.envFunc.NodeProto_childNodes_get = function () {
                 Object.setPrototypeOf(temp2, HTMLMetaElement.prototype)
                 break
             default:
-                console.log(`DocumentProto_getElementsByTagName_${tagName}未实现`);
+                console.log(`NodeProto_getElementsByTagName_${tagName}未实现`);
                 debugger;
         }
         temp2.jquery = temp
@@ -2621,7 +2817,22 @@ dingvm.envFunc.NodeProto_textContent_get = function () {
 };
 dingvm.envFunc.NodeProto_textContent_set = function (text) {
     this.jquery.text(text)
-};;
+};
+dingvm.envFunc.NodeProto_nodeValue_get = function () {
+    if (this.jquery) {
+        return this.jquery.text()
+    }
+    return dingvm.toolsFunc.getProtoArr.call(this, 'nodeValue')
+};
+dingvm.envFunc.NodeProto_baseURI_get = function () {
+    return location.href
+};
+dingvm.envFunc.NodeProto_ownerDocument_get = function () {
+    return document
+};
+dingvm.envFunc.NodeProto_textContent_get = function () {
+    return dingvm.toolsFunc.get_protoOwnAttr.call(this, 'textContent')
+};
 dingvm.envFunc.EventProto_type_get = function EventProto_type_get() {
     return this.myType;
 };
@@ -2636,6 +2847,16 @@ dingvm.envFunc.EventProto_target_set = function EventProto_target_set(value) {
 };
 dingvm.envFunc.EventProto_timeStamp_get = function Event_timeStamp_get() {
     return dingvm.toolsFunc.getProtoArr.call(this, "timeStamp");
+};
+dingvm.envFunc.EventProto_srcElement_get = function () {
+    debugger
+};;
+dingvm.envFunc.MouseEventProto_clientY_get = function MouseEvent_clientY_get() {
+    return dingvm.toolsFunc.getProtoArr.call(this, "clientY");
+};
+dingvm.envFunc.MouseEventProto_clientX_get = function MouseEvent_clientX_get() {
+    return dingvm.toolsFunc.getProtoArr.call(this, "clientX");
+
 };;
 dingvm.envFunc.CSSStyleDeclarationProto_cssText_get = function () {
     let cssText = this.myThis.jquery.attr('style')
@@ -3049,7 +3270,18 @@ dingvm.envFunc.HTMLElementProto_onload_get = function () {
 dingvm.envFunc.HTMLElementProto_onload_set = function (value) {
     this.jquery.attr('onload', value)
 };
-;
+dingvm.envFunc.HTMLElementProto_onmouseenter_get = function () {
+    debugger
+};
+dingvm.envFunc.HTMLElementProto_onmouseenter_set = function (value) {
+    dingvm.toolsFunc.setProtoArr.call(this, 'onmouseenter', value)
+};
+dingvm.envFunc.HTMLElementProto_onresize_get = function () {
+    debugger
+};
+dingvm.envFunc.HTMLElementProto_onresize_set = function (value) {
+    dingvm.toolsFunc.setProtoArr.call(this, 'onresize', value)
+};;
 dingvm.envFunc.HTMLImageElementProto_width_get = function () {
     let width = dingvm.toolsFunc.get_protoOwnAttr.call(this, 'width')
     if (width === undefined) {
@@ -3183,7 +3415,7 @@ dingvm.envFunc.HTMLFormElementProto_relList_set = function (value) {
 };
 ;
 dingvm.envFunc.HTMLCollectionProto_length_get = function () {
-    return this.length
+    return dingvm.toolsFunc.getProtoArr.call(this, 'length')
 };
 dingvm.envFunc.HTMLCollectionProto_item = function (idx) {
     return this[idx]
@@ -3217,13 +3449,66 @@ dingvm.envFunc.HTMLStyleElementProto_type_set = function (value) {
     return dingvm.toolsFunc.setProtoArr.call(this, 'type', value)
 };
 dingvm.envFunc.HTMLStyleElementProto_sheet_get = function () {
-    
+    let obj = {}
+    Object.setPrototypeOf(obj, CSSStyleSheet.prototype)
+
+    return obj
 };
 dingvm.envFunc.HTMLStyleElementProto_blocking_get = function () {
     debugger
 };
 dingvm.envFunc.HTMLStyleElementProto_blocking_set = function (value) {
     return dingvm.toolsFunc.setProtoArr.call(this, 'blocking', value)
+};
+;
+dingvm.envFunc.AttrProto_namespaceURI_get = function () {
+    return null
+};
+dingvm.envFunc.AttrProto_prefix_get = function () {
+    return null
+};
+dingvm.envFunc.AttrProto_localName_get = function () {
+    return dingvm.toolsFunc.getProtoArr.call(this, 'name')
+};
+dingvm.envFunc.AttrProto_name_get = function () {
+    return dingvm.toolsFunc.getProtoArr.call(this, 'name')
+};
+dingvm.envFunc.AttrProto_value_get = function () {
+    return dingvm.toolsFunc.getProtoArr.call(this, 'value')
+};
+dingvm.envFunc.AttrProto_value_set = function (value) {
+    return dingvm.toolsFunc.setProtoArr.call(this, 'value', value)
+};
+dingvm.envFunc.AttrProto_ownerElement_get = function () {
+    return dingvm.toolsFunc.getProtoArr.call(this, 'ownerElement')
+};
+dingvm.envFunc.AttrProto_specified_get = function () {
+    return true
+};
+;
+dingvm.envFunc.NamedNodeMapProto_length_get = function () {
+    return dingvm.toolsFunc.getProtoArr.call(this, 'length')
+};
+dingvm.envFunc.NamedNodeMapProto_getNamedItem = function () {
+    debugger
+};
+dingvm.envFunc.NamedNodeMapProto_getNamedItemNS = function () {
+    debugger
+};
+dingvm.envFunc.NamedNodeMapProto_item = function () {
+    debugger
+};
+dingvm.envFunc.NamedNodeMapProto_removeNamedItem = function () {
+    debugger
+};
+dingvm.envFunc.NamedNodeMapProto_removeNamedItemNS = function () {
+    debugger
+};
+dingvm.envFunc.NamedNodeMapProto_setNamedItem = function () {
+    debugger
+};
+dingvm.envFunc.NamedNodeMapProto_setNamedItemNS = function () {
+    debugger
 };
 ;
 !function () {
@@ -5566,7 +5851,7 @@ dingvm.toolsFunc.defineProperty(Document.prototype, "implementation", {
     },
     set: undefined
 });
-dingvm.toolsFunc.defineProperty(Document.prototype, "URL",{
+dingvm.toolsFunc.defineProperty(Document.prototype, "URL", {
     configurable: true,
     enumerable: true,
     get: function () {
@@ -12403,6 +12688,141 @@ dingvm.toolsFunc.defineProperty(CSSStyleSheet.prototype, "replaceSync", {
     }
 });
 ;
+// NamedNodeMap对象
+NamedNodeMap = function NamedNodeMap() {
+    return dingvm.toolsFunc.throwError("TypeError", "Illegal constructor")
+};
+dingvm.toolsFunc.safe_constructor_prototype(NamedNodeMap, "NamedNodeMap");
+dingvm.toolsFunc.defineProperty(NamedNodeMap.prototype, "length", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, NamedNodeMap.prototype, "NamedNodeMapProto", "length_get", arguments, 2)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(NamedNodeMap.prototype, "getNamedItem", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, NamedNodeMap.prototype, "NamedNodeMapProto", "getNamedItem", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(NamedNodeMap.prototype, "getNamedItemNS", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, NamedNodeMap.prototype, "NamedNodeMapProto", "getNamedItemNS", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(NamedNodeMap.prototype, "item", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, NamedNodeMap.prototype, "NamedNodeMapProto", "item", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(NamedNodeMap.prototype, "removeNamedItem", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, NamedNodeMap.prototype, "NamedNodeMapProto", "removeNamedItem", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(NamedNodeMap.prototype, "removeNamedItemNS", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, NamedNodeMap.prototype, "NamedNodeMapProto", "removeNamedItemNS", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(NamedNodeMap.prototype, "setNamedItem", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, NamedNodeMap.prototype, "NamedNodeMapProto", "setNamedItem", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(NamedNodeMap.prototype, "setNamedItemNS", {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, NamedNodeMap.prototype, "NamedNodeMapProto", "setNamedItemNS", arguments)
+    }
+});
+;
+// Attr对象
+Attr = function Attr() {
+    return dingvm.toolsFunc.throwError("TypeError", "Illegal constructor")
+};
+dingvm.toolsFunc.safe_constructor_prototype(Attr, "Attr");
+Object.setPrototypeOf(Attr.prototype, Node.prototype);
+dingvm.toolsFunc.defineProperty(Attr.prototype, "namespaceURI", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, Attr.prototype, "AttrProto", "namespaceURI_get", arguments, null)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(Attr.prototype, "prefix", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, Attr.prototype, "AttrProto", "prefix_get", arguments, null)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(Attr.prototype, "localName", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, Attr.prototype, "AttrProto", "localName_get", arguments, 'id')
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(Attr.prototype, "name", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, Attr.prototype, "AttrProto", "name_get", arguments, 'id')
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(Attr.prototype, "value", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, Attr.prototype, "AttrProto", "value_get", arguments, 'wrapper')
+    },
+    set: function () {
+        return dingvm.toolsFunc.dispatch(this, Attr.prototype, "AttrProto", "value_set", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(Attr.prototype, "ownerElement", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, Attr.prototype, "AttrProto", "ownerElement_get", arguments)
+    },
+    set: undefined
+});
+dingvm.toolsFunc.defineProperty(Attr.prototype, "specified", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return dingvm.toolsFunc.dispatch(this, Attr.prototype, "AttrProto", "specified_get", arguments, true)
+    },
+    set: undefined
+});
+;
 // document对象
 document = {};
 Object.setPrototypeOf(document, HTMLDocument.prototype);
@@ -14953,6 +15373,7 @@ window.PERSISTENT = 1;
 //* 凑数 检测了window属性个数
 window.isSecureContext = true;
 window.originAgentCluster = false;
+window.frameElement = null;
 //* on···事件
 window.onsearch = null;
 window.onappinstalled = null;
@@ -15120,7 +15541,8 @@ window.onunload = null;
                 args: arg
             })
 
-            const timer_obj = dingvm.node_func.setTimeout(callback, ...arg);
+            // const timer_obj = dingvm.node_func.setTimeout(callback, ...arg);
+            const timer_obj = {};
             const timer_id = parseInt(Object.keys(dingvm.timer_map).sort((a, b) => {
                 return a - b;
             }).pop()) + 1;
@@ -15136,7 +15558,8 @@ window.onunload = null;
                 args: arg
             })
 
-            const timer_obj = dingvm.node_func.setInterval(callback, ...arg);
+            // const timer_obj = dingvm.node_func.setInterval(callback, ...arg);
+            const timer_obj = {};
             const timer_id = parseInt(Object.keys(dingvm.timer_map).sort((a, b) => {
                 return a - b;
             }).pop()) + 1;
@@ -15145,11 +15568,11 @@ window.onunload = null;
         },
         clearTimeout(timer_id) {
             const timer_obj = dingvm.timer_map[timer_id];
-            return dingvm.node_func.clearTimeout(timer_obj)
+            // return dingvm.node_func.clearTimeout(timer_obj)
         },
         clearInterval(timer_id) {
             const timer_obj = dingvm.timer_map[timer_id];
-            return dingvm.node_func.clearInterval(timer_obj)
+            // return dingvm.node_func.clearInterval(timer_obj)
         }
     };
     setTimeout = timer.setTimeout;
@@ -15250,21 +15673,23 @@ frames = parent = top = self = window = dingvm.toolsFunc.proxy(window, "window")
 
     //* 固定随机值
     if (dingvm.config.random) {
+        // const time_stamp = Date.now()
+        const time_stamp = 1719296000341
         Date.now = dingvm.toolsFunc.hook(Date.now, undefined, false, function () {
         }, function (obj) {
-            return obj.result = 1681893196072
+            return obj.result = time_stamp
         })
         Date.parse = dingvm.toolsFunc.hook(Date.parse, undefined, false, function () {
         }, function (obj) {
-            return obj.result = 1681893196072
+            return obj.result = time_stamp
         })
         Date.prototype.getTime = dingvm.toolsFunc.hook(Date.prototype.getTime, undefined, false, function () {
         }, function (obj) {
-            return obj.result = 1681893196072
+            return obj.result = time_stamp
         })
         Date.prototype.valueOf = dingvm.toolsFunc.hook(Date.prototype.valueOf, undefined, false, function () {
         }, function (obj) {
-            return obj.result = 1681893196072
+            return obj.result = time_stamp
         })
         Math.random = dingvm.toolsFunc.hook(Math.random, undefined, false, function () {
         }, function (obj) {
@@ -15291,6 +15716,11 @@ frames = parent = top = self = window = dingvm.toolsFunc.proxy(window, "window")
     //* 初始化宽度、高度
     dingvm.memory.globalVar.width = dingvm.toolsFunc.random(480, 800);
     dingvm.memory.globalVar.height = dingvm.toolsFunc.random(720, 1278);
+
+    //* 初始化电池
+    dingvm.memory.globalVar.BatteryManager.charging = true;
+    dingvm.memory.globalVar.BatteryManager.chargingTime = Infinity;
+    dingvm.memory.globalVar.BatteryManager.level = 1
 
     //* setTimeout setInterval修改
     if (dingvm.config.setTimeout) {
@@ -15322,11 +15752,244 @@ delete globalThis['Database'];
 delete globalThis['SQLTransaction'];;
 debugger
 
-var dd=navigator.plugins[0]
-console.log(dd[0]==dd[0])
-console.log(navigator.plugins[0][0]==navigator.plugins[0][0])
-console.log(dd[0].enabledPlugin[0]==dd[0])
-console.log(navigator.plugins[0][0].enabledPlugin==dd)
-// console.log(navigator.plugins[0][0].enabledPlugin==dd[1].enabledPlugin)
+console.log("同步代码开始执行");
+let list = [];
+let encodeFunc = function  encodeFunc(resultList){
+    let result = [];
+    for(let i=0;i<10;i++){
+        result.push(resultList[i].clientX);
+        result.push(resultList[i].clientY);
+        result.push(resultList[i].timeStamp);
+    }
+    // copy(result)
+    let str = btoa(result.toString());
+    console.log(str);
+}
+let mousemoveFunc = function mousemoveFunc(event){
+    console.log("正在执行mousemove回调函数");
+    list.push(event);
+}
+let mousedownFunc = function mousedownFunc(event){
+    console.log("正在执行mousedown回调函数");
+    list.push(event);
+}
+let mouseupFunc = function mouseupFunc(event){
+    console.log("正在执行mouseup回调函数");
+    list.push(event);
+    let len = list.length;
+    let resultList = [];
+    for(let i=len-10;i<len;i++){
+        resultList.push(list[i]);
+    }
+    encodeFunc(resultList);
+}
+let setTimeoutcallBack = function setTimeoutcallBack(){
+    console.log("正在执行setTimeout回调函数");
+    document.addEventListener("mousemove", mousemoveFunc);
+    document.addEventListener("mousedown", mousedownFunc);
+    document.addEventListener("mouseup", mouseupFunc);
+}
+let unloadFunc = function unloadFunc(){
+    console.log("网页卸载完成");
+    debugger;
+}
+let loadFunc = function loadFunc(){
+    console.log("网页加载完成");
+    // setTimeout(setTimeoutcallBack, 0);
+}
+setTimeout(setTimeoutcallBack, 0);
+window.addEventListener("load", loadFunc);
+window.addEventListener("unload", unloadFunc);
+console.log("同步代码执行完成");
+
+debugger;
+let mousedown_data = {
+    "clientX": 289,
+    "clientY": 308,
+    "timeStamp": 10806.39999999851,
+};
+
+let mouseup_data = {
+    clientX: 180,
+    clientY: 233,
+    timeStamp: 11930,
+};
+
+let event_mouse_data = [
+    {
+        "clientX": 437,
+        "clientY": 311,
+        "timeStamp": 10222.79999999702,
+        "type": "mousemove"
+    },
+    {
+        "clientX": 436,
+        "clientY": 311,
+        "timeStamp": 10224.70000000298,
+        "type": "mousemove"
+    },
+    {
+        "clientX": 436,
+        "clientY": 311,
+        "timeStamp": 10224.70000000298,
+        "type": "mousemove"
+    },
+    {
+        "clientX": 436,
+        "clientY": 311,
+        "timeStamp": 10224.70000000298,
+        "type": "mousemove"
+    },
+    {
+        "clientX": 436,
+        "clientY": 311,
+        "timeStamp": 10224.70000000298,
+        "type": "mousemove"
+    },
+    {
+        "clientX": 436,
+        "clientY": 311,
+        "timeStamp": 10224.70000000298,
+        "type": "mousemove"
+    },
+    {
+        "clientX": 436,
+        "clientY": 311,
+        "timeStamp": 10224.70000000298,
+        "type": "mousemove"
+    },
+    {
+        "clientX": 436,
+        "clientY": 311,
+        "timeStamp": 10224.70000000298,
+        "type": "mousemove"
+    },
+    {
+        "clientX": 436,
+        "clientY": 311,
+        "timeStamp": 10224.70000000298,
+        "type": "mousemove"
+    },
+    {
+        "clientX": 436,
+        "clientY": 311,
+        "timeStamp": 10224.70000000298,
+        "type": "mousemove"
+    },
+    {
+        "clientX": 436,
+        "clientY": 311,
+        "timeStamp": 10224.70000000298,
+        "type": "mousemove"
+    },
+    {
+        "clientX": 436,
+        "clientY": 311,
+        "timeStamp": 10224.70000000298,
+        "type": "mousemove"
+    },
+    {
+        "clientX": 436,
+        "clientY": 311,
+        "timeStamp": 10224.70000000298,
+        "type": "mousemove"
+    },
+];;
+//异步执行的代码
+let setIntervalEvent = dingvm.memory.asyncEvent.setInterval;
+
+
+function clone_prototype(obj) {
+    let __proto__ = Object.getPrototypeOf(obj);
+    return Object.assign(Object.create(__proto__), obj);
+}
+
+//> ---------------------------------------------------------------- 微任务
+debugger
+let promise = dingvm.memory.asyncEvent.promise;
+if (promise !== undefined) {
+    for (let i = 0; i < promise.length; i++) {
+        promise[i]();
+    }
+}
+
+//> ---------------------------------------------------------------- 异步任务
+debugger
+let setTimeoutEvent = dingvm.memory.asyncEvent.setTimeout;
+if (setTimeoutEvent !== undefined) {
+    for (let i = 0; i < setTimeoutEvent.length; i++) {
+        let event = setTimeoutEvent[i];
+        if (event === undefined) {
+            continue;
+        }
+        let func = event.callback;
+        let args = event.args;
+        // dingvm.node_func.setTimeout(func, ...args);
+        func(...args);
+    }
+}
+
+debugger
+let listeners = dingvm.memory.asyncEvent.listener;
+if (listeners !== undefined) {
+    function assign(event_mousedown, mouse_data, key) {
+        dingvm.toolsFunc.setProtoArr.call(event_mousedown, 'clientX', mouse_data.clientX);
+        dingvm.toolsFunc.setProtoArr.call(event_mousedown, 'clientY', mouse_data.clientY);
+        dingvm.toolsFunc.setProtoArr.call(event_mousedown, 'timeStamp', mouse_data.timeStamp);
+        dingvm.toolsFunc.setProtoArr.call(event_mousedown, 'type', key);
+    }
+
+    function executeCallback(event_mousedown, key) {
+        let listener = listeners[key];
+        for (let i = 0; i < listener.length; i++) {
+            let callback = listener[i].listener;
+            let this_ = listener[i].self;
+            callback.call(this_, event_mousedown);
+        }
+    }
+
+    for (let key in listeners) {
+        //* 资源事件
+        if (['unload', 'load', 'abort', 'error', 'cached'].includes(key)) {
+            if (key === 'unload') {
+            } else if (key === 'load') {
+                let listener = listeners[key];
+                for (let i = 0; i < listener.length; i++) {
+                    let callback = listener[i].listener;
+                    let this_ = listener[i].self;
+                    // let useCapture = listener[i].options;
+                    callback.call(this_);
+                }
+            }
+        }
+        //* 鼠标事件
+        if (['click', 'mouseup', 'mousemove', 'mousedown'].includes(key)) {
+            let event_mouse = {
+                "isTrusted": true
+            };
+            Object.setPrototypeOf(event_mouse, MouseEvent.prototype);
+
+            if (key === 'mousedown') {
+                let event_mousedown = clone_prototype(event_mouse);
+                assign(event_mousedown, mousedown_data, key);
+                executeCallback(event_mousedown, key);
+            }
+            if (key === 'mouseup') {
+                let event_mouseup = clone_prototype(event_mouse);
+                assign(event_mouseup, mouseup_data, key);
+                executeCallback(event_mouseup, key);
+            }
+            if (key === 'mousemove') {
+                for (let i = 0; i < event_mouse_data.length; i++) {
+                    let mouse_data = event_mouse_data[i];
+                    let event_mousemove = clone_prototype(event_mouse);
+                    assign(event_mousemove, mouse_data, key);
+                    executeCallback(event_mousemove, key);
+                }
+
+            }
+        }
+    }
+}
 
 debugger;

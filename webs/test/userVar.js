@@ -3,21 +3,23 @@
 
     //* 固定随机值
     if (dingvm.config.random) {
+        // const time_stamp = Date.now()
+        const time_stamp = 1719296000341
         Date.now = dingvm.toolsFunc.hook(Date.now, undefined, false, function () {
         }, function (obj) {
-            return obj.result = 1681893196072
+            return obj.result = time_stamp
         })
         Date.parse = dingvm.toolsFunc.hook(Date.parse, undefined, false, function () {
         }, function (obj) {
-            return obj.result = 1681893196072
+            return obj.result = time_stamp
         })
         Date.prototype.getTime = dingvm.toolsFunc.hook(Date.prototype.getTime, undefined, false, function () {
         }, function (obj) {
-            return obj.result = 1681893196072
+            return obj.result = time_stamp
         })
         Date.prototype.valueOf = dingvm.toolsFunc.hook(Date.prototype.valueOf, undefined, false, function () {
         }, function (obj) {
-            return obj.result = 1681893196072
+            return obj.result = time_stamp
         })
         Math.random = dingvm.toolsFunc.hook(Math.random, undefined, false, function () {
         }, function (obj) {
@@ -44,6 +46,11 @@
     //* 初始化宽度、高度
     dingvm.memory.globalVar.width = dingvm.toolsFunc.random(480, 800);
     dingvm.memory.globalVar.height = dingvm.toolsFunc.random(720, 1278);
+
+    //* 初始化电池
+    dingvm.memory.globalVar.BatteryManager.charging = true;
+    dingvm.memory.globalVar.BatteryManager.chargingTime = Infinity;
+    dingvm.memory.globalVar.BatteryManager.level = 1
 
     //* setTimeout setInterval修改
     if (dingvm.config.setTimeout) {

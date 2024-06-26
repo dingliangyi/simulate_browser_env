@@ -10,7 +10,7 @@ dingvm.envFunc.DocumentProto_getElementById = function DocumentProto_getElementB
     let result = null;
     if (temp !== undefined) {
         result = {}
-        switch (temp[0].name) {
+        switch (temp[0].name.toLowerCase()) {
             case "div":
                 Object.setPrototypeOf(result, HTMLDivElement.prototype)
                 break
@@ -39,7 +39,7 @@ dingvm.envFunc.DocumentProto_getElementById = function DocumentProto_getElementB
 dingvm.envFunc.DocumentProto_createElement = function createElement(tagName) {
     // debugger;
     let result = {}
-    switch (tagName) {
+    switch (tagName.toLowerCase()) {
         case 'div':
             result.jquery = get_document('<div></div>')('div')
             Object.setPrototypeOf(result, HTMLDivElement.prototype)
@@ -118,7 +118,7 @@ dingvm.envFunc.DocumentProto_getElementsByTagName = function DocumentProto_getEl
     let result = []
     for (let i = 0; i < temp.length; i++) {
         let temp2 = {}
-        switch (tagName) {
+        switch (tagName.toLowerCase()) {
             case 'div':
                 Object.setPrototypeOf(temp2, HTMLDivElement.prototype)
                 break
@@ -245,10 +245,19 @@ dingvm.envFunc.DocumentProto_compatMode_get = function () {
 };
 dingvm.envFunc.DocumentProto_createEvent = function (type) {
     let event = {}
-    if (type === 'TouchEvent') {
-        dingvm.toolsFunc.throwError('DOMException', "Failed to execute 'createEvent' on 'Document': The provided event type ('TouchEvent') is invalid.")
-    } else {
-        Object.setPrototypeOf(event, Event.prototype)
+    switch (type.toUpperCase()) {
+        case 'MOUSEEVENT':
+            Object.setPrototypeOf(event, MouseEvent.prototype)
+            break
+        case 'TOUCHEVENT':
+            dingvm.toolsFunc.throwError('DOMException', "Failed to execute 'createEvent' on 'Document': The provided event type ('TouchEvent') is invalid.")
+            break
+        case "EVENT":
+            Object.setPrototypeOf(event, Event.prototype)
+            break
+        default:
+            console.log(`DocumentProto_createEvent_${type}未实现`);
+            debugger
     }
 
     return event
@@ -261,7 +270,7 @@ dingvm.envFunc.DocumentProto_querySelector = function (selector) {
     }
 
     let result = {}
-    switch (temp[0].name) {
+    switch (temp[0].name.toLowerCase()) {
         case "div":
             Object.setPrototypeOf(result, HTMLDivElement.prototype)
             break
@@ -276,6 +285,9 @@ dingvm.envFunc.DocumentProto_querySelector = function (selector) {
             break
         case 'script':
             Object.setPrototypeOf(result, HTMLScriptElement.prototype)
+            break
+        case 'form':
+            Object.setPrototypeOf(result, HTMLFormElement.prototype)
             break
         default:
             console.log(`DocumentProto_querySelector_${temp[0].name}未实现`);
@@ -298,7 +310,7 @@ dingvm.envFunc.DocumentProto_querySelectorAll = function (selector) {
     let result = []
     for (let i = 0; i < temp.length; i++) {
         let temp2 = {}
-        switch (temp[0].name) {
+        switch (temp[0].name.toLowerCase()) {
             case 'div':
                 Object.setPrototypeOf(temp2, HTMLDivElement.prototype)
                 break
@@ -387,7 +399,7 @@ dingvm.envFunc.DocumentProto_getElementsByName = function () {
     let result = []
     for (let i = 0; i < temp.length; i++) {
         let temp2 = {}
-        switch (temp[i].name) {
+        switch (temp[i].name.toLowerCase()) {
             case "div":
                 Object.setPrototypeOf(temp2, HTMLDivElement.prototype)
                 break
@@ -449,3 +461,86 @@ dingvm.envFunc.DocumentProto_onmousemove_get = function () {
 dingvm.envFunc.DocumentProto_onselectionchange_get = function () {
     return null
 };
+dingvm.envFunc.DocumentProto_forms_get = function () {
+    const forms = $('form');
+    const documentForms = {};
+    let length = 0;
+    forms.each((i, form) => {
+        const formName = $(form).attr('name');
+        const id = $(form).attr('id');
+        if (formName) {
+            documentForms[formName] = $(form);
+            documentForms[length] = $(form);
+        }
+        if (id) {
+            documentForms[id] = $(form);
+        }
+        length++;
+    });
+    Object.setPrototypeOf(documentForms, HTMLCollection.prototype);
+    dingvm.toolsFunc.setProtoArr.call(documentForms, 'length', length);
+    return documentForms;
+};
+dingvm.envFunc.DocumentProto_getElementsByClassName = function (className) {
+    let elements = $(`.${className}`);
+    let result = [];
+    for (let i = 0; i < elements.length; i++) {
+        let element = {};
+        switch (elements[i].name.toLowerCase()) {
+            case 'div':
+                Object.setPrototypeOf(element, HTMLDivElement.prototype);
+                break;
+            case 'input':
+                Object.setPrototypeOf(element, HTMLInputElement.prototype);
+                break;
+            case 'span':
+                Object.setPrototypeOf(element, HTMLSpanElement.prototype);
+                break;
+            case 'iframe':
+                Object.setPrototypeOf(element, HTMLIFrameElement.prototype);
+                break;
+            default:
+                console.log(`DocumentProto_getElementsByClassName_${elements[i].name}未实现`);
+                debugger;
+        }
+
+        Object.defineProperty(element, 'jquery', {
+            configurable: true,
+            enumerable: false,
+            writable: true,
+            value: $(elements[i])
+        });
+        result.push(element);
+    }
+
+    Object.setPrototypeOf(result, HTMLCollection.prototype);
+    return result;
+};
+dingvm.envFunc.DocumentProto_createTextNode = function (text) {
+    let textNode = {};
+    Object.setPrototypeOf(textNode, Text.prototype);
+    dingvm.toolsFunc.setProtoArr.call(textNode, 'nodeValue', text);
+    return textNode;
+};
+dingvm.envFunc.DocumentProto_lastModified_get = function () {
+    let date = new Date();
+    let month = date.getMonth() + 1
+    month = month > 11 ? month : '0' + month
+    let day = date.getDate()
+    let year = date.getFullYear()
+    let hours = date.getHours()
+    let minutes = date.getMinutes()
+    let seconds = date.getSeconds()
+    return `${month}/${day}/${year} ${hours}->${minutes}->${seconds}`
+};
+dingvm.envFunc.DocumentProto_implementation_get = function () {
+    let obj = {};
+    Object.setPrototypeOf(obj, DOMImplementation.prototype);
+    return obj;
+};
+dingvm.envFunc.DocumentProto_scrollingElement_get = function () {
+    let obj = {};
+    obj.jquery = get_document('<html></html>')('html');
+    Object.setPrototypeOf(obj, HTMLElement.prototype);
+    return obj;
+}

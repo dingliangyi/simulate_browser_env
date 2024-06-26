@@ -107,3 +107,15 @@ dingvm.envFunc.HTMLElementProto_onload_get = function () {
 dingvm.envFunc.HTMLElementProto_onload_set = function (value) {
     this.jquery.attr('onload', value)
 };
+dingvm.envFunc.HTMLElementProto_onmouseenter_get = function () {
+    debugger
+};
+dingvm.envFunc.HTMLElementProto_onmouseenter_set = function (value) {
+    dingvm.toolsFunc.setProtoArr.call(this, 'onmouseenter', value)
+};
+dingvm.envFunc.HTMLElementProto_onresize_get = function () {
+    debugger
+};
+dingvm.envFunc.HTMLElementProto_onresize_set = function (value) {
+    dingvm.toolsFunc.setProtoArr.call(this, 'onresize', value)
+};

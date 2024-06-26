@@ -16,9 +16,9 @@ dingvm.envFunc.NodeProto_nextSibling_get = function NodeProto_nextSibling_get() 
     if (!nextSibling)
         return null
 
-    switch (result.jquery[0].type.toLocaleLowerCase()) {
+    switch (result.jquery[0].type.toLowerCase()) {
         case 'tag':
-            switch (result.jquery[0].name.toLocaleLowerCase()) {
+            switch (result.jquery[0].name.toLowerCase()) {
                 case 'input':
                     Object.setPrototypeOf(result, HTMLInputElement.prototype)
                     break
@@ -29,12 +29,12 @@ dingvm.envFunc.NodeProto_nextSibling_get = function NodeProto_nextSibling_get() 
                     Object.setPrototypeOf(result, HTMLSpanElement.prototype)
                     break
                 default:
-                    console.log(`NodeProto_nextSibling_${result.jquery[0].name.toLocaleLowerCase()}未实现`);
+                    console.log(`NodeProto_nextSibling_${result.jquery[0].name}未实现`);
                     debugger
             }
             break
         case 'script':
-            switch (result.jquery[0].name.toLocaleLowerCase()) {
+            switch (result.jquery[0].name.toLowerCase()) {
                 case 'script':
                     Object.setPrototypeOf(result, HTMLScriptElement.prototype)
                     break
@@ -52,9 +52,13 @@ dingvm.envFunc.NodeProto_nextSibling_get = function NodeProto_nextSibling_get() 
     return result
 };
 dingvm.envFunc.NodeProto_nodeName_get = function NodeProto_nodeName_get() {
+    if (Object.prototype.toString.call(this) === '[object Attr]') {
+        return dingvm.toolsFunc.getProtoArr.call(this, 'name')
+    }
+
     if (this === document)
         return '#document'
-    switch (this.jquery[0].type) {
+    switch (this.jquery[0].type.toLowerCase()) {
         case 'tag':
             return this.jquery[0].name.toLocaleUpperCase()
         case 'script':
@@ -66,9 +70,13 @@ dingvm.envFunc.NodeProto_nodeName_get = function NodeProto_nodeName_get() {
     }
 };
 dingvm.envFunc.NodeProto_nodeType_get = function NodeProto_nodeType_get() {
+    if (Object.prototype.toString.call(this) === '[object Attr]') {
+        return 2
+    }
+
     if (this === document)
         return 9
-    switch (this.jquery[0].type) {
+    switch (this.jquery[0].type.toLowerCase()) {
         case 'tag':
             return 1
         case 'script':
@@ -83,7 +91,7 @@ dingvm.envFunc.NodeProto_parentNode_get = function NodeProto_parentNode_get() {
     // debugger
     let temp = this.jquery.parent()
     let result = {}
-    switch (temp[0].name) {
+    switch (temp[0].name.toLowerCase()) {
         case 'input':
             Object.setPrototypeOf(result, HTMLInputElement.prototype)
             break
@@ -122,7 +130,7 @@ dingvm.envFunc.NodeProto_parentElement_get = function () {
 
     let temp = this.jquery.parent()
     let result = {}
-    switch (temp[0].name) {
+    switch (temp[0].name.toLowerCase()) {
         case 'input':
             Object.setPrototypeOf(result, HTMLInputElement.prototype)
             break
@@ -159,9 +167,9 @@ dingvm.envFunc.NodeProto_firstChild_get = function () {
     let result = {}
     result.jquery = firstChild
 
-    switch (result.jquery[0].type.toLocaleLowerCase()) {
+    switch (result.jquery[0].type.toLowerCase()) {
         case 'tag':
-            switch (result.jquery[0].name.toLocaleLowerCase()) {
+            switch (result.jquery[0].name.toLowerCase()) {
                 case 'input':
                     Object.setPrototypeOf(result, HTMLInputElement.prototype)
                     break
@@ -172,12 +180,12 @@ dingvm.envFunc.NodeProto_firstChild_get = function () {
                     Object.setPrototypeOf(result, HTMLSpanElement.prototype)
                     break
                 default:
-                    console.log(`NodeProto_firstChild_get_${result.jquery[0].name.toLocaleLowerCase()}未实现`);
+                    console.log(`NodeProto_firstChild_get_${result.jquery[0].name}未实现`);
                     debugger
             }
             break
         case 'script':
-            switch (result.jquery[0].name.toLocaleLowerCase()) {
+            switch (result.jquery[0].name.toLowerCase()) {
                 case 'script':
                     Object.setPrototypeOf(result, HTMLScriptElement.prototype)
                     break
@@ -202,7 +210,7 @@ dingvm.envFunc.NodeProto_childNodes_get = function () {
         let temp = $(children[i])
         let tagName = temp[0].name
         let temp2 = {}
-        switch (tagName) {
+        switch (tagName.toLowerCase()) {
             case 'div':
                 Object.setPrototypeOf(temp2, HTMLDivElement.prototype)
                 break
@@ -222,7 +230,7 @@ dingvm.envFunc.NodeProto_childNodes_get = function () {
                 Object.setPrototypeOf(temp2, HTMLMetaElement.prototype)
                 break
             default:
-                console.log(`DocumentProto_getElementsByTagName_${tagName}未实现`);
+                console.log(`NodeProto_getElementsByTagName_${tagName}未实现`);
                 debugger;
         }
         temp2.jquery = temp
@@ -237,3 +245,18 @@ dingvm.envFunc.NodeProto_textContent_get = function () {
 dingvm.envFunc.NodeProto_textContent_set = function (text) {
     this.jquery.text(text)
 };
+dingvm.envFunc.NodeProto_nodeValue_get = function () {
+    if (this.jquery) {
+        return this.jquery.text()
+    }
+    return dingvm.toolsFunc.getProtoArr.call(this, 'nodeValue')
+};
+dingvm.envFunc.NodeProto_baseURI_get = function () {
+    return location.href
+};
+dingvm.envFunc.NodeProto_ownerDocument_get = function () {
+    return document
+};
+dingvm.envFunc.NodeProto_textContent_get = function () {
+    return dingvm.toolsFunc.get_protoOwnAttr.call(this, 'textContent')
+}

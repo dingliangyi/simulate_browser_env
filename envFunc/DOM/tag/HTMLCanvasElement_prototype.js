@@ -24,7 +24,7 @@ dingvm.envFunc.HTMLCanvasElementProto_getContext = function HTMLCanvasElementPro
     }
 
     let context = {}
-    switch (contextType) {
+    switch (contextType.toLowerCase()) {
         case '2d':
             context.getedContext = this.jquery.canvas.getContext('2d')
             Object.setPrototypeOf(context, CanvasRenderingContext2D.prototype)

@@ -370,6 +370,7 @@ window.PERSISTENT = 1;
 //* 凑数 检测了window属性个数
 window.isSecureContext = true;
 window.originAgentCluster = false;
+window.frameElement = null;
 //* on···事件
 window.onsearch = null;
 window.onappinstalled = null;

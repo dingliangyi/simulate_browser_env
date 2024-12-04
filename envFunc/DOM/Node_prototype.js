@@ -1,4 +1,4 @@
-dingvm.envFunc.NodeProto_appendChild = function NodeProto_appendChild(node) {
+dingvm.envFunc.NodeProto_appendChild = function (node) {
     // debugger;
     if (typeof node === 'string') {
         throw TypeError("Failed to execute 'appendChild' on 'Node': parameter 1 is not of type 'Node'")
@@ -8,7 +8,7 @@ dingvm.envFunc.NodeProto_appendChild = function NodeProto_appendChild(node) {
 
     return node
 };
-dingvm.envFunc.NodeProto_nextSibling_get = function NodeProto_nextSibling_get() {
+dingvm.envFunc.NodeProto_nextSibling_get = function () {
     // debugger
     let result = {}
     let nextSibling = this.jquery[0].nextSibling
@@ -51,7 +51,7 @@ dingvm.envFunc.NodeProto_nextSibling_get = function NodeProto_nextSibling_get() 
 
     return result
 };
-dingvm.envFunc.NodeProto_nodeName_get = function NodeProto_nodeName_get() {
+dingvm.envFunc.NodeProto_nodeName_get = function () {
     if (Object.prototype.toString.call(this) === '[object Attr]') {
         return dingvm.toolsFunc.getProtoArr.call(this, 'name')
     }
@@ -69,7 +69,7 @@ dingvm.envFunc.NodeProto_nodeName_get = function NodeProto_nodeName_get() {
             debugger
     }
 };
-dingvm.envFunc.NodeProto_nodeType_get = function NodeProto_nodeType_get() {
+dingvm.envFunc.NodeProto_nodeType_get = function () {
     if (Object.prototype.toString.call(this) === '[object Attr]') {
         return 2
     }
@@ -87,7 +87,7 @@ dingvm.envFunc.NodeProto_nodeType_get = function NodeProto_nodeType_get() {
             debugger
     }
 };
-dingvm.envFunc.NodeProto_parentNode_get = function NodeProto_parentNode_get() {
+dingvm.envFunc.NodeProto_parentNode_get = function () {
     // debugger
     let temp = this.jquery.parent()
     let result = {}
@@ -115,7 +115,7 @@ dingvm.envFunc.NodeProto_parentNode_get = function NodeProto_parentNode_get() {
 
     return result
 };
-dingvm.envFunc.NodeProto_removeChild = function NodeProto_removeChild(node) {
+dingvm.envFunc.NodeProto_removeChild = function (node) {
     // debugger
     let oldNode = node
     node.jquery.remove()
@@ -158,7 +158,7 @@ dingvm.envFunc.NodeProto_parentElement_get = function () {
     return result
 };
 dingvm.envFunc.NodeProto_firstChild_get = function () {
-    debugger
+    // debugger
     let firstChild_ = this.jquery[0].firstChild
     if (!firstChild_) {
         return null

@@ -1,4 +1,4 @@
-dingvm.envFunc.DocumentProto_getElementById = function DocumentProto_getElementById() {
+dingvm.envFunc.DocumentProto_getElementById = function () {
     // debugger
     let id = arguments[0];
     const temp = $(`#${id}`);
@@ -36,7 +36,7 @@ dingvm.envFunc.DocumentProto_getElementById = function DocumentProto_getElementB
     }
     return result
 };
-dingvm.envFunc.DocumentProto_createElement = function createElement(tagName) {
+dingvm.envFunc.DocumentProto_createElement = function (tagName) {
     // debugger;
     let result = {}
     switch (tagName.toLowerCase()) {
@@ -55,7 +55,7 @@ dingvm.envFunc.DocumentProto_createElement = function createElement(tagName) {
             break
         case 'canvas':
             result.jquery = get_document('<canvas></canvas>')('canvas')
-            result.jquery.canvas = createCanvas(300, 150)
+            // result.jquery.canvas = createCanvas(300, 150)
             Object.setPrototypeOf(result, HTMLCanvasElement.prototype)
             break
         case 'img':
@@ -86,6 +86,10 @@ dingvm.envFunc.DocumentProto_createElement = function createElement(tagName) {
             result.jquery = get_document('<iframe></iframe>')('iframe')
             Object.setPrototypeOf(result, HTMLIFrameElement.prototype)
             break
+        case 'i':
+            result.jquery = get_document('<i></i>')('i')
+            Object.setPrototypeOf(result, HTMLElement.prototype)
+            break
         default:
             console.log(`Document_createElement_${tagName}未实现`);
             debugger;
@@ -98,7 +102,7 @@ dingvm.envFunc.DocumentProto_createElement = function createElement(tagName) {
 
     return result
 };
-dingvm.envFunc.DocumentProto_body_get = function DocumentProto_body_get() {
+dingvm.envFunc.DocumentProto_body_get = function () {
     // debugger
     let result = {}
     const temp = $('body')
@@ -112,7 +116,7 @@ dingvm.envFunc.DocumentProto_body_get = function DocumentProto_body_get() {
 
     return result
 };
-dingvm.envFunc.DocumentProto_getElementsByTagName = function DocumentProto_getElementsByTagName(tagName) {
+dingvm.envFunc.DocumentProto_getElementsByTagName = function (tagName) {
     // debugger
     let temp = $(tagName)
     let result = []
@@ -159,12 +163,16 @@ dingvm.envFunc.DocumentProto_getElementsByTagName = function DocumentProto_getEl
             writable: true,
             value: $(temp[i])
         })
+        if (dingvm.config.proxy_tag) {
+            let name = `DocumentProto_getElementsByTagName_${tagName}`
+            temp2 = dingvm.toolsFunc.createProxyObj(temp2, name)
+        }
         result.push(temp2)
     }
     Object.setPrototypeOf(result, HTMLCollection.prototype)
     return result
 };
-dingvm.envFunc.DocumentProto_write = function DocumentProto_write(html_str) {
+dingvm.envFunc.DocumentProto_write = function (html_str) {
     // debugger
     let script_position = document.script_position
     let parsed_html = $.parseHTML(html_str)
@@ -175,7 +183,7 @@ dingvm.envFunc.DocumentProto_write = function DocumentProto_write(html_str) {
         $('body').append(parsed_html)
     }
 };
-dingvm.envFunc.DocumentProto_cookie_get = function DocumentProto_cookie_get() {
+dingvm.envFunc.DocumentProto_cookie_get = function () {
     let jsonCookie = dingvm.memory.globalVar.jsonCookie;
     let tempCookie = "";
     for (const key in jsonCookie) {
@@ -187,8 +195,9 @@ dingvm.envFunc.DocumentProto_cookie_get = function DocumentProto_cookie_get() {
     }
     return tempCookie.slice(0, -2);
 };
-dingvm.envFunc.DocumentProto_cookie_set = function DocumentProto_cookie_set() {
-    console.log('cookie: ', arguments[0])
+dingvm.envFunc.DocumentProto_cookie_set = function (value) {
+
+    console.log(`set ${value.split(';')[0].slice(14).length} cookie:`, value)
 
     let cookieValue = arguments[0];
     if (cookieValue === "") {

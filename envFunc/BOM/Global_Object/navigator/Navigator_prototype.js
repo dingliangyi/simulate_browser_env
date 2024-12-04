@@ -1,7 +1,7 @@
-dingvm.envFunc.NavigatorProto_plugins_get = function NavigatorProto_plugins_get() {
+dingvm.envFunc.NavigatorProto_plugins_get = function () {
     return dingvm.memory.globalVar.pluginArray;
 };
-dingvm.envFunc.NavigatorProto_mimeTypes_get = function NavigatorProto_mimeTypes_get() {
+dingvm.envFunc.NavigatorProto_mimeTypes_get = function () {
     return dingvm.memory.globalVar.mimeTypeArray;
 };
 dingvm.envFunc.NavigatorProto_getBattery = function () {
@@ -146,16 +146,28 @@ dingvm.envFunc.NavigatorProto_sendBeacon = function (url, data) {
 };
 dingvm.envFunc.NavigatorProto_javaEnabled = function () {
     return false
-}
+};
 dingvm.envFunc.NavigatorProto_userAgentData_get = function () {
     let obj = {}
     Object.setPrototypeOf(obj, NavigatorUAData.prototype)
 
     return obj
-}
+};
 dingvm.envFunc.NavigatorProto_xr_get = function () {
     let obj = {}
     Object.setPrototypeOf(obj, XRSystem.prototype)
+
+    return obj
+};
+dingvm.envFunc.NavigatorProto_mediaDevices_get = function () {
+    let obj = {}
+    Object.setPrototypeOf(obj, MediaDevices.prototype)
+
+    return obj
+}
+dingvm.envFunc.NavigatorProto_locks_get = function () {
+    let obj = {}
+    Object.setPrototypeOf(obj, LockManager.prototype)
 
     return obj
 }

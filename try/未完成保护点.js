@@ -4,6 +4,7 @@ Object.getOwnPropertyDescriptors(HTMLDivElement)
 //todo WebSocket
 
 //todo vm2特征 window.VM2_INTERNAL_STATE_DO_NOT_USE_OR_PROGRAM_WILL_FAIL
+// todo VM2_INTERNAL_STATE_DO_NOT_USE_OR_PROGRAM_WILL_FAIL.handleException
 
 //todo https://blog.csdn.net/Xzike/article/details/124944923
 

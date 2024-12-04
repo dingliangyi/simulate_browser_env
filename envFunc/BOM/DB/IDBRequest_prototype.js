@@ -14,14 +14,18 @@ dingvm.envFunc.IDBRequestProto_readyState_get = function () {
     return this['request'].readyState
 };
 dingvm.envFunc.IDBRequestProto_onsuccess_get = function () {
-    return this['request'].onsuccess
+    // debugger
+    // return this['request'].onsuccess
 };
 dingvm.envFunc.IDBRequestProto_onsuccess_set = function (value) {
-    this['request'].onsuccess = arguments[0]
+    // debugger
+    // this['request'].onsuccess = arguments[0]
 };
 dingvm.envFunc.IDBRequestProto_onerror_get = function () {
-    return this['request'].onerror
+    // debugger
+    // return this['request'].onerror
 };
 dingvm.envFunc.IDBRequestProto_onerror_set = function (value) {
-    this['request'].onerror = arguments[0]
+    // debugger
+    // this['request'].onerror = arguments[0]
 };

@@ -10,18 +10,25 @@ const {indexedDB: indexedDB_} = require("fake-indexeddb");
 
 const parser = require("@babel/parser");
 const generator = require("@babel/generator").default;
+const traverse = require("@babel/traverse").default;
+const types = require("@babel/types");
 const {minify} = require("terser");
 
+const {get_document_all} = require('../../node_plugin/build/Release/document_all.node')
 const {read_html_code} = require('../../env/get_html_code')
 const {get_document, get_env_code, get_tools_code, get_file} = require('../../readfile')
 //> --------------------------------------------------------------------------------------------
 
-const name = "test";
+// 名称
+const name = "test"; //! 改1
+// 日志
 fs.writeFileSync(`./log.txt`, "");
+// 加载网页html并解析
 const html_code = read_html_code();
 $ = get_document(html_code);
 //> --------------------------------------------------------------------------------------------
 
+//* 套娃iframeEnv
 const createIframeEnv = function () {
     let jsCode2 = get_file('env', "iframeEnv")
 
@@ -43,6 +50,7 @@ const _ = {
 }
 //> --------------------------------------------------------------------------------------------
 
+// 创建虚拟机实例
 const vm = new VM({
     sandbox: {
         fs,
@@ -58,18 +66,60 @@ const vm = new VM({
         clearTimeout: clearTimeout,
         _,
         CryptoJS,
-        ldObj,
+        get_document_all,
         createCanvas,
         getContextWebgl,
         indexedDB_,
-        // html_code,
-        // cheerio
     }
 });
 //> --------------------------------------------------------------------------------------------
 
-let str_ = fs.readFileSync('./output.js', {encoding: 'utf8'});
+let str_ = fs.readFileSync('./generator/output_not_run.js', {encoding: 'utf8'});
+console.log(str_.length)
 let ast = parser.parse(str_, {sourceType: 'script'});
+traverse(ast, {
+    DebuggerStatement(path) {
+        path.remove()
+    },
+    CallExpression(path) {
+        if (
+            types.isMemberExpression(path.node.callee) &&
+            types.isIdentifier(path.node.callee.object, {name: "console"})
+        ) {
+            // console.log(path + '')
+            path.remove()
+        }
+    },
+    Identifier(path) {
+        const {parent, parentPath} = path;
+        if (path.node.name === 'dingvm') {
+            path.node.name = 'dv'
+        } else if (path.node.name === 'envFunc') {
+            path.node.name = 'eF'
+        } else if (path.node.name === 'toolsFunc') {
+            path.node.name = 'tF'
+        }
+        if (
+            types.isMemberExpression(parent) &&
+            parent.object.name !== 'Object' &&
+            path.node.name === 'defineProperty'
+        ) {
+            // console.log(parentPath + '')
+            path.node.name = 'dP'
+        }
+        if (/.*?Proto_/.test(path.node.name)) {
+            path.node.name = path.node.name.replace(/Proto_/, 'P_')
+            // console.log(path + '')
+        }
+    },
+    Literal(path) {
+        const {value} = path.node;
+        if (/.*Proto$/.test(value)) {
+            path.node.value = value.replace(/Proto$/, 'P')
+            // console.log(path + '')
+        }
+    }
+})
 str_ = generator(ast, {
     comments: false,
     compact: true,
@@ -79,54 +129,12 @@ str_ = generator(ast, {
         minimal: true
     }
 }).code;
-
-async function minifyCode() {
-    str_ = await minify(str_, {
-        ecma: 6,
-        compress: {
-            unsafe_methods: true, // 将 { m: function(){} } 转换为 { m(){} }
-            drop_console: true,  // 去除 console.* 语句
-            arguments: true, // 尽可能将 arguments[index] 替换为函数参数名称
-            booleans_as_integers: true, // 将布尔值 true 和 false 替换为 1 和 0
-            global_defs: {}, // 替换自定义全局变量
-            inline: false, // 将函数内联
-            keep_classnames: true, // 保留类名
-            keep_fnames: true, // 保留函数名
-            keep_infinity: true, // 保留 Infinity
-            negate_iife: false, // 不对 IIFE 进行取反
-            passes: 2, // 运行压缩的最大次数
-            unused: false, //  删除未引用的函数和变量
-            loops: false, // 优化循环
-        },
-        mangle: {
-            keep_classnames: true,
-            keep_fnames: true,
-            reserved: [],
-            toplevel: true,
-            properties: {
-                undeclared: false,
-                reserved: [],
-                keep_quoted: true,
-            }
-        },
-        output: {
-            comments: false,  // 是否保留注释
-        },
-        keep_classnames: true,
-        keep_fnames: true,
-    });
-    console.log(str_.code.length)
-}
-
-minifyCode().then(r => {
-});
+fs.writeFileSync('./generator/compress.js', str_, {encoding: 'utf8'});
+console.log(str_.length)
 const script = new VMScript(str_, "./debugJS.js");
+let start_time = new Date().getTime();
 
-console.log_ = console.log
-start_time = new Date().getTime();
+vm.run(script)
 
-// console.log_(eval(str_))
-// vm.run(script)
-
-end_time = new Date().getTime();
-console.log_((end_time - start_time) / 1000)
+let end_time = new Date().getTime();
+console.log((end_time - start_time) / 1000)

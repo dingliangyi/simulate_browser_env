@@ -560,7 +560,8 @@ dingvm.toolsFunc.defineProperty(window, "WheelEvent", {
 dingvm.toolsFunc.defineProperty(window, "WebSocket", {
     configurable: true,
     enumerable: false,
-    writable: true, value: function () {
+    writable: true,
+    value: function () {
         return dingvm.toolsFunc.dispatch(this, window, "window", "WebSocket", arguments)
     }
 });
@@ -1275,7 +1276,8 @@ dingvm.toolsFunc.defineProperty(window, "SVGPoint", {
 dingvm.toolsFunc.defineProperty(window, "SVGPatternElement", {
     configurable: true,
     enumerable: false,
-    writable: true, value: function () {
+    writable: true,
+    value: function () {
         return dingvm.toolsFunc.dispatch(this, window, "window", "SVGPatternElement", arguments)
     }
 });
@@ -2213,7 +2215,8 @@ dingvm.toolsFunc.defineProperty(window, "OscillatorNode", {
 dingvm.toolsFunc.defineProperty(window, "OffscreenCanvasRenderingContext2D", {
     configurable: true,
     enumerable: false,
-    writable: true, value: function () {
+    writable: true,
+    value: function () {
         return dingvm.toolsFunc.dispatch(this, window, "window", "OffscreenCanvasRenderingContext2D", arguments)
     }
 });
@@ -3627,7 +3630,8 @@ dingvm.toolsFunc.defineProperty(window, "Comment", {
 dingvm.toolsFunc.defineProperty(window, "CloseEvent", {
     configurable: true,
     enumerable: false,
-    writable: true, value: function () {
+    writable: true,
+    value: function () {
         return dingvm.toolsFunc.dispatch(this, window, "window", "CloseEvent", arguments)
     }
 });

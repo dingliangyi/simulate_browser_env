@@ -5,7 +5,14 @@ dingvm.envFunc.window_self_get = function () {
     return window
 };
 dingvm.envFunc.window_name_get = function () {
+    let result = dingvm.toolsFunc.getProtoArr.call(this, 'name');
+    if (result) {
+        return result;
+    }
     return ''
+};
+dingvm.envFunc.window_name_set = function () {
+    dingvm.toolsFunc.setProtoArr.call(this, 'name')
 };
 dingvm.envFunc.window_indexedDB_get = function () {
     let obj = {}
@@ -153,12 +160,12 @@ dingvm.envFunc.window_matchMedia = function (matchMedia_str) {
     return obj
 };
 dingvm.envFunc.window_webkitRequestFileSystem = function (storage_type, space_size, success_callback, error_callback) {
-    debugger
+    // debugger
     try {
         let fs = {
             root: {
                 getFile(path, param, callback) {
-                    console.log(`调用了 getFile(webkitRequestFileSystem) 路径：${path} 参数：${param} 回调：${callback.toString()}`)
+                    // console.log(`调用了 getFile(webkitRequestFileSystem) 路径：${path} 参数：${param} 回调：${callback.toString()}`)
                 }
             }
         }
@@ -166,5 +173,7 @@ dingvm.envFunc.window_webkitRequestFileSystem = function (storage_type, space_si
     } catch (e) {
         error_callback({})
     }
-    console.log(`调用了 window_webkitRequestFileSystem 存储类型：${storage_type} 空间大小：${space_size} 成功回调：${success_callback.toString()} 失败回调：${error_callback.toString()}`)
+    // console.log(`调用了 window_webkitRequestFileSystem 存储类型：${storage_type} 空间大小：${space_size} 成功回调：${success_callback.toString()} 失败回调：${error_callback.toString()}`)
+}
+dingvm.envFunc.window_WebSocket = function () {
 }

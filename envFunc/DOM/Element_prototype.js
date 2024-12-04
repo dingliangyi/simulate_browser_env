@@ -1,20 +1,21 @@
-dingvm.envFunc.ElementProto_id_get = function ElementProto_id_get() {
+dingvm.envFunc.ElementProto_id_get = function () {
     return this.jquery.attr('id')
 };
-dingvm.envFunc.ElementProto_id_set = function ElementProto_id_set(value) {
+dingvm.envFunc.ElementProto_id_set = function (value) {
     if (this instanceof HTMLFormElement) {
         // debugger
         dingvm.memory.globalVar.window.filter_proto_attr.push(value)
         window.__proto__.__proto__[value] = this
         //! 注意在vm2运行时,不能过window.hasOwnProperty()检测
+        //! 或通过代理 WindowProperties 来解决
     }
 
     this.jquery.attr('id', value)
 };
-dingvm.envFunc.ElementProto_innerHTML_get = function ElementProto_innerHTML_get() {
+dingvm.envFunc.ElementProto_innerHTML_get = function () {
     return this.jquery.html()
 };
-dingvm.envFunc.ElementProto_innerHTML_set = function ElementProto_innerHTML_set(value) {
+dingvm.envFunc.ElementProto_innerHTML_set = function (value) {
     this.jquery.empty()
     let match = value.match(/<\/([a-zA-Z]+)>/)
     if (match && match.length === 2) {
@@ -23,10 +24,10 @@ dingvm.envFunc.ElementProto_innerHTML_set = function ElementProto_innerHTML_set(
     }
     this.jquery.append(value)
 };
-dingvm.envFunc.ElementProto_outerHTML_get = function ElementProto_outerHTML_get() {
+dingvm.envFunc.ElementProto_outerHTML_get = function () {
     return this.jquery.toString()
 };
-dingvm.envFunc.ElementProto_append = function ElementProto_append(value) {
+dingvm.envFunc.ElementProto_append = function (value) {
     // debugger;
     for (let i = 0; i < arguments.length; i++) {
         let node = arguments[i]
@@ -37,14 +38,14 @@ dingvm.envFunc.ElementProto_append = function ElementProto_append(value) {
         }
     }
 };
-dingvm.envFunc.ElementProto_getAttribute = function ElementProto_getAttribute(name) {
+dingvm.envFunc.ElementProto_getAttribute = function (name) {
     // debugger
     return this.jquery.attr(name) === undefined ? null : this.jquery.attr(name)
 };
-dingvm.envFunc.ElementProto_setAttribute = function ElementProto_setAttribute(name, value) {
+dingvm.envFunc.ElementProto_setAttribute = function (name, value) {
     this.jquery.attr(name, value);
 };
-dingvm.envFunc.ElementProto_children_get = function ElementProto_children_get() {
+dingvm.envFunc.ElementProto_children_get = function () {
     // debugger
     let children = this.jquery.children()
     let result = []

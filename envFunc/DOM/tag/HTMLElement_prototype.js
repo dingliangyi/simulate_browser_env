@@ -1,10 +1,10 @@
-dingvm.envFunc.HTMLElementProto_innerText_get = function HTMLElementProto_innerText_get() {
+dingvm.envFunc.HTMLElementProto_innerText_get = function () {
     return this.jquery.text()
 };
-dingvm.envFunc.HTMLElementProto_innerText_set = function HTMLElementProto_innerText_set(value) {
+dingvm.envFunc.HTMLElementProto_innerText_set = function (value) {
     this.jquery.text(value);
 };
-dingvm.envFunc.HTMLElementProto_style_get = function HTMLElementProto_style_get() {
+dingvm.envFunc.HTMLElementProto_style_get = function () {
     // debugger
     // let style_str = this.jquery.attr('style')
     let style_obj = this.jquery.css()
@@ -56,10 +56,10 @@ dingvm.envFunc.HTMLElementProto_style_get = function HTMLElementProto_style_get(
 
     return style_
 };
-dingvm.envFunc.HTMLElementProto_style_set = function HTMLElementProto_style_set(value) {
+dingvm.envFunc.HTMLElementProto_style_set = function (value) {
     debugger
 };
-dingvm.envFunc.HTMLElementProto_offsetWidth_get = function HTMLElementProto_offsetWidth_get() {
+dingvm.envFunc.HTMLElementProto_offsetWidth_get = function () {
     let fontFamily = this.style.fontFamily
 
     if (['monospace', 'sans-serif', 'serif'].includes(fontFamily)) {
@@ -74,10 +74,10 @@ dingvm.envFunc.HTMLElementProto_offsetWidth_get = function HTMLElementProto_offs
         return 111
     }
 };
-dingvm.envFunc.HTMLElementProto_offsetWidth_set = function HTMLElementProto_offsetWidth_set(value) {
+dingvm.envFunc.HTMLElementProto_offsetWidth_set = function (value) {
     return dingvm.toolsFunc.setProtoArr.call(this, 'offsetWidth', value)
 };
-dingvm.envFunc.HTMLElementProto_offsetHeight_get = function HTMLElementProto_offsetHeight_get() {
+dingvm.envFunc.HTMLElementProto_offsetHeight_get = function () {
     let fontFamily = this.style.fontFamily
 
     if (['monospace', 'sans-serif', 'serif'].includes(fontFamily)) {
@@ -92,7 +92,7 @@ dingvm.envFunc.HTMLElementProto_offsetHeight_get = function HTMLElementProto_off
         return 222
     }
 };
-dingvm.envFunc.HTMLElementProto_offsetHeight_set = function HTMLElementProto_offsetHeight_set(value) {
+dingvm.envFunc.HTMLElementProto_offsetHeight_set = function (value) {
     return dingvm.toolsFunc.setProtoArr.call(this, 'offsetHeight', value)
 };
 dingvm.envFunc.HTMLElementProto_accessKey_get = function () {
@@ -109,12 +109,14 @@ dingvm.envFunc.HTMLElementProto_onload_set = function (value) {
 };
 dingvm.envFunc.HTMLElementProto_onmouseenter_get = function () {
     debugger
+    return null
 };
 dingvm.envFunc.HTMLElementProto_onmouseenter_set = function (value) {
     dingvm.toolsFunc.setProtoArr.call(this, 'onmouseenter', value)
 };
 dingvm.envFunc.HTMLElementProto_onresize_get = function () {
     debugger
+    return null
 };
 dingvm.envFunc.HTMLElementProto_onresize_set = function (value) {
     dingvm.toolsFunc.setProtoArr.call(this, 'onresize', value)

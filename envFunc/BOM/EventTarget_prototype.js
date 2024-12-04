@@ -1,4 +1,4 @@
-dingvm.envFunc.EventTargetProto_addEventListener = function EventTargetProto_addEventListener(type, listener, useCapture) {
+dingvm.envFunc.EventTargetProto_addEventListener = function (type, listener, useCapture) {
     let event = {
         "self": this,
         "type": type,
@@ -22,7 +22,7 @@ dingvm.envFunc.EventTargetProto_addEventListener = function EventTargetProto_add
 
     this.listeners[type].push(listener)
 };
-dingvm.envFunc.EventTargetProto_removeEventListener = function EventTargetProto_removeEventListener(type, listener, useCapture) {
+dingvm.envFunc.EventTargetProto_removeEventListener = function (type, listener, useCapture) {
     if (!(type in this.listeners)) {
         return
     }
@@ -35,7 +35,7 @@ dingvm.envFunc.EventTargetProto_removeEventListener = function EventTargetProto_
         }
     }
 };
-dingvm.envFunc.EventTargetProto_dispatchEvent = function EventTargetProto_dispatchEvent(event) {
+dingvm.envFunc.EventTargetProto_dispatchEvent = function (event) {
     if (!(event.type in this.listeners)) {
         return;
     }

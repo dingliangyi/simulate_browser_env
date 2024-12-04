@@ -1,4 +1,5 @@
 dingvm.envFunc.IDBFactoryProto_open = function (databaseName, version) {
+    // debugger
     if (databaseName === undefined) {
         dingvm.toolsFunc.throwError('TypeError', 'Failed to execute \'open\' on \'IDBFactory\': 1 argument required, but only 0 present.')
     }

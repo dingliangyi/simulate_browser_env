@@ -96,14 +96,14 @@ dingvm.toolsFunc.defineProperty(window, "indexedDB", {
     },
     set: undefined
 });
-dingvm.toolsFunc.defineProperty(window, "openDatabase", {
-    configurable: true,
-    enumerable: true,
-    writable: true,
-    value: function (name, version, displayName, estimatedSize) {
-        return dingvm.toolsFunc.dispatch(this, window, "window", "openDatabase", arguments)
-    }
-});
+// dingvm.toolsFunc.defineProperty(window, "openDatabase", {
+//     configurable: true,
+//     enumerable: true,
+//     writable: true,
+//     value: function (name, version, displayName, estimatedSize) {
+//         return dingvm.toolsFunc.dispatch(this, window, "window", "openDatabase", arguments)
+//     }
+// });
 dingvm.toolsFunc.defineProperty(window, "getComputedStyle", {
     configurable: true,
     enumerable: true,
@@ -252,6 +252,87 @@ dingvm.toolsFunc.defineProperty(window, "webkitRequestFileSystem", {
     enumerable: true,
     writable: true, value: function () {
         return dingvm.toolsFunc.dispatch(this, window, "window", "webkitRequestFileSystem", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(window, "Gamepad", {
+    configurable: true,
+    enumerable: true,
+    writable: true, value: function () {
+        return dingvm.toolsFunc.dispatch(this, window, "window", "Gamepad", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(window, "clientInformation", {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+        return navigator
+    },
+    // set: function () {
+    //     return dingvm.toolsFunc.dispatch(this, window, "window", "clientInformation_set", arguments)
+    // }
+});
+dingvm.toolsFunc.defineProperty(window, "Request", {
+    configurable: true,
+    enumerable: false,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, window, "window", "Request", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(window, "BeforeInstallPromptEvent", {
+    configurable: true,
+    enumerable: false,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, window, "window", "BeforeInstallPromptEvent", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(window, "TextTrackList", {
+    configurable: true,
+    enumerable: false,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, window, "window", "TextTrackList", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(window, "OffscreenCanvasRenderingContext2D", {
+    configurable: true,
+    enumerable: false,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, window, "window", "OffscreenCanvasRenderingContext2D", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(window, "Notification", {
+    configurable: true,
+    enumerable: false,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, window, "window", "Notification", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(window, "CloseEvent", {
+    configurable: true,
+    enumerable: false,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, window, "window", "CloseEvent", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(window, "SVGPatternElement", {
+    configurable: true,
+    enumerable: false,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, window, "window", "SVGPatternElement", arguments)
+    }
+});
+dingvm.toolsFunc.defineProperty(window, "WebSocket", {
+    configurable: true,
+    enumerable: false,
+    writable: true,
+    value: function () {
+        return dingvm.toolsFunc.dispatch(this, window, "window", "WebSocket", arguments)
     }
 });
 

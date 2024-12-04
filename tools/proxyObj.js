@@ -1,11 +1,11 @@
 // 需要代理的对象(先开始全局对象)
-// localStorage = dingvm.toolsFunc.proxy(localStorage, "localStorage");
-// sessionStorage = dingvm.toolsFunc.proxy(sessionStorage, "sessionStorage");
-// location = dingvm.toolsFunc.proxy(location, "location");
-// document = dingvm.toolsFunc.proxy(document, "document");
-// navigator = dingvm.toolsFunc.proxy(navigator, "navigator");
-// history = dingvm.toolsFunc.proxy(history, "history");
-// screen = dingvm.toolsFunc.proxy(screen, "screen");
+localStorage = dingvm.toolsFunc.proxy(localStorage, "localStorage");
+sessionStorage = dingvm.toolsFunc.proxy(sessionStorage, "sessionStorage");
+location = dingvm.toolsFunc.proxy(location, "location");
+document = dingvm.toolsFunc.proxy(document, "document");
+navigator = dingvm.toolsFunc.proxy(navigator, "navigator");
+history = dingvm.toolsFunc.proxy(history, "history");
+screen = dingvm.toolsFunc.proxy(screen, "screen");
 frames = parent = top = self = window = dingvm.toolsFunc.proxy(window, "window");
 
 

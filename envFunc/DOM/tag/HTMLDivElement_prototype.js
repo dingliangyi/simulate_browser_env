@@ -1,4 +1,4 @@
-dingvm.envFunc.HTMLDivElementProto_align_get = function HTMLDivElementProto_align_get() {
+dingvm.envFunc.HTMLDivElementProto_align_get = function () {
     let if_ = dingvm.toolsFunc.get_protoOwnAttr.call(this, 'align')
     if (if_) {
         return if_
@@ -6,7 +6,7 @@ dingvm.envFunc.HTMLDivElementProto_align_get = function HTMLDivElementProto_alig
         return ""
     }
 };
-dingvm.envFunc.HTMLDivElementProto_align_set = function HTMLDivElementProto_align_set() {
+dingvm.envFunc.HTMLDivElementProto_align_set = function () {
     let value = arguments[0];
     return dingvm.toolsFunc.setProtoArr.call(this, "align", value);
 };

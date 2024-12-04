@@ -17,7 +17,7 @@ dingvm.envFunc.AudioBufferProto_copyToChannel = function () {
 dingvm.envFunc.AudioBufferProto_getChannelData = function () {
     let array = new Float32Array(5500);
     for (let i = 4500; i < 5050; i++) {
-        let random_ = _.random(0.25);
+        let random_ = _.random(0.25, true);
         if (i % 3 === 0) {
             array[i] = -random_;
         } else {

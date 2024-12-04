@@ -1,6 +1,7 @@
 // MutationObserver对象
-MutationObserver = function MutationObserver() {
-    return dingvm.toolsFunc.throwError("TypeError", "Failed to construct 'MutationObserver': 1 argument required, but only 0 present.")
+MutationObserver = function MutationObserver(callback) {
+    if (!(this instanceof MutationObserver) || typeof callback !== 'function')
+        return dingvm.toolsFunc.throwError("TypeError", "Failed to construct 'MutationObserver': 1 argument required, but only 0 present.")
 };
 dingvm.toolsFunc.safe_constructor_prototype(MutationObserver, "MutationObserver");
 dingvm.toolsFunc.defineProperty(MutationObserver.prototype, "disconnect", {

@@ -1,7 +1,7 @@
-dingvm.envFunc.HTMLMetaElementProto_content_get = function HTMLMetaElementProto_content_get() {
+dingvm.envFunc.HTMLMetaElementProto_content_get = function () {
     return dingvm.toolsFunc.get_protoOwnAttr.call(this, 'content')
 };
-dingvm.envFunc.HTMLMetaElementProto_content_set = function HTMLMetaElementProto_content_set() {
+dingvm.envFunc.HTMLMetaElementProto_content_set = function () {
     let value = arguments[0];
     return dingvm.toolsFunc.setProtoArr.call(this, "content", value);
 };

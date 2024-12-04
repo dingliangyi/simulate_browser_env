@@ -1,19 +1,19 @@
-dingvm.envFunc.StorageProto_setItem = function StorageProto_setItem() {
+dingvm.envFunc.StorageProto_setItem = function () {
     let keyName = arguments[0];
     this[keyName] = arguments[1];
 };
-dingvm.envFunc.StorageProto_getItem = function StorageProto_getItem() {
+dingvm.envFunc.StorageProto_getItem = function () {
     let key = arguments[0];
     if (key in this) {
         return this[key];
     }
     return null;
 };
-dingvm.envFunc.StorageProto_removeItem = function StorageProto_removeItem() {
+dingvm.envFunc.StorageProto_removeItem = function () {
     let key = arguments[0];
     delete this[key];
 };
-dingvm.envFunc.StorageProto_key = function StorageProto_key() {
+dingvm.envFunc.StorageProto_key = function () {
     let index = arguments[0];
     let i = 0;
     for (const key in this) {
@@ -24,12 +24,12 @@ dingvm.envFunc.StorageProto_key = function StorageProto_key() {
     }
     return null;
 };
-dingvm.envFunc.StorageProto_clear = function StorageProto_clear() {
+dingvm.envFunc.StorageProto_clear = function () {
     for (const key in this) {
         delete this[key];
     }
 };
-dingvm.envFunc.StorageProto_length_get = function StorageProto_length_get() {
+dingvm.envFunc.StorageProto_length_get = function () {
     let i = 0;
     for (const key in Object.getOwnPropertyDescriptors(this)) {
         i++;

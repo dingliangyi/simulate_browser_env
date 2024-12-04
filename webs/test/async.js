@@ -1,7 +1,6 @@
 //异步执行的代码
 let setIntervalEvent = dingvm.memory.asyncEvent.setInterval;
 
-
 function clone_prototype(obj) {
     let __proto__ = Object.getPrototypeOf(obj);
     return Object.assign(Object.create(__proto__), obj);
@@ -9,7 +8,8 @@ function clone_prototype(obj) {
 
 //> ---------------------------------------------------------------- 微任务
 debugger
-let promise = dingvm.memory.asyncEvent.promise;
+// let promise = dingvm.memory.asyncEvent.promise;
+let promise = undefined;
 if (promise !== undefined) {
     for (let i = 0; i < promise.length; i++) {
         promise[i]();
@@ -18,19 +18,24 @@ if (promise !== undefined) {
 
 //> ---------------------------------------------------------------- 异步任务
 debugger
-let setTimeoutEvent = dingvm.memory.asyncEvent.setTimeout;
-if (setTimeoutEvent !== undefined) {
-    for (let i = 0; i < setTimeoutEvent.length; i++) {
-        let event = setTimeoutEvent[i];
-        if (event === undefined) {
-            continue;
-        }
-        let func = event.callback;
-        let args = event.args;
-        // dingvm.node_func.setTimeout(func, ...args);
-        func(...args);
-    }
-}
+// var setTimeoutEvent = dingvm.memory.asyncEvent.setTimeout;
+// // let setTimeoutEvent = undefined;
+// if (setTimeoutEvent !== undefined) {
+//     for (let i = 0; i < setTimeoutEvent.length; i++) {
+//         let event = setTimeoutEvent[i];
+//         if (event === undefined) {
+//             continue;
+//         }
+//         let func = event.callback;
+//         let args = event.args;
+//         // dingvm.node_func.setTimeout(func, ...args);
+//         func(...args);
+//     }
+// }
+
+//> ---------------------------------------------------------------- 事件
+
+console.log(JSON.stringify(localStorage))
 
 debugger
 let listeners = dingvm.memory.asyncEvent.listener;
@@ -65,8 +70,9 @@ if (listeners !== undefined) {
                 }
             }
         }
+        continue;
         //* 鼠标事件
-        if (['click', 'mouseup', 'mousemove', 'mousedown'].includes(key)) {
+        if (['click', 'mouseup', 'mousemove', 'mousedown', 'mouseenter', 'mouseleave', 'mouseover', 'mouseout'].includes(key)) {
             let event_mouse = {
                 "isTrusted": true
             };
@@ -89,10 +95,7 @@ if (listeners !== undefined) {
                     assign(event_mousemove, mouse_data, key);
                     executeCallback(event_mousemove, key);
                 }
-
             }
         }
     }
 }
-
-debugger

@@ -26,9 +26,18 @@ function get_file(dir, name) {
     return fs.readFileSync(`./${dir}/${name}.js`) + ";\r\n";
 }
 
+function get_files(dir, names) {
+    let code = '';
+    for (let name of names) {
+        code += fs.readFileSync(`./${dir}/${name}.js`) + ";\r\n";
+    }
+    return code;
+}
+
 module.exports = {
     get_document,
     get_env_code,
     get_tools_code,
     get_file,
+    get_files
 }

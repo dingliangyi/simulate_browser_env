@@ -1,20 +1,9 @@
-同步代码开始执行 
-同步代码执行完成 
-正在执行setTimeout回调函数 
-网页加载完成 
-正在执行mousemove回调函数 
-正在执行mousemove回调函数 
-正在执行mousemove回调函数 
-正在执行mousemove回调函数 
-正在执行mousemove回调函数 
-正在执行mousemove回调函数 
-正在执行mousemove回调函数 
-正在执行mousemove回调函数 
-正在执行mousemove回调函数 
-正在执行mousemove回调函数 
-正在执行mousemove回调函数 
-正在执行mousemove回调函数 
-正在执行mousemove回调函数 
-正在执行mousedown回调函数 
-正在执行mouseup回调函数 
-NDM2LDMxMSwxMDIyNC43MDAwMDAwMDI5OCw0MzYsMzExLDEwMjI0LjcwMDAwMDAwMjk4LDQzNiwzMTEsMTAyMjQuNzAwMDAwMDAyOTgsNDM2LDMxMSwxMDIyNC43MDAwMDAwMDI5OCw0MzYsMzExLDEwMjI0LjcwMDAwMDAwMjk4LDQzNiwzMTEsMTAyMjQuNzAwMDAwMDAyOTgsNDM2LDMxMSwxMDIyNC43MDAwMDAwMDI5OCw0MzYsMzExLDEwMjI0LjcwMDAwMDAwMjk4LDI4OSwzMDgsMTA4MDYuMzk5OTk5OTk4NTEsMTgwLDIzMywxMTkzMA== 
+set 10 cookie: enable_EKyd12pLzdcZ=true; Secure 
+set 236 cookie: EKyd12pLzdcZP=0Idddd6ddddedddddIddddTEBlOgZx_itXbxljpOXK.uUIGNhv02KwQ4RZS9BpJVVBzzyGcYxkSiYPUBeO0sUiMYzVy36_HEJUEPK6k.k43odZ019MqJgz7eFGc.xd.YXh.XL2fVqslSAF5zF35Sp4qcqnx7_r8lct7TJ5CFOE2kQ7ax7NKL09VlqcBZHyBZxbErWu6fz.ElJqkCHR9waVJUHFpgcP0oFKw.eCqXzZNL; path=/; expires=Thu, 01 Aug 2024 13:41:31 GMT; Secure; SameSite=None 
+{"__#classType":"localStorage","$_YWTU":"icvuU8L0q300LNNK16YUBHozqRu3zBq3xsUKl81HYQ3","$_YVTX":"Wq"} 
+set 10 cookie: enable_EKyd12pLzdcZ=true; expires=Thu, 25 Jul 2024 13:39:51 GMT; Secure 
+set 236 cookie: EKyd12pLzdcZP=0Idddd6ddddedddddIdddd5ewY26mjfL2LaGMY1jHCLNjAvo9fWG_M.yG3hHNfx82bPyDpSvhhHJogTsTG1TFuG.DmJ95CmFqyyQi7NpgciPp5x3Zw2ezAbPNXSmAiU1h9J5WtsiSzpH0.I1iBWBI8mUXEXoaiYBBrM9h60ASfuyazfW5txK8LWE4M8_T8EMwvd20qSKD14kalYtUgldIHVJNZyE.EVTsUu0W5oDOpUG; path=/; expires=Thu, 01 Aug 2024 13:41:31 GMT; Secure; SameSite=None 
+set 236 cookie: EKyd12pLzdcZP=0Idddd6ddddedddddIdddde047WAb_oerSa_0lJXQ6z8T2Bz_qa8h8n_hg2tbPGKqvhY_aoFF8vu8B8m6xBR40GFKOup4pd93IqLh5jXo1Vzby1L4TTlV2a32HDtJ80c0A4qU2c_kuiLnz5TLEXni903m2rJqdMkxriKOxg_kF3pFEhZ3qfxtTerluFT3vozqOQ1ehwkiF2_iUFd3gCUqG4Pw_s4aS2vHIcPapWfQRaV; path=/; expires=Thu, 01 Aug 2024 13:41:31 GMT; Secure; SameSite=None 
+warn: [DocumentProto_createEvent] 参数[{"0":"TouchEvent"}] 正在执行，错误信息(补错 或 未补 或 返回undefined): Failed to execute 'createEvent' on 'Document': The provided event type ('TouchEvent') is invalid.
+set 343 cookie: EKyd12pLzdcZP=0Idddd6ddddedddddIddddub9mdkFHC2QVUBzQbQPQVUqsxq3U0ffxffNcwat58mIBnMDHTHiYTz58ggL4pXLUg24E6JkD4ZBFLBazwg8U.8cSgs6JC5iJ_kYhXyRFmOn7FvSYYjuI_jAUtcQH4IEZMILMSWPc_mHxZ1AmIOBkSvdJNVxA0XAfZVpIr9zPSIvE.drapJ6JUbOy2v6t8w8qWjQEHBvXMEIuq2cQNxLZ1ZJJKxyy3rFLiBdQFQLa9eiIg6bcPE56tm17dITaHNCiF5jNpE.4dNyVnHmaEcW9MA209VrqPX_5qdWsCmDIolYXtNFsnSZwGhyUZ3VXj6.wq; path=/; expires=Thu, 01 Aug 2024 13:41:31 GMT; Secure; SameSite=None 
+location_replace 更新url和location信息:  https://amr.sz.gov.cn/outer/entSelect/gs.html 

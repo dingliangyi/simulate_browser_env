@@ -19,29 +19,34 @@ const files_constructor_prototype = [
     "/constructor_prototype/Global_Object/navigator/Navigator.js",
     "/constructor_prototype/Global_Object/navigator/NavigatorUAData.js",
     "/constructor_prototype/Global_Object/navigator/XRSystem.js",
+    "/constructor_prototype/Global_Object/navigator/MediaDevices.js",
     //> plugin
     "/constructor_prototype/Global_Object/navigator/plugin/Plugin.js",
     "/constructor_prototype/Global_Object/navigator/plugin/PluginArray.js",
     "/constructor_prototype/Global_Object/navigator/plugin/MimeType.js",
     "/constructor_prototype/Global_Object/navigator/plugin/MimeTypeArray.js",
     //> 电池
-    "/constructor_prototype/BatteryManager.js",
+    "/constructor_prototype/Global_Object/navigator/BatteryManager.js",
+    //> 网络
+    "/constructor_prototype/Global_Object/navigator/NetworkInformation.js",
+    //> lock
+    "/constructor_prototype/Global_Object/navigator/LockManager.js",
 
     //> 离线与存储 API 原型
     "/constructor_prototype/Storage.js",
 
     //> 数据通信 API
     //> xhr
-    // "/constructor_prototype/communication/xhr/XMLHttpRequestEventTarget.js",
-    // "/constructor_prototype/communication/xhr/XMLHttpRequest.js",
-    // "/constructor_prototype/communication/xhr/XMLHttpRequestUpload.js",
+    "/constructor_prototype/communication/xhr/XMLHttpRequestEventTarget.js",
+    "/constructor_prototype/communication/xhr/XMLHttpRequest.js",
+    "/constructor_prototype/communication/xhr/XMLHttpRequestUpload.js",
     //> RTC
     // "/constructor_prototype/communication/RTC/RTCPeerConnection.js",
 
     //> 性能 API
-    // "/constructor_prototype/performance/Performance.js",
-    // "/constructor_prototype/performance/PerformanceNavigation.js",
-    // "/constructor_prototype/performance/EventCounts.js",
+    "/constructor_prototype/performance/Performance.js",
+    "/constructor_prototype/performance/PerformanceNavigation.js",
+    "/constructor_prototype/performance/EventCounts.js",
 
     //> web sql
     // "/constructor_prototype/DB/DataBase.js", // todo 浏览器已经不支持
@@ -50,25 +55,22 @@ const files_constructor_prototype = [
     "/constructor_prototype/DB/IDBOpenDBRequest.js",
 
     //> audio
-    // "/constructor_prototype/audio/AudioParam.js",
-    // "/constructor_prototype/audio/AudioBuffer.js",
-    // "/constructor_prototype/audio/OfflineAudioCompletionEvent.js",
-    // "/constructor_prototype/audio/AudioNode.js",
-    // "/constructor_prototype/audio/AudioScheduledSourceNode.js",
-    // "/constructor_prototype/audio/OscillatorNode.js",
-    // "/constructor_prototype/audio/DynamicsCompressorNode.js",
-    // "/constructor_prototype/audio/BaseAudioContext.js",
-    // "/constructor_prototype/audio/OfflineAudioContext.js",
-
-    //> 网络
-    // "/constructor_prototype/NetworkInformation.js",
+    "/constructor_prototype/audio/AudioParam.js",
+    "/constructor_prototype/audio/AudioBuffer.js",
+    "/constructor_prototype/audio/OfflineAudioCompletionEvent.js",
+    "/constructor_prototype/audio/AudioNode.js",
+    "/constructor_prototype/audio/AudioScheduledSourceNode.js",
+    "/constructor_prototype/audio/OscillatorNode.js",
+    "/constructor_prototype/audio/DynamicsCompressorNode.js",
+    "/constructor_prototype/audio/BaseAudioContext.js",
+    "/constructor_prototype/audio/OfflineAudioContext.js",
 
     //> 监视 API
-    // "/constructor_prototype/observer/MutationObserver.js",
+    "/constructor_prototype/observer/MutationObserver.js",
 
     //> 其他
     "/constructor_prototype/Crypto.js",
-    // "/constructor_prototype/SubtleCrypto.js",
+    "/constructor_prototype/SubtleCrypto.js",
     "/constructor_prototype/VisualViewport.js",
 ]
 
@@ -84,10 +86,10 @@ const files_instance = [
     "/instance/screen.js",
 
     //> 性能API
-    // "/instance/performance.js",
+    "/instance/performance.js",
 
     //> 其他
-    // "/instance/DeprecatedStorageQuota.js",
+    "/instance/DeprecatedStorageQuota.js",
     "/instance/chrome.js",
 ]
 

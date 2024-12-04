@@ -8,26 +8,28 @@ dingvm = {
 };
 
 dingvm.config.proxy = false;// 是否开启代理
-dingvm.config.proxy_tag = false;// 是否开启标签原型代理
+dingvm.config.proxy_tag = true;// 是否开启标签原型代理
 dingvm.config.proxy_navigator_plugins = false;// 是否开启plugins相关代理
-dingvm.config.proxy_navigator_battery = false;// 是否开启battery相关代理
-dingvm.config.proxy_tag_style = false;// 是否开启标签样式style相关代理
-dingvm.config.proxy_tag_canvas = false;// 是否开启标签canvas相关代理
-dingvm.config.proxy_event = false;// 是否开启event事件相关代理
+dingvm.config.proxy_navigator_battery = true;// 是否开启battery相关代理
+dingvm.config.proxy_tag_style = true;// 是否开启标签样式style相关代理
+dingvm.config.proxy_tag_canvas = true;// 是否开启标签canvas相关代理
+dingvm.config.proxy_event = true;// 是否开启event事件相关代理
 
 dingvm.config.print = true; // 是否输出日志
 dingvm.config.print_file = true; // 日志是否写入文件
 dingvm.config.setInterval = true; //是否置空setInterval函数
 dingvm.config.setTimeout = false; //是否置空setTimeout函数
-dingvm.config.random = false; //是否固定随机值
-
+dingvm.config.random = true; //是否固定随机值
 dingvm.config.vm2_if = true; // 是否在vm2运行
 
 dingvm.memory.symbolProxy = Symbol("proxy");// 独一无二的属性, 标记是否已代理
 dingvm.memory.symbolData = Symbol("data");// 用来保存当前对象上的原型属性
-dingvm.memory.filterStrProp = ['toString', "eval", '__proto__', 'prototype', 'jquery', 'listeners', 'hasOwnProperty', 'constructor', 'valueOf'];// 需要过滤的属性
-dingvm.memory.filterSymbolProp = [dingvm.memory.symbolProxy, Symbol.toStringTag, dingvm.memory.symbolData, Symbol.toPrimitive]
-dingvm.memory.filterRecursionProp = ['jquery', 'getedContext']
+dingvm.memory.filterStrProp = ['toString', "eval", '__proto__', 'prototype', 'jquery', 'listeners',
+    'hasOwnProperty', 'constructor', 'valueOf', 'toJSON'];// 需要过滤的属性
+dingvm.memory.filterSymbolProp = [dingvm.memory.symbolProxy, Symbol.toStringTag, dingvm.memory.symbolData,
+    Symbol.toPrimitive, Symbol.iterator]
+dingvm.memory.filterRecursionProp = ['jquery', 'getedContext', 'localStorage', 'sessionStorage', 'location', 'document', 'navigator', 'history',
+    'screen', "frames", "parent", "top", "self", "window", "setTimeout", "setInterval", "clearTimeout", "clearInterval"]
 dingvm.memory.ID = {}; // tag对象次数id
 
 dingvm.memory.globalVar = {}; // 存取全局变量
@@ -49,7 +51,6 @@ dingvm.memory.globalVar.fontList = [
 let fontListLength = dingvm.memory.globalVar.fontList.length;
 dingvm.memory.globalVar.fontList.splice(_.random(fontListLength, floating = false) - 1, 1);
 dingvm.memory.globalVar.timeoutID = 0;
-// dingvm.memory.globalVar.all = new ldObj();
 dingvm.memory.globalVar.all = get_document_all({length: 3});
 dingvm.memory.globalVar.scripts = [];
 dingvm.memory.globalVar.document = {};

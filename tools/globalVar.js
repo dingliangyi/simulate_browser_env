@@ -56,9 +56,10 @@
                 callback: callback,
                 args: arg
             })
+            // callback(...arg)
 
-            // const timer_obj = dingvm.node_func.setTimeout(callback, ...arg);
-            const timer_obj = {};
+            const timer_obj = dingvm.node_func.setTimeout(callback, ...arg);
+            // const timer_obj = {};
             const timer_id = parseInt(Object.keys(dingvm.timer_map).sort((a, b) => {
                 return a - b;
             }).pop()) + 1;

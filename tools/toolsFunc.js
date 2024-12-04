@@ -438,15 +438,17 @@
             if (dingvm.memory.filterSymbolProp[i] === prop)
                 return true;
         }
+        if (prop.toString().includes('myToString'))
+            return true;
         return false;
     };
     dingvm.toolsFunc.filterRecursionProp = function (prop) {
-        if (typeof prop === 'function')
-            return true;
         for (let i = 0; i < dingvm.memory.filterRecursionProp.length; i++) {
             if (dingvm.memory.filterRecursionProp[i] === prop.toString())
                 return true;
         }
+        if (typeof prop === 'function')
+            return true;
         return false;
     };
 
@@ -475,21 +477,22 @@
                     let type = dingvm.toolsFunc.getType(result);
                     let table = {
                         "类型": 'get',
-                        '调用者': target,
+                        '调用者': objName,
                         '属性': prop.toString(),
                         '值': result,
                         '值类型': type
                     }
 
                     if (result instanceof Object) {
-                        try {
-                            let if_ = (['self', 'top', 'window', 'parent', 'globalThis', 'frames'].indexOf(prop.toString()) !== -1);
-                            table['值'] = if_ ? 'window' : (typeof result === 'function' ? result.toString() : JSON.stringify(result));
-                            console.table([table]);
-                        } catch (e) {
-                            // debugger
-                            console.table([table]);
-                        }
+                        // try {
+                        //     let if_ = (['self', 'top', 'window', 'parent', 'globalThis', 'frames'].indexOf(prop.toString()) !== -1);
+                        //     table['值'] = if_ ? 'window' : (typeof result === 'function' ? result.toString() : JSON.stringify(result));
+                        //     console.table([table]);
+                        // } catch (e) {
+                        //     // debugger
+                        //     console.table([table]);
+                        // }
+                        console.table([table]);
                         //* 过滤不需要递归代理的属性
                         if (!dingvm.toolsFunc.filterRecursionProp(prop)) {
                             result = dingvm.toolsFunc.proxy(result, `${objName}.${prop.toString()}`);
@@ -518,148 +521,149 @@
                         '值类型': type
                     }
 
-                    if (value instanceof Object) {
-                        try {
-                            let if_ = (type === 'Window' || ['self', 'top', 'window', 'parent', 'globalThis', 'frames'].indexOf(prop.toString()) !== -1);
-                            table['值'] = if_ ? 'window' : (typeof value === 'function' ? value.toString() : JSON.stringify(value));
-                            console.table([table]);
-                        } catch (e) {
-                            // debugger
-                            console.table([table]);
-                        }
-                    } else {
-                        console.table([table]);
-                    }
+                    // if (value instanceof Object) {
+                    //     try {
+                    //         let if_ = (type === 'Window' || ['self', 'top', 'window', 'parent', 'globalThis', 'frames'].indexOf(prop.toString()) !== -1);
+                    //         table['值'] = if_ ? 'window' : (typeof value === 'function' ? value.toString() : JSON.stringify(value));
+                    //         console.table([table]);
+                    //     } catch (e) {
+                    //         // debugger
+                    //         console.table([table]);
+                    //     }
+                    // } else {
+                    //     console.table([table]);
+                    // }
+                    console.table([table]);
                 } catch (e) {
                     console.error(`{set:[${objName}] -> prop:[${prop.toString()}] -> error:[${e.message}]}`);
                 }
                 return result;
             },
-            getOwnPropertyDescriptor: function (target, prop) {
-                let result;//* 描述符对象
-                try {
-                    result = Reflect.getOwnPropertyDescriptor(target, prop);
-                    let table = {
-                        "类型": 'getOwnPropertyDescriptor',
-                        '调用者': target,
-                        '属性': prop.toString(),
-                        '值': result,
-                        '值类型': 'Object'
-                    }
-                    console.table([table]);
-                } catch (e) {
-                    console.error(`{getOwnPropertyDescriptor:[${objName}] -> prop:[${prop.toString()}] -> error:[${e.message}]}`);
-                }
-                return result;
-            },
-            defineProperty(target, prop, descriptor) {
-                if (prop.toString() === 'Symbol(data)') {
-                    return Reflect.defineProperty(target, prop, descriptor)
-                }
-
-                let result;
-                try {
-                    result = Reflect.defineProperty(target, prop, descriptor);
-                    let table = {
-                        "类型": 'defineProperty',
-                        '调用者': target,
-                        '属性': prop.toString(),
-                        '值': descriptor,
-                        '值类型': 'Object'
-                    }
-                    console.table([table]);
-                } catch (e) {
-                    console.error(`{defineProperty:[${objName}] -> prop:[${prop.toString()}] -> error:[${e.message}]}`);
-                }
-                return result;
-            },
-            deleteProperty(target, propKey) {
-                let result = Reflect.deleteProperty(target, propKey);
-                let table = {
-                    "类型": 'deleteProperty',
-                    '调用者': target,
-                    '属性': propKey.toString(),
-                    '值': result,
-                    '值类型': dingvm.toolsFunc.getType(result)
-                }
-                console.log([table]);
-                return result;
-            },
-            has(target, propKey) { // in操作符
-                if (propKey.toString() === 'Symbol(data)' || propKey.toString() === 'Symbol(proxy)') {
-                    return Reflect.has(target, propKey)
-                }
-                let result = Reflect.has(target, propKey);
-                let table = {
-                    "类型": 'has',
-                    '调用者': target,
-                    '属性': propKey.toString(),
-                    '值': result,
-                    '值类型': dingvm.toolsFunc.getType(result)
-                }
-                console.table([table]);
-                return result;
-            },
-            ownKeys(target) {
-                let result = Reflect.ownKeys(target);
-                let table = {
-                    "类型": 'ownKeys',
-                    '调用者': target,
-                    '属性': '无',
-                    '值': result,
-                    '值类型': dingvm.toolsFunc.getType(result)
-                }
-                console.table([table]);
-                return result
-            },
-            getPrototypeOf(target) {
-                let result = Reflect.getPrototypeOf(target);
-                let table = {
-                    "类型": 'getPrototypeOf',
-                    '调用者': target,
-                    '属性': '无',
-                    '值': result,
-                    '值类型': dingvm.toolsFunc.getType(result)
-                }
-                console.table([table]);
-                return result;
-            },
-            setPrototypeOf(target, proto) {
-                let result = Reflect.setPrototypeOf(target, proto);
-                let table = {
-                    "类型": 'setPrototypeOf',
-                    '调用者': target,
-                    '属性': proto.toString(),
-                    '值': result,
-                    '值类型': dingvm.toolsFunc.getType(result)
-                }
-                console.table([table]);
-                return result;
-            },
-            preventExtensions(target) {
-                let result = Reflect.preventExtensions(target);
-                let table = {
-                    "类型": 'preventExtensions',
-                    '调用者': target,
-                    '属性': '无',
-                    '值': result,
-                    '值类型': dingvm.toolsFunc.getType(result)
-                }
-                console.table([table]);
-                return result;
-            },
-            isExtensible(target) {
-                let result = Reflect.isExtensible(target);
-                let table = {
-                    "类型": 'isExtensible',
-                    '调用者': target,
-                    '属性': '无',
-                    '值': result,
-                    '值类型': dingvm.toolsFunc.getType(result)
-                }
-                console.table([table]);
-                return result;
-            }
+            // getOwnPropertyDescriptor: function (target, prop) {
+            //     let result;//* 描述符对象
+            //     try {
+            //         result = Reflect.getOwnPropertyDescriptor(target, prop);
+            //         let table = {
+            //             "类型": 'getOwnPropertyDescriptor',
+            //             '调用者': target,
+            //             '属性': prop.toString(),
+            //             '值': result,
+            //             '值类型': 'Object'
+            //         }
+            //         console.table([table]);
+            //     } catch (e) {
+            //         console.error(`{getOwnPropertyDescriptor:[${objName}] -> prop:[${prop.toString()}] -> error:[${e.message}]}`);
+            //     }
+            //     return result;
+            // },
+            // defineProperty(target, prop, descriptor) {
+            //     if (prop.toString() === 'Symbol(data)') {
+            //         return Reflect.defineProperty(target, prop, descriptor)
+            //     }
+            //
+            //     let result;
+            //     try {
+            //         result = Reflect.defineProperty(target, prop, descriptor);
+            //         let table = {
+            //             "类型": 'defineProperty',
+            //             '调用者': target,
+            //             '属性': prop.toString(),
+            //             '值': descriptor,
+            //             '值类型': 'Object'
+            //         }
+            //         console.table([table]);
+            //     } catch (e) {
+            //         console.error(`{defineProperty:[${objName}] -> prop:[${prop.toString()}] -> error:[${e.message}]}`);
+            //     }
+            //     return result;
+            // },
+            // deleteProperty(target, propKey) {
+            //     let result = Reflect.deleteProperty(target, propKey);
+            //     let table = {
+            //         "类型": 'deleteProperty',
+            //         '调用者': target,
+            //         '属性': propKey.toString(),
+            //         '值': result,
+            //         '值类型': dingvm.toolsFunc.getType(result)
+            //     }
+            //     console.log([table]);
+            //     return result;
+            // },
+            // has(target, propKey) { // in操作符
+            //     if (propKey.toString() === 'Symbol(data)' || propKey.toString() === 'Symbol(proxy)') {
+            //         return Reflect.has(target, propKey)
+            //     }
+            //     let result = Reflect.has(target, propKey);
+            //     let table = {
+            //         "类型": 'has',
+            //         '调用者': target,
+            //         '属性': propKey.toString(),
+            //         '值': result,
+            //         '值类型': dingvm.toolsFunc.getType(result)
+            //     }
+            //     console.table([table]);
+            //     return result;
+            // },
+            // ownKeys(target) {
+            //     let result = Reflect.ownKeys(target);
+            //     let table = {
+            //         "类型": 'ownKeys',
+            //         '调用者': target,
+            //         '属性': '无',
+            //         '值': result,
+            //         '值类型': dingvm.toolsFunc.getType(result)
+            //     }
+            //     console.table([table]);
+            //     return result
+            // },
+            // getPrototypeOf(target) {
+            //     let result = Reflect.getPrototypeOf(target);
+            //     let table = {
+            //         "类型": 'getPrototypeOf',
+            //         '调用者': target,
+            //         '属性': '无',
+            //         '值': result,
+            //         '值类型': dingvm.toolsFunc.getType(result)
+            //     }
+            //     console.table([table]);
+            //     return result;
+            // },
+            // setPrototypeOf(target, proto) {
+            //     let result = Reflect.setPrototypeOf(target, proto);
+            //     let table = {
+            //         "类型": 'setPrototypeOf',
+            //         '调用者': target,
+            //         '属性': proto.toString(),
+            //         '值': result,
+            //         '值类型': dingvm.toolsFunc.getType(result)
+            //     }
+            //     console.table([table]);
+            //     return result;
+            // },
+            // preventExtensions(target) {
+            //     let result = Reflect.preventExtensions(target);
+            //     let table = {
+            //         "类型": 'preventExtensions',
+            //         '调用者': target,
+            //         '属性': '无',
+            //         '值': result,
+            //         '值类型': dingvm.toolsFunc.getType(result)
+            //     }
+            //     console.table([table]);
+            //     return result;
+            // },
+            // isExtensible(target) {
+            //     let result = Reflect.isExtensible(target);
+            //     let table = {
+            //         "类型": 'isExtensible',
+            //         '调用者': target,
+            //         '属性': '无',
+            //         '值': result,
+            //         '值类型': dingvm.toolsFunc.getType(result)
+            //     }
+            //     console.table([table]);
+            //     return result;
+            // }
         };
         let handler_func = {
             apply(target, thisArg, argumentsList) {
@@ -706,7 +710,7 @@
         }
 
         let proxyObj = new Proxy(obj, handler);
-        proxyObj = new Proxy(proxyObj, handler); //* 代理两层防止检测
+        // proxyObj = new Proxy(proxyObj, handler); //* 代理两层防止检测
         Object.defineProperty(obj, dingvm.memory.symbolProxy, {
             configurable: false,
             enumerable: false,

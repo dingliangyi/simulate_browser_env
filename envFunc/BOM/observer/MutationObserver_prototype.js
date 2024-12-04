@@ -1,9 +1,9 @@
 dingvm.envFunc.MutationObserverProto_disconnect = function () {
-    debugger
+    // debugger
 };
 dingvm.envFunc.MutationObserverProto_observe = function () {
-    debugger
+    // debugger
 };
 dingvm.envFunc.MutationObserverProto_takeRecords = function () {
-    debugger
+    // debugger
 };

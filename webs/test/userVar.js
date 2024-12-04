@@ -3,8 +3,8 @@
 
     //* 固定随机值
     if (dingvm.config.random) {
-        // const time_stamp = Date.now()
-        const time_stamp = 1719296000341
+        const time_stamp = Date.now()
+        // const time_stamp = 1719296000341
         Date.now = dingvm.toolsFunc.hook(Date.now, undefined, false, function () {
         }, function (obj) {
             return obj.result = time_stamp
@@ -38,10 +38,10 @@
     // dingvm.memory.globalVar.jsonCookie = dingvm.toolsFunc.parseCookie('APISID=W2yqD6FrmjhlgxBD/ASrYUTz-HQZFNOdWE; SAPISID=LuMrTMmU2NrI8tn8/AF9tpODi_31gX8w4s; __Secure-1PAPISID=LuMrTMmU2NrI8tn8/AF9tpODi_31gX8w4s; __Secure-3PAPISID=LuMrTMmU2NrI8tn8/AF9tpODi_31gX8w4s; ISSW=1; SID=VghwOrvEurZPtoqG8nTcxugdE-F9qEuedS7VB-ujOdALRKzOksZZmmOS21wkHW3Pe7lffQ.; OTZ=6994868_24_24__24_; a=1; 1P_JAR=2023-04-24-06; SIDCC=AP8dLtz983JfdV1UkDnVW8LU9ym7-LR-aB6TPV1M5fhOCBNVV_cJiEgctxVR0P04eIkVwAkdK14');
 
     //* location
-    dingvm.toolsFunc.resetLocation('http://www.chinastock.com.cn/newsite/cgs-services/stockFinance/businessAnnc.html');
+    dingvm.toolsFunc.resetLocation('https://amr.sz.gov.cn/outer/entSelect/gs.html');
 
     //* 固定文档加载状态 "interactive" "complete" "loading"
-    dingvm.memory.globalVar.document.readyState = 'interactive';
+    dingvm.memory.globalVar.document.readyState = 'complete';
 
     //* 初始化宽度、高度
     dingvm.memory.globalVar.width = dingvm.toolsFunc.random(480, 800);
@@ -64,7 +64,7 @@
 
     //* 防止检测window navigator是不是不可变对象
     // Object.freeze(window)
-    Object.freeze(navigator);
+    // Object.freeze(navigator);
 
     debugger
     //! 最后执行
@@ -76,5 +76,21 @@
     //     eval(script_code);
     //     delete document['script_position'];
     // }
+
+    const originalTest = RegExp.prototype.test;
+    RegExp.prototype.test = function (str) {
+        // debugger
+        if (this.toString() === '/function \\S+?\\(\\){\\S+/')
+            return true;
+
+        // console.log(`正则表达式: ${this}`);
+        // console.log(`测试字符串: ${str}`);
+        // console.log(`结果: ${originalTest.call(this, str)}`)
+
+        return originalTest.call(this, str)
+    };
+    dingvm.toolsFunc.safeFunc(RegExp.prototype.test, 'test')
+
+    window.ddd = [];
 
 }();

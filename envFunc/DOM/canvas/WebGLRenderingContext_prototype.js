@@ -1,4 +1,4 @@
-dingvm.envFunc.WebGLRenderingContextProto_createBuffer = function WebGLRenderingContextProto_createBuffer() {
+dingvm.envFunc.WebGLRenderingContextProto_createBuffer = function () {
     let buffer = {}
     // buffer.myBuffer = this.getedContext.createBuffer.apply(this.getedContext, arguments)
     Object.setPrototypeOf(buffer, WebGLBuffer.prototype)
@@ -10,17 +10,17 @@ dingvm.envFunc.WebGLRenderingContextProto_createBuffer = function WebGLRendering
     // return buffer
     return this.getedContext.createBuffer.apply(this.getedContext, arguments)
 };
-dingvm.envFunc.WebGLRenderingContextProto_bindBuffer = function WebGLRenderingContextProto_bindBuffer() {
+dingvm.envFunc.WebGLRenderingContextProto_bindBuffer = function () {
     return this.getedContext.bindBuffer.apply(this.getedContext, arguments)
 };
-dingvm.envFunc.WebGLRenderingContextProto_bufferData = function WebGLRenderingContextProto_bufferData() {
+dingvm.envFunc.WebGLRenderingContextProto_bufferData = function () {
     arguments[1].map(function (item, index, array) {
         array[index] = item + _.random(0.25, floating = true)
     })
 
     return this.getedContext.bufferData.apply(this.getedContext, arguments)
 };
-dingvm.envFunc.WebGLRenderingContextProto_createProgram = function WebGLRenderingContextProto_createProgram() {
+dingvm.envFunc.WebGLRenderingContextProto_createProgram = function () {
     let webGLProgram = {}
     // webGLProgram.myCreateProgram = this.getedContext.createProgram.apply(this.getedContext, arguments)
     Object.setPrototypeOf(webGLProgram, WebGLProgram.prototype)
@@ -32,7 +32,7 @@ dingvm.envFunc.WebGLRenderingContextProto_createProgram = function WebGLRenderin
     // return webGLProgram
     return this.getedContext.createProgram.apply(this.getedContext, arguments)
 };
-dingvm.envFunc.WebGLRenderingContextProto_canvas_get = function WebGLRenderingContextProto_canvas_get() {
+dingvm.envFunc.WebGLRenderingContextProto_canvas_get = function () {
     return dingvm.toolsFunc.getProtoArr.call(this, 'canvas')
 };
 dingvm.envFunc.WebGLRenderingContextProto_getExtension = function () {
